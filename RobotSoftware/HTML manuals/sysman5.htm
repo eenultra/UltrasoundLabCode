@@ -1,0 +1,3235 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Robot Controller Manual</title>
+</head>
+<body>
+<body Background = "#ffffff">
+
+last revision 2016-05-17<p>
+<h2><center>              S-T ROBOTICS</center>
+
+<center>ROBOT CONTROLLER MANUAL</center></h2>
+<h4><center>                  by David N. Sands</center>
+</h4>
+<p><p>
+<center> <table border="1" cellspacing="0" cellpadding="3">
+ <tr>
+ <th>  <a name="#contents">                        CONTENTS</th></a>
+                           
+
+<tr> <td>  <a href="#1.1">       Introduction</a></td><td>  1.1</td>
+<tr>  <td>  <a href="#1.2">      Hardware overview</a></td><td>1.2</td>
+<tr> <td>   <a href="#1.3">         Powering up</a></td><td>1.3</td>
+<tr>  <th>            SOFTWARE</th> <th> </th> <th>            HARDWARE</th>
+<tr>  <td>     <a href="#2.1">      About FORTH</a></td><td>2.1</td>  
+   <td>   <a href="#11">        Instructions for using Z-cards</a></td><td>11</td>
+<tr>  <td>      <a href="#2.2">      Understanding FORTH</a></td><td>2.2</td><td>
+   <a href="#11.1">          Available modules</a></td><td>11.1</td>
+<tr> <td>        <a href="#2.3">     Structure of FORTH</a></td><td>2.3</td>
+   <td>   <a href="#11.2">          Z-card bus</a></td><td>11.2</td>
+<tr> <td>     <a href="#2.4">  Getting Started</a></td><td>2.4</td>
+   <td>   <a href="#11.3">         Input-output addressing</a></td><td>11.3</td>
+<tr> <td>    <a href="#3">         Interfacing with the outside world</a></td><td>3</td>
+   <td>   <a href="#11.4">          Basic robot I/O (input/output)</a></td><td>11.4</td>
+<tr>  <td> <a href="#4">           Mixed precision and Trigonometry</a></td><td>4</td>
+   <td>      <a href="#11.5">       Serial ports</a></td><td>11.5</td>
+<tr> <td>  <a href="#5">           Saving on Disk</a></td><td>5</td>
+   <td>   <a href="#11.6">        Electric Gripper drive</a></td><td>11.6</td>
+<tr> <td>    <a href="#6">        Supervisory software</a></td><td>6</td>
+   <td>   <a href="#11.7">           Power Supply</a></td><td>11.7</td>
+<tr> <td>    <a href="#7">        Turnkey operation</a></td><td>7</td>
+   <td>   <a href="#11.14">           General purpose I/O expansion</a></td><td>11.14</td>
+<tr><td>   <a href="#8">          Interrupts</a></td> <td>8</td>
+   <td>      <a href="#11.15">       Analog and Digital I/O card</a></td><td>11.15</td>
+<tr> <td>   <a href="#9.1">         Memory Map</a></td> <td>9.1</td>
+   <td>   <a href="#11.16">          I/O signal conditioners</a></td><td>11.16</td>
+<tr> <td>    <a href="#9.2">        TIL Characteristics</a></td><td>9.2</td>
+   <td><a href="#11.17">              Remote E-stop circuit</a></td><td>11.17</td>
+<tr> <td>    <a href="#9.2.8">        Information block</a></td><td>9.2.8</td>
+   <td>  <a href="#12">            Connector Pin-outs</a></td> <td>12</td>
+<tr> <td>    <a href="#10">        FORTH Glossary</a></td><td>10</td>
+<tr><td>     <a href="#10.2">      Terminal and Input/Output Words</a></td><td>10.2</td>
+<tr><td>     <a href="#10.4">        Arithmetic Words </a></td><td>10.4</td>
+<tr><td>     <a href="#10.5">       Defining Words </a></td><td>10.5</td>
+<tr><td>     <a href="#10.6">        Control Words  </a></td><td>10.6</td>
+<tr><td>     <a href="#10.7">        Timing Words </a></td><td>10.7</td>
+
+</table></center>
+<p><p>
+<hr>
+<h4>
+<a name="1.1"> 1.1 INTRODUCTION
+</h4><p>
+The K11R robot controller is modular system based on the eZ80L92 pipelined 16-bit microprocessor.
+Memory is static RAM which is loaded from flash EPROM upon power up or reset. All the I/O devices and RAM run at the full 
+processor clock speed without wait states and there are no system interrupts unless you create them.
+So input/output oriented software runs much faster. The controller's language is an implementation of FORTH 
+called Tiny FORTH or TIL (Threaded Interpretive Language) which is concise and efficient.
+It has the dual advantages of speed and very low memory usage which has made it possible to get a highly complex 
+system into the controller's minimal address space.
+<p><a href="#contents">Back to Contents</a> <p>
+<hr>
+<h4><a name="1.2">1.2 HARDWARE OVERVIEW</h4>
+<p>
+The controller comprises a bench top cabinet containing all power supplies, motor drives and logic cards. There are two logic cards, the CPU and the DSP plugged into an internal bus with space for 2 more cards.
+<p>
+Communication with the computer is via an RS232 connector on the front panel and the teach pendant also connects there. All other connections are to the rear panel. If your computer has USB but not RS232 then ST will supply a converter.
+<p>
+<h4>Front Panel</h4>
+The reset button is only for use in dire circumstances. If it is pressed the robot will have to be initialized again.<br> Any software you have written which has not been saved with the USAVE command will be lost, but you can reload it from computer.<br>
+The other button is the soft stop button -- see <a href="manual10.htm#6.1">Stop button</a><br>
+The key switch is the power up mode. The modes are:<br>
+cold start - this initializes the static RAM and ROBOFORTH ready for use.<br>
+warm start - this permits continuing after a reset or power up without having to reload your software (providing it was saved to flash ROM with USAVE).<br>
+auto start - this is like warm start except that a chosen word can be made to execute immediately on power up or reset without having to type anything (providing it was saved to flash ROM with USAVE).<br>
+The front panel has four lamps: (top to bottom)<br>
+Power fail (red) - lights when power is bad. It also lights when the reset button is pressed.<br>
+Power OK (green) - indicates power is satisfactory.<br>
+When power is turned on the red lamp lights for 1-2 secs then goes out and the green lamp lights. If power fails e.g. a brown-out the red lamp lights and green goes out. Power must be good for 1-2 seconds (adjustable) before it is deemed OK again. See <a href="#11.7">Power Supply, 11.7</a>. When the reset button is pressed both lamps light.<br>
+TX (amber) - (Transmit) lights when CPU is transitting characters. When power is first turned on or reset is pressed it flashes briefly as the herald message is sent to the computer. Therefore if no message appears on the computer the problem lies with the computer or cables.<br>
+RX (red) - (Receive) lights when character streams are received from the computer e.g. loading project.
+<p>
+There may be up to two relays in the rear of the cabinet: one is 
+a reservior discharge relay as required CE safety marking and the 
+other is the E-stop extension relay whereby all external E-stop 
+devices are in series and if any device breaks a connection the 
+relay drops out and sends a signal to the software to stop all 
+motors.
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+<h4><a name ="1.3">1.3 POWERING UP</h4>
+<p>
+<h4>Cold start</h4>
+When powered up for the very first time all the system variables must be initialised, For example pointers to the start and finish of user programs will be random in RAM which has not been used before. Before powering up for the first time select COLD on the front panel key switch.
+<p>
+Now connect the computer and switch on the power. 
+The PC should display a message which includes the words "COLD START". The key may now be turned (with power on or off) to the warm start position once you have USAVED your program. If you leave it in the cold start position then any programming you do will be lost when power is next switched on. Note that pressing the reset button is the same as switching power off/on. Cold start could be re-selected deliberately, however, to erase all programs e.g. after a practice session.
+<p>
+Enter ROBOFORTH and press return.
+<p>
+<h4>Warm start</h4>
+Warm start may be selected to retain your programming. When the power is switched on you will see the message "WARM START". All your previously programmed definitions will then be reloaded to RAM from flash memory and still be there without downloading them again (providing they were saved to flash ROM with USAVE).. (Note: ROBWIN downloads them anyway)
+<p>
+<h4>Auto start</h4>
+This is the turnkey mode. See <a href="#7">turnkey operation</a>
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<h4><a name = "2.1">2.1 ABOUT FORTH</h4>
+<p>
+All the key-words and commands in FORTH are organised as a linked 
+list or "dictionary". With each word in the dictionary is kept 
+its definition, as with a conventional dictionary. Each word in 
+the command line is looked up in the dictionary and its "meaning" 
+is executed. If FORTH cannot find the word and it is not a number 
+the word is rejected and the rest of the line ignored.
+<p>
+At its lower levels FORTH can be somewhat cryptic, but it does 
+allow access to the whole machine, like assembly language, yet 
+permits the generation of very high level functions.  Programming 
+the machine is done by adding new words to the dictionary, 
+defined in terms of existing words,  Yet user software is semi-
+compiled so is much faster than an interpreter. This combination 
+of speed and high level power makes FORTH particularly suited to 
+the control of machinery. It is also concise and compact (i.e. 
+occupies less memory).
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+<h4>
+<a name = "2.2">2.2 UNDERSTANDING FORTH</h4>
+<p>
+If you already know about FORTH please skip this section.
+<a href="#3">Go directly to 3. Interfacing with the Outside World</a><p>
+Without wishing to embark on a tutorial on FORTH, I would just like to outline the fundamentals of FORTH for the benefit of readers not acquainted with the language.<br> Note: In all my examples of exchanges between man and machine I will show text typed in by the user in <font color= 009c00><u>green</u></font> and underlined. I won't keep mentioning the need for the RETURN (or ENTER) key.  The computer's response will be in upper case, and not in green.  My comments will be in lower case.
+<p>
+There are probably five fundamental characteristics-
+<p>
+<h4>2.2.1 - Command line.</h4>
+<p>
+Commands and numbers are typed in by the user, separated by 
+spaces, finishing with return.  FORTH then scans the user's line 
+acting on each word, and if everything works out OK then FORTH 
+types OK.
+<p>
+<h4>
+2.2.2 - the Stack</h4>
+<p>
+All arguments are passed between procedures on a data stack.  A 
+stack is an area of memory into which values are placed 
+temporarily on a last-in first-out basis. Variables are used, but 
+not as much as in other languages.
+<p>
+Part of the reason for this is to maximise the performance of the 
+system. Suppose you wish to add 4 and 5 together and print the 
+result:- In the BASIC statement PRINT 4 + 5 the operator '+' gets 
+one of its "arguments" (values) from its left, and the other from 
+its right. This may seem logical to humans but a machine must 
+first organise its arguments before it can do arithmetic, and  
+almost any language will first convert a formula to items on a 
+stack. The equivalent in FORTH is therefore:-
+<p>
+><font color= 009c00><u>4 5 +<b> .</b></u></font> (return) 9 OK
+<p>
+FORTH scans the user's input line and first puts 4 on the stack, 
+then puts 5 on the stack. The FORTH word '+' then takes two 
+values off the stack ( 5 and 4 ). adds them together and puts the 
+answer back on the stack, the value 9. The FORTH abbreviation '.' 
+then prints it. This is sometimes called post-fix notation.
+<p>
+There is now nothing on the stack.  If we try to print again we 
+get the message "STACK UNDERFLOW!" which is not OK.
+<p>
+But the FORTH data stack doesn't exist to make everyone think 
+like a machine.  At worst post-fix notation is a minor 
+inconvenience. Imagine that we wish to calculate the total 
+content of two tanks of chemical.  Each tank has a transducer in 
+it with a complicated service routine, as follows:-
+<p>
+1  Select the transducer and energise.<br>
+2  Allow the signal conditioners to settle.<br>
+3  Command the analog-to-digital converter.<br>
+4  Wait for the ADC to complete.<br>
+5  Read the ADC.<br>
+6  Scale the result according to the calibration factor of the    
+transducer.<br>
+7  Leave the scaled result on the stack.
+<p>
+Each tank has it's own service routine, called LEFT-TANK and 
+RIGHT-TANK.  The total of both tanks is given by:-<p>
+LEFT-TANK RIGHT-TANK +<p>
+
+Now LEFT-TANK and RIGHT-TANK are not values! Nor variables.  We 
+are not doing PRINT X + Y.  They are whole  procedures which 
+leave their results on the stack.  There can even be other words 
+between LEFT-TANK and RIGHT-TANK as long as they don't take off 
+or put on extra items on the stack for example:-<p>
+LEFT-TANK BLA-BLA RHUBARB RIGHT-TANK + .
+
+
+<p>
+Though the stack is used extensively to pass arguments, variables 
+also exist and are handled with the words ! ("store") and @ 
+("fetch").  ! means "store the second value down on the stack 
+into the address which is the top item on the stack. @ means 
+"fetch the contents of the address on the stack and leave it in 
+its place".
+<p>
+<h4>2.2.3 - the Dictionary</h4>
+<p>
+Instead of a handful of keywords as in, for example BASIC, there are hundreds 
+of words, which are organised in a "dictionary".  FORTH 
+interprets a user's word by searching down the dictionary until 
+it finds it, then carries out the activity which is in the 
+"definition" of the word.  If the word isn't in the dictionary 
+then FORTH tries to convert  it as a number.  If it isn't a valid 
+number either then FORTH declares it an error.
+<p>
+Most LOW level words in FORTH tend to be abbreviations, or single 
+characters, for example the FORTH word for "print" is just a 
+dot (.) whereas higher level procedures tend to have highly 
+descriptive names. Abbreviations have agreed pronunciations, e.g. 
+dot (.) is pronounced "print", ! is pronounced "store", @ is pronounced "fetch" etc. 
+Pronunciations will be given as they arise.
+<p>
+Note that in this version of FORTH all words are stored in the 
+dictionary as a length figure followed by the first 5 characters 
+only of the word. Sometimes ambiguity has to be avoided, for 
+example LATHE1 and LATHE2 have the same lengths and the same 
+first 5 characters so 1LATHE and 2LATHE are better words.
+<p>
+<h4>
+2.2.4 - Definitions</h4>
+<p>
+This principle is fundamental to FORTH users.  It is the 
+building-block approach to programming.
+<p>
+FORTH, in its basic form, consists of a "kernel" of some 150 or 
+so "words" or commands, most of which are "primitives" i.e. they 
+directly execute machine code whenever they are used.  The 
+programmer must define new words in terms of words already in the 
+kernel.  He/she can then define higher level words in terms of 
+words he/she has already defined plus words from the kernel as 
+necessary. These new words are added to the existing dictionary. <br> 
+Hence the programmer begins by defining short concise procedures 
+which can be tested individually.  In this way the user builds up 
+a range of fully tested modules which are then used to construct 
+more powerful procedures, and so on until the final application 
+programme is complete, which can be just one word.  The modular 
+approach imparts a very high degree of confidence to the final 
+application.
+<p>
+New procedures are created using a colon sign, followed by the 
+name of the procedure, then the definition ending with a semi-
+colon, for example-<p>
+: TANKS?  LEFT-TANK  RIGHT-TANK + . ;
+<p>
+Now all you have to do is type TANKS? to yield the total in both 
+tanks, or alternatively TANKS? can be included in the definition 
+of some grander procedure.
+<p>
+<h4>2.2.5 - Integers</h4>
+<p>
+The standard representation of a number in Forth is a 16 bit 
+integer. A single stack entry is a 16-bit value (which occupies 2 
+bytes in a byte oriented machine). Arithmetic is done with 16-bit 
+twos complement values in the range -32768 to +32767 unless 
+unsigned integers are specified (0-65535). To assist with scaling 
+mixed precision arithmetic is provided in which the intermediate 
+result of a computation can occupy 32 bits (double precision), 
+i.e two stack entries. Floating point arithmetic is provided in 
+some FORTHs but integer arithmetic is much faster. Even 
+trigonometry can be performed using integers (see trigonometry 
+section) with an implied decimal point.
+<p>
+Because the K11 is a byte (8-bit) oriented machine values are stored in two successive 8-bit 
+memory locations. The highest value 8 bits occupies the highest memory address.
+To obtain the necessary memory space the K11 has two banks of 64k 8 bit memory. These
+are addressed using one 16 bit address and a value in a location called BANK. When
+BANK is 0 this refers to the frst 64k and when BANK is 1 this refers to the second 64k.
+8-bit (single byte) values can be manipulated using FORTH words like C@ C! C1SET 
+(the C is historical and stands for character i.e. byte) and IN and OUT. 
+These values occupy 16 bit stack entries, with the highest 8 bits all zero. 
+There is also a 32-bit precision occupying 4 locations and accessed with 2@ and 2! 
+(2 for double precision).
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+
+<h4><a name="2.3">2.3 STRUCTURE OF FORTH</h4>
+<p>
+The structure of a FORTH word is as follows:-<p>
+First there is a header.  This is the dictionary entry containing 
+the spelling of the word plus a link to the previous word in the 
+dictionary.  The dictionary is a linked list of words which 
+enables any word to be found by following the links.
+Next is the code field.  This is the 16-bit address of some 
+machine code which determines what the word is actually going to 
+do.<p>
+Next is the parameter field.  This is a list of 16-bit values 
+which may be data, as in an array, or only one value for a 
+variable or a constant.  If you had defined the word as a 
+procedure in terms of other words then the parameter list would 
+comprise a list of the other words' code field addresses.  These 
+other words may also comprise lists of other words and so on, and 
+this is why FORTH is called a "threaded interpreter".  Whenever a 
+word is executed the threads are followed deeper into the 
+dictionary until machine code is found.<br>
+Please see  <a href="#9.2">TIL Characteristics</a><br>
+Consider the example:<br>
+><font color= 009c00><u>42 CONSTANT STAR</u></font> OK
+<p>
+The header contains the word "STAR".  The code field points to 
+some machine code which takes the contents of the parameter field 
+and puts it on the stack for following words to use, e.g.<br>
+><font color= 009c00><u>STAR EMIT</u> </font> * OK
+<p>
+The parameter field is 2 bytes long and contains the value 42.
+Words defined with the defining-word VARIABLE leave the address 
+of their parameter fields on the stack, so that the contents of 
+the parameter fields can be fetched using the @ sign, or values 
+can be stored back using the ! sign. e.g.<br>
+><font color= 009c00><u>VARIABLE STAR</u></font> OK
+<p>
+><font color= 009c00><u>42 STAR !</u></font> OK
+ <p>
+><font color= 009c00><u>STAR @ <b>.</b></u></font> 42 OK
+<p>
+To define a procedure the defining-word used is the colon sign 
+(:) which puts the system into compile mode so that words which 
+follow in the definition are looked up in the dictionary, and 
+their code field addresses are added to the PARAMETER list of the 
+new word.  The value put into the CODE field is the address of 
+some machine code which, when the new word is executed, will 
+begin the process of following the threads and executing the 
+machine code found at the bottom of each thread.  The machine 
+code which follows the threads down and back up, keeping track of 
+where it has got to in each word, is called the "inner 
+interpreter". Code at the end of each list tells the inner 
+interpreter to end this word and return to the next level up. The 
+inner interpreter is concise and efficient to ensure fast 
+execution of high level definitions. The "outer interpreter" is 
+itself a word which gets the users commands and executes them, 
+checking for errors etc.
+<p><a href="#contents">Back to Contents</a>
+<hr>
+
+<h4><a name="2.4">
+2.4 GETTING STARTED</h4>
+<p>
+When the system is cold-started (see powering up) it 
+automatically adopts the hexadecimal numbering system. This is 
+frequently more appropriate for controlling binary entities such 
+as analog-to-digital converters, memory and port addresses etc. 
+but real engineering units are best handled in decimal, so before 
+anything else enter:<p>
+><font color= 009c00><u>DECIMAL</u></font> OK
+ <p>
+It is now ESSENTIAL to read a recommended book as it is beyond 
+the scope of this manual to include a full tutorial. In the 
+absence of such a book then refer to the GLOSSARY before 
+continuing. By way of advice programming should begin by thinking 
+out a control problem from the top down, i.e. try to decide the 
+program flow at the highest level, and then break it down into 
+smaller parts as you think out the problems of interfacing with 
+external machinery etc. Then begin to code the lowest levels. 
+Where possible try to use the stack and not variables because 
+this can save alot of execution time in lower level words.
+<p>
+<h3>Keeping track of the stack</h3>
+As an aid to stack use it is useful to draw up a list in which 
+the stack values can be written next to the instructions. 
+Consider the word PULSE which pulses an output port bit on for 
+one second then off again:<br>
+Usage:<br>
+><font color= 009c00><u>PA 2 PULSE</u></font>
+<p>
+The word PULSE is not part of FORTH or ROBOFORTH so you would add 
+it thus:<br>
+: PULSE OVER OVER ON 1000 MSECS OFF ;<p>
+Let us trace its operation on the values PA 2 e.g. <font color= 009c00><u>PA 2 PULSE</u></font>
+ <p><pre>                                         
+      Stack | Instruction | Index
+         PA | PA          |
+       PA 2 | 2           |
+    PA 2 PA | OVER        |
+  PA 2 PA 2 | OVER        |
+       PA 2 | ON          | (uses up one set of PA 2)
+  PA 2 1000 | 1000        |
+       PA 2 | MSECS       | (uses up the 1000 for 1sec delay)
+            | OFF         | (OFF uses up the remaining PA 2)
+</pre><p><a href="#contents">Back to Contents</a>
+<hr>
+
+<h4><a name="3">3. INTERFACING WITH THE OUTSIDE WORLD</h4>
+<p>
+The following examples apply to the basic I/O which is part of the CPU card. Additional I/O cards such as 11-48 and 11-56 are similar but have different port names.
+<p>
+The CPU has three ports which are called PA PB and PC.
+<p>
+TO OUTPUT connect to PA as indicated on connector pinout. Suppose there were an air solenoid connected to PA 4. You could turn it on with:-<br>
+<font color= 009c00><u>PA 4 ON</u></font><br>
+and off with:-<br>
+<font color= 009c00><u>PA 4 OFF</u></font>
+<p>
+A better idea would be to define AIR as follows:-<br>
+<font color= 009c00><u><b>:</b> AIR PA 4 <b>;</b></u></font>
+<p>
+Now you can type (or include in a higher level definition):-<br>
+<font color= 009c00><u>AIR ON</u></font>   and  <font color= 009c00><u> AIR OFF</u></font>
+<p>
+
+TO INPUT connect to PB as indicated on connector pin-out.
+Suppose there were a switch on PB bit 4 which made PB 4 logic 
+zero when closed, but logic '1' when open (see connector pin-
+outs) You could define a word:-<br>
+<font color= 009c00><u><b>:</b> SWITCH PB 4 BIT? <b>;</b></u></font>
+<p>
+This can be tested thus:<br>
+<font color= 009c00><u>SWITCH <b>.</b></font></u> 16 (meaning switch is open) (note 16 decimal = 10 hex)<p>
+
+<font color= 009c00><u>SWITCH <b>.</b></font></u> 0 (meaning switch is closed)<p>
+
+Suppose you would like to synchronise some activity to an pushbutton connected to PB 4. For the purposes of words like IF and UNTIL any value is TRUE and zero is FALSE. Using the FORTH building block approach definitions could be built up as follows:-<br>
+<font color= 009c00><u><b>:</b> HI BEGIN PB 4 BIT? UNTIL<b> ;</b></u></font>   -or-  <font color= 009c00><u><b> :</b> HI BEGIN SWITCH UNTIL <b>;</b></u></font>
+<p>
+BEGIN ... UNTIL is a loop which executes all the words between 
+BEGIN and UNTIL. A condition (true of false) must be on the stack 
+before UNTIL. If the condition is false (zero) then the program 
+loops back to BEGIN but if it is true (non-zero) it drops through 
+to the next word.<br>
+<font color= 009c00><u><b>:</b> LO BEGIN SWITCH 0= UNTIL <b>;</b></u></font>
+<p>
+The word 0= takes a stack value and if it is zero leaves a true 
+(non-zero) which satisfies UNTIL. This is similar but the signal 
+must be zero to drop out of the loop. <br>
+So HI waits for the incoming signal to go high and LO to go low.
+<font color= 009c00><u><b>:</b> WAIT<b>-</b>PB LO HI <b>;</b></u></font> waits for the pulse to go low then high i.e.
+    the button must be pressed then released.<p>
+<a href="#contents">Back to Contents</a>
+<hr>
+
+<a name="4"><p>
+
+<h4>
+4. MIXED PRECISION AND TRIGONOMETRY</h4>
+<p>
+Suppose you wanted to scale a measurement from the analog-to-
+digital converter by a factor of, say, 0.514 . You would expect 
+to do this in FORTH as follows:<br>
+ADC 514 * 1000 /<p>
+The trouble is that if the ADC output is any larger than 63 the 
+multiplication will produce NUMERIC OVERFLOW because the result 
+would have been larger than 32767. We therefore need the 
+precision of 32 bits for the multiplication only and so the 
+correct expression is:<br>
+ADC 514 M* 1000 M/<p>
+M* multiplies two 16 bit values and leaves a 32 bit value. M/ 
+divides a 32 bit value by a 16 bit value and leaves a 16 bit 
+answer. 32-bit values occupy two stack levels, with the most 
+significant 16 bits on the top of the stack.
+<p>
+Although all values are integers they can have implied decimal 
+points. For trigonometry all angles are in degrees with two 
+implied decimal points, for example the value 1234 represents 
+12.34 degrees; 90 degrees is entered as 9000. The result of a 
+sine or cosine is a fraction with 4 implied decimal points. Note 
+that hexadecimal numbering is not appropriate.<br>
+Examples:<br>
+><font color= 009c00><u>DECIMAL </u></font>OK
+<p>
+><font color= 009c00><u>6000 COS<b> .</b></u></font> 5000 OK i.e. the cosine of 60 degrees is 0.5.
+<p>
+><font color=009c00><u>5000 ASIN<b> .</b></u></font> 3000 OK i.e. the arc-sine of 0.5 is 30 degrees.
+<p>
+Functions included are SIN (sine) COS (cosine) ASIN (arc-sine) 
+ACOS (arc-cosine).<br>
+TAN is not included but TAN is SIN/COS. You could define your own 
+function thus:<br>
+><b>:</b> TAN DUP SIN 10000 M<b>*</b> ROT COS M/<b> ;</b></font> OK
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<h4><a name ="5"><p>
+5. SAVING ON DISK</h4>
+<p>
+5.1 Using ROBWIN click file, open (or file, new) to open a text file. To download this 
+to the controller click file, download current. If you edit the text remember to
+FORGET the first word in the text before reloading. It is best that this word be a USER
+variable (see <a href="#10.5">10.5</a>) because FORGETting a USER variable also recovers the data area as well as 
+dictionary space.
+<p>
+5.2 LOW LEVEL DATA TRANSFER PROTOCOL</h4>
+<p>
+The host must be connected via its serial port set up for 19200 
+baud, no parity, 8 bits, 1 stop bit. The baud rate can be changed to higher
+(or lower values) (see <a href="#11.5">11.5</a>. An extremely simple protocol is employed:
+<p>
+UPLOADING<p>
+To initiate uploading from the controller to the host the host 
+must send an ENQ (5) character to the controller. The controller 
+has first been given the TRANSMIT command and the host computer 
+must also be in some routine to upload and write data to disk, 
+with the file already open.<br>
+The controller then sends an STX (2) to the host followed 
+immediately by one block of 256 (100hex) bytes of data.
+The controller then waits for the host to send another ENQ and 
+sends another STX(2) and the next block of 256 bytes. This 
+repeats until all blocks are sent. When all data is transfered 
+the controller's answer to ENQ is not STX but ETX (3). When the 
+host receives ETX instead of STX it finishes the routine and 
+closed the file.
+<p>
+DOWNLOADING<p>
+To initiate downloading from host to controller the host sends an 
+ENQ and waits for STX from the controller. The controller must 
+first have been given the RECEIVE command and the host must also 
+be in some routine to read data from disk and download it.<br>
+The host then sends one block (256 bytes) to the controller.
+The host then sends another ENQ and waits for another STX then 
+sends the next block. This repeats until all the blocks have been 
+downloaded.<br>
+The host then sends sends ETX instead of ENQ meaning no more data 
+and the host then stops.
+<p>
+BANK SELECT<br>
+Before using either of the above commands you must specify which of the two memory banks you want to read/load. All coordinates data is in bank 1 so before sending TRANSMIT or RECEIVE use<br>
+BANK C1SET<br>
+Or, if the data is in low memory use<br>
+BANK C0SET<br>
+then TRANSMIT or RECEIVE
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<h4>
+<a name="6">6 SUPERVISORY SOFTWARE</h4>
+<p>
+The host computer can control the controller by sending commands 
+down the RS232 serial link. The host software should start by 
+opening the serial channel e.g.<p>
+OPEN "COM1:19200,N,8,1,CS,DS,CD" AS #1<p>
+The commands can  then be PRINTed to the controller e.g. 
+PRINT#1,"PURGE". Each character you send to the controller is echoed back (unless you are in HIDE mode) until the 0D (return) is sent then the controller sends back a space character (20h). There is then no response until the controller has completed the command. All these echoed characters can be allowed to accumulate in the input buffer.<br>
+After executing the command the response should always end in a sequence of 5 characters:<p>
+O K cr lf ><p>
+This response may come (a) immediately, (b) after some unkown 
+time, (c) not at all (in the case of some task which never ends). 
+The host software should look for the >. The preceding string 
+should therefore be OK, if not then there was some error message. 
+In case (c) the host can continue some other task without 
+waiting.<br>
+<b>Suggested flow chart for communication with the controller:</b><br>
+<img src="flowchart1.gif" width="632" height="650" border="0" alt="">
+<p>
+NOTE: All characters which come back from the controller 
+must be used up or "buffer overflow" will occur.
+<hr>
+
+<a name="7"><h4>7. TURNKEY OPERATION</h4>
+<p>
+In many cases it is desirable to have a program run as soon as 
+power is switched on rather than have to type something every 
+time. In these cases the program to run is a single word, or you 
+might have to generate a new word e.g.:-<p>
+<font color=009c00><u><b>:</b> DEMO INITIALISE MAIN-PROG <b>;</b></font></u>
+<p>
+The word DEMO can be made to execute immediately on power-up by 
+setting the switch on the front panel to the auto position (see 
+diagram 2) and entering:-<p>
+<font color=009c00><u>AUTO DEMO</font></u> and follow with <font color=009c00><u>USAVE</font></u> to save to flash ROM. 
+<p>
+Before ever DEMO is forgotten, or words below it re-compiled the 
+key switch must be put back to warm start position until AUTO is used 
+again.
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="8"><h4>8. INTERRUPTS (Forth v8 up and Roboforth v11 up)</h4>
+
+The BIOS has some code to set up EZ80L92 interrupts. Forth words may be executed by putting the CFA of the word in address Intvec - see information block. INTVEC is defined in ROBOFORTH. The word must end with a direct jump back into the BIOS at address intret (see <a href="#9.2.8"> Information block</a>) to complete the interrupt. Roboforth has a word RETURN which does this - see Roboforth V11 manual.<br>
+<p>
+The interrupt vector table has only two entries, both to the same interrupt code:
+<br>
+<b>Interrupt from external signal.</b><br>
+A PB input (usually PB 6) should be connected to TP1 on the CPU card.<br>
+Look for TP1 on the top side of the board and insert a short piece of tinned copper wire through the hole. Solder one side. Turn over the card and put a length of insulated wire from TP1 to PB 6 (or any PB you prefer). A large orange wire was used in the picture below for visibility but normally a thin prototype wire would be used.<br>
+<img src="interruptlink.jpg" border="0" alt=""><br>
+If enabled the chosen word in Intvec will execute upon change of state of PB 6 from high to low.<br>
+Enable interrupts with a jump to enh (see <a href="#9.2.8"> Information block</a>). Disable with a jump to dish (see information block).<br>
+In RoboForth see <a href="manual13.htm#8.5">section 8.5</a>
+On an interrupt occurring further interrupts are disabled. The jump to intret re-enables interrupts. Using a jump to xintret  (see <a href="#9.2.8"> Information block</a>) instead of intret leaves interrupts disabled.
+<p>
+<b>Timer interrupt.</b><br>
+A CPU timer can be set to interrupt every n milliseconds. Every n mSecs the chosen word in Intvec is executed. The maximum time is 500 mSecs. To start the timer put the value in mSecs times 125 on the stack and jump to entim (see <a href="#9.2.8"> Information block</a>). To stop the timer jump to distim (see <a href="#9.2.8"> Information block</a>). On an interrupt occurring further interrupts are disabled. The jump to intret re-enables interrupts.<br>
+Because of interrupt conflicts do not use the word USECS in any interrupt definition.
+<br>You should find it easier to use <a href="http://www.strobotics.com/manuals/manual15.htm#8.5">higher level RoboForth commands </a>
+<p>
+NMI (non maskable interrupt) works as before. Any NMI will cause a call to 66hex and place the value 80hex in INTFLAG at address 9D03 (only one byte). It is up to ROBOFORTH programming to read INTFLAG (with INTFLAG C@) and take any necessary action.
+<p>
+<a href="#contents">Back to Contents</a><P>
+<hr>
+<a name="9.1"><h4>9.1 MEMORY MAP</h4>
+<p>
+
+<div align="center"><img src="mem-map2.gif" border="0" align="middle">
+</div>
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="9.2"><h4>
+9.2 TIL CHARACTERISTICS</h4>
+<p>
+<hr>
+<a name"9.2.1">
+<h4>9.2.1 - REPRESENTATION OF A FORTH WORD IN MEMORY</h4>
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr bgcolor="#eeeeee"> 
+		<td><b>Byte</b></td>
+		<td><b>Function</b></td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>length of word string plus control bit</td>
+	</tr>
+	<tr>
+		<td>2-6</td>
+		<td>first 5 characters of word</td>
+	</tr>
+	<tr>
+		<td>7,8</td>
+		<td>link address i.e. address of next word down in list</td>
+	</tr>
+	<tr>
+		<td>9,10 CODE FIELD ADDRESS (CFA)<br>
+found by FIND</td>
+		<td>If a primitive: a pointer to the next 2 bytes where machine code starts<br>
+If CREATEd or a VARIABLE: a pointer to routine which puts the address<br>
+of the parameter field on the stack<br>
+If a CONSTANT: a pointer to code which will put the contents of the parameter field on the stack.<br>
+If a word definition: a pointer to the inner interpreter to start<br>
+interpretation of the parameter list (colon).<br>
+If a word defined by a defining word: a pointer to code following DOES></td>
+	</tr>
+	<tr>
+		<td>11 on PARAMETER FIELD (PFA)<br>found by ' (single quote - "tick")</td>
+		<td>If a primitive: machine code.
+If a CONSTANT: value of constant.<br>
+If word definition: parameter list i.e list of codes of compiled words,<br>
+finishing with a pointer to the inner interpreter to stop (semi-colon).<br>
+If a VARIABLE: stored value of the variable.<br>
+If a USER variable (see <a href="#10.5">10.5</a>): it is the address of the actual RAM location<br>
+of the value.</td>
+	</tr>
+</table>
+
+<p>
+From above you may see that ambiguous word names are possible 
+because the word is represented as a length plus only the first 
+five letters. If you type VLIST the entire vocabulary will be 
+listed, and the missing characters are printed out as dots. Some 
+FORTHs have variable length headers but the fixed length makes for a 
+faster dictionary search resulting in faster compilation of new words.<br>
+If a new word has the same 5 starting letters as a previous word 
+then check the lengths.  If same then choose a new name.
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+
+<a name="9.2.2"><h4>
+9.2.2 - WORDS WHICH DIFFER FROM FORTH 79 OR FIG STANDARDS</h4>
+<p>
+Some words in TIL behave differently from their equivalents in 
+FIG ( Forth Interest Group ) or FORTH '79 standard. These words 
+are listed below:
+<p>
+DUMP (and EDUMP) - prints contents of memory in hexadecimal The start of the 
+dump is rounded down with the actual address indicated by an 
+asterisk in the top line.  In other FORTHs this has two 
+arguments: memory address and number of bytes to dump. In TIL 
+only the address is required. Press space bar for the next line 
+of 16 bytes, press return to stop the dump.
+<p>
+LOAD - in other FORTHs n LOAD loads the screen n from disk. In TIL n is a memory address. v15 up - disabled.
+<p>
+VLIST - in other FORTHs this lists the entire vocabulary across      
+the screen, unformatted. In TIL, VLIST lists the vocabulary      
+in the following format: address of dictionary entry i.e.      
+header, not CFA or PFA; length of word name; word name, with      
+any characters after the fifth printed as dots. See variant      
+'VLIST below. VLIST will print "0 words" when tried the      
+first time with un-initialised memory - repeat the command.
+<p>
+<# # #S and #> work with 16-bit numbers only.
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="9.2.3"><h4>
+9.2.3 - NEW WORDS</h4>
+<p>
+Words which do not exist in other FORTHs are:
+<p>
+ASK CODE C0SET C1SET EDBUF EDLOAD INKEY INC IOFLAG MSQ MSQR<br>
+PURGE SIN ASIN COS ACOS USER and UVP 'VLIST #. U. <><br>
+See section 10.
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="9.2.4"><h4>
+9.2.4 - 'DEAD' WORDS</h4>
+<p>
+Some words exist in the system but cannot be used:
+<p>
+FREEZE - sets the cold start parameters for example pointer to 
+the top of the basic (kernel) dictionary when powered up in cold 
+start mode. Has no effect because these parameters are in EPROM.<p>
+SETFORTH - sets the boundary of the FORTH vocabulary at cold 
+start. Has no effect because this is also in read only memory.<p>
+DOS - exit TIL to SSD disk operating system which is not installed.<p>
+DLOAD, READ, WRITE, DLIST, DLOOK - disk commands - would apply 
+only to the solid state disk system if installed.<p>
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="9.2.5"><h4>
+9.2.5 - ERRORS</h4>
+<p>
+If you use up a stack value when there is none the message is 
+"STACK UNDERFLOW". This check is not made until your word has 
+fully executed and command mode is re-entered, so too much stack 
+underflow in your word can crash the system.<p>
+"NUMERIC OVERFLOW" - result of signed multiply exceeding 32767 or 
+7FFF hex, or unsigned multiply exceeding FFFF hex or the result 
+of M* exceeding 7FFF FFFF hex.<p>
+"DIVIDE BY ZERO" - also fatal error i.e. program cannot continue 
+through such an error.<p>
+"ILLEGAL" means you used a compile-only word e.g. a control word 
+or sem-colon (;) when not in compile mode.<p>
+"NO DOS" no disk operating system installed.<p>
+"DISK ERROR" worse!<p>
+
+While compiling there are no syntax checks in TIL to make sure 
+you use the same number of opening control words as closing 
+control words - e.g. same number of IFs and THENs. During 
+compilation of control loops starting words push addresses to the 
+stack, which are then popped off when ending words are compiled.  
+Thus if loop starts are not matched with loop ends then stack 
+errors will occur:<p>
+"STACK UNDERFLOW" - indicates more ending words than starting 
+words eg. more THENs than IFs.<p>
+After a definition try X.  You should, of course, get the stack 
+underflow message, so if you do not then it is an indication of 
+more starting words than ending words.<p>
+If there is no response at all to typing X. then you are still in 
+compile mode (missing semi colon).<p>
+Unexplained errors such as unwelcome cold starts or total crashes 
+are usually the result of mis-matched IFs and THENs, or AN IF-
+THEN or DO-LOOP or BEGIN-UNTIL loop which is physically longer 
+than 127 bytes after compilation. (Remember that each word in a 
+definition reduces to 2 bytes.) Use of ! or any word containing 
+it with incorrect or missing arguments could store some unknown 
+value in some unknown part of memory, for example in the middle 
+of your dictionary. This condition can be corrected by doing a 
+cold start and re-entering or re-loading your software.
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="9.2.6"><h4>
+9.2.6 - VOCABULARIES</h4>
+<p>
+New words are linked to the FORTH vocabulary but form part of the 
+user's vocabulary. Searches start from the top of the dictionary 
+downwards, so  if the user creates a word identical to that in 
+the original FORTH then only the new definition will be found.<br>
+ROBOFORTH and the user's dictionary are treated as one vocabulary. 
+There is a boundary between words in the original FORTH vocabulary 
+and the ROBOFORTH plus user vocabulary. By typing FORTH searches 
+will begin at this boundary; by typing ROBOT then searches will 
+start from the top of the dictionary.
+<p>
+<p>
+EXAMPLE:-<pre>
+HEX
+: ASPACE 2A ;
+: TEST
+ASPACE EMIT FORTH ASPACE EMIT ROBOT ASPACE EMIT
+;
+TEST * *OK
+</pre>
+TEST uses ASPACE in two contexts, and prints two asterisks 
+separated by a space.
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="9.2.7"><h4>
+9.2.7 - RECURSION</h4>
+<p>
+<h4>RECURSION</h4>
+In order to get a word to execute itself it is necessary to push up the 
+dictionary pointers prematurely so to speak, so that the new word is
+already included in the dictionary when needed within its own definition.
+To do this use the word LATEST.
+
+Ideally you could enter:-<p>
+: Q 1- DUP 0 > IF Q THEN ;<p>
+Q will recursively decrement the value on TOS to zero. 
+Unfortunately the second Q will not compile, being not yet part 
+of the vocabulary until after the definition is complete (semi-
+colon). The line would, therefore, be entered as follows:<p>
+: Q 1- DUP 0 > IF LATEST Q THEN ;
+<p><a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="9.2.8"><h4>
+9.2.8 - INFORMATION BLOCK</h4>
+<p>
+The following addresses are significant:<p>
+FORTH<br>
+0400 : start of FORTH kernel, cold start entry point.<br>
+0417 : High byte of address of start of RAM area.<br>
+0418 : FORTH vocabulary boundary.<br>
+041A : Version number.<br>
+041B : Maximum number of characters stored for each word.<br>
+041C : Low byte address of upper limit of dictionary area.<br>
+041D : High byte address of upper limit of dictionary area.<br>
+041E : Low byte address of outer interpreter.<br>
+041F : High byte address of outer interpreter.<br>
+0420 : Warm start entry point.<br>
+0423 : Auto-start entry point.<br>
+042B : Vector to input routines CIN.<br>
+042F : Start up number base.<br>
+BIOS<br>
+A022 : Intvec (address for the CFA of an interrupting word.)<br>
+03C4 : Address of the above. To change the address of intvec change the contents of 03C4.*<br>
+0360 : entim<br>
+0363 : distim<br>
+0366 : enh<br>
+0369 : dish<br>
+036C : intret<br>
+036F : xintret
+<p>
+* note that the values in these addresses are in a protected part of memory and can not be saved to flash. Any changes to these values are lost if the system resets.
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="10"><h4>
+10. GLOSSARY</h4>
+<p>
+Note: TOS means top of stack.<br>
+Note: 1 byte variables must be moved with C@ or C!<br>
+<a href="#contents">Back to Contents</a><br>
+<hr>
+<a name="10.1"><h4>
+10.1 SYSTEM WORDS AND VARIABLES</h4>
+<p>
+HERE - puts dictionary pointer on stack.<br>
+STATE (1 byte) - puts address of mode byte to stack (contents: 1 = compile, 0 = interpret).<br>
+DP - puts address of dictionary pointer to stack.<br>
+UVP - puts address of user variable pointer to stack.<br>
+UVP @ is the next address for the next user variable.<br>
+CONTEXT - puts address of context pointer to stack. This contains 
+the address of the word at which the dictionary search starts.<br>
+CURRENT - puts address of current pointer to stack. This contains 
+the address of the word to which any newly created word is linked.<br>
+DEFINITIONS - causes new words to be added to the current vocabulary<br>
+FIND (word) - returns address of code field of the word following    
+FIND. If not found leaves zero.<br>
+' (word) - ("tick",single quote) - returns address of parameter field of the word following tick.  If not found then aborts.<br>
+EXECUTE - (addr) EXECUTE - executes the word whose code field address is on the stack.<br>
+BASE (1 byte) - contains ruling number radix.<br>
+DECIMAL - converts number system to base 10.<br>
+HEX - converts number system to base 16.<br>
+CALL - (addr) CALL - calls code at address (addr) which must end in RET if it is intended to return to FORTH.  Do not use EXX as FORTH needs those registers, also do not use the IY or IX  registers. (unless you save them first)<br>
+( - comment.  All text after "(" is   ignored, until a  ")"  
+character is encountered.<br>
+FORTH - makes the FORTH vocabulary the context vocabulary, by-  
+passing user's vocabulary.<br>
+ROBOT - makes the ROBOT vocabulary the context vocabulary.<br>
+LATEST - makes the LATEST vocabulary the context vocabulary including the word currenty being defined. (see <a href="sysman5.htm#9.2.6">Vocabularies</a> and <a href="sysman5.htm#9.2.7"> Recursion</a>)<br>
+'S - puts the address of the start of the data stack onto the 
+stack.<br>
+S0 - puts the address on the stack of a pointer to a location of 
+the value of the stack pointer, i.e S0 @ X. yields stack pointer.<br>
+ .S - prints out the contents of the stack without losing them.<br>
+>IN - address of the variable holding a pointer to the position 
+in the line input buffer currently being read.<br>
+PAD - a constant location of RAM used by text input and output.<br>
+TOP - a constant, value is the address of the top of the RAM area 
+used for user variables, system variables and stacks.<br>
+QUIT - restarts outer interpreter.<br>
+EDIT - OBSOLETE - do not use (jumps to an editor which is no longer installed).<br>
+FREEZE - sets cold start parameters for a cold start. (dead)<br>
+SETFORTH - sets FORTH boundary to top of dictionary. (dead)<br>
+(n) SAVE - writes RAM to FLASH ROM. n is a sector number 0 to 7, where a sector is 4000hex. Sectors 0-3 are in bank 0 and 4-7 are in bank 1. Sector 0 is protected EPROM.<br>
+DICLEN (constant) - number of characters stored in a dictionary 
+entry (see information block)<br>
+AUTO (word) - makes the following word execute on power up.<br>
+TURNKEY - variable containing the code-field-address of the word 
+which is executed on power up.<br>
+BANK - pseudo-variable containing bank number - 0 is first 64k, 1 is 2nd 64k and so on.
+<br>
+(n) JUMP - jump to address n. Re-enter FORTH at 420hex. Do a cold start with ORG JUMP
+or 0 JUMP.
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="10.2"><h4>
+10.2 TERMINAL AND INPUT/OUTPUT WORDS</h4>
+<p>
+CR - carriage return and line feed.<br>
+X. - (n) X. - prints (n) in hex, 4 digits followed by space.<br>
+KEY - wait for key to be pressed, leaves its ASCII value on stack<br>
+EMIT - (n) EMIT - send (n) to screen.<br>
+BEEP - beeps computer (sends ASCII 7)<br>
+OUT - (n) (port) OUT - sends (n) out via port address.<br>
+IN - (port) IN - reads port address (n), leaves value on TOS<br>
+ ." ("dot-quote") - syntax: ."(space) (text)" types text as 
+written including any inbedded control characters up to " mark.
+    Note: CAN ONLY BE USED WITHIN A COLON DEFINITION<br>
+TYPE - (addr) (n) TYPE - types out (n) characters from address 
+(addr). Printing will stop if an ETX (3) is encountered.<br>
+EXPECT - (addr) (n) EXPECT - waits for (n) characters to be typed 
+by the user, these are directed to a string address (addr). 
+Terminates when return key is pressed. The string will end with 
+ETX (3). All positions in the string from when return is pressed 
+until (addr)+(n) are filled with space characters. (see NUMBER)
+The rules for entering type string are the same as for entering 
+commands.  Control characters are: rub-out or back-space = delete 
+last character typed, control-Y = delete entire line, return = 
+enter the line, esc key = abort whatever is happening and go to 
+command level.<br>
+WORD - (n) WORD (word or string) - reads further along the input 
+buffer and copies the next word in the buffer to HERE and leaves 
+its address on the stack. (n) is the ASCII value of the character 
+at which copying will stop ( normally 20 hex (space)). The first 
+byte at the address (HERE) is a character count, followed by the 
+actual characters, followed by a space character. No use in 
+immediate mode because as overwritten by next command.<br>
+NUMBER - (addr) NUMBER - where (addr) is the address of a numeric 
+string. If the first byte is a character count this will be 
+ignored. The string delimiter will be any non-numeric character.<br>
+COUNT - (addr) COUNT - taking a string at address (addr) which 
+starts with a character count it leaves the count on the stack 
+with the address of the string itself (addr+1) below that.<br>
+LOAD - (addr) LOAD - reads text from the RAM address given into 
+the line input buffer as if it had been typed. The delimiter for 
+the edit buffer text is the byte FF hex. v15 up - disabled.<br>
+IOFLAG (1 byte) - bit 7 set means read disk buffer, lower 4 bits 
+are device no. for prints and EMIT.<br>
+? - immediate examination of a variable, pseudo-variable or any memory address in bank 0.<br>
+Addresses and pseudo-variables in high memory must be examined with E@ .
+<br>
+EDBUF - constant, leaves address of edit buffer.<br>
+EDLOAD - compiles edit buffer contents - as  EDBUF LOAD<br>
+INTERPRET - acts on next word in input stream (line buffer).<br>
+INKEY - tests the terminal to see if a key has been pressed. If 
+so leaves the ASCII value; if not leaves zero on TOS. Does not 
+wait for key to be pressed.<br>
+(n) LINES - line feeds n times<br>
+?TERMINAL - test the terminal to see if escape has been pressed. 
+If so leaves true (1) else leaves zero on TOS.<br>
+CTRL-C - test the terminal to see if control-C has been pressed. 
+If so leaves true (1) else leaves zero on TOS.<br>
+control-C is EOT (end of text) code 3<br>
+ASK - gets a signed number from user straight to stack in ruling 
+number system.  If number is invalid a zero is returned.<br>
+DUMP - (addr) DUMP - dumps memory contents of low memory (bank 0) starting at (addr), 16 
+bytes per line advanced by space bar. Return key to stop dump.<br>
+EDUMP - (addr) EDUMP - dumps memory contents of hi memory (bank 1) starting at (addr), 16 
+bytes per line advanced by space bar. Return key to stop dump.<br>
+. ("dot") - (n) . - prints (n) from the stack according to ruling number base 
+preceded by sign or space and followed by one space. Use of .(dot) resets BANK to zero.
+<br>
+SGN - flag used by <# and SIGN, used for "dot".<br>
+SPACE - prints one space character.<br>
+SPACES - (n) SPACES - prints (n) spaces.<br>
+<p>
+The following words are for formatted print. They are the same as 
+FORTH '79 but work with single length numbers not double length.<br>
+<# - prepares PAD for number conversion, used in . (dot).<br>
+HOLD - inserts character into PAD, during . (dot).<br>
+# - converts one digit from TOS to PAD.<br>
+#S - converts all TOS to digits in PAD, destroys TOS.<br>
+SIGN - inserts sign into PAD during . (dot).<br>
+#> - finishes number conversion and leaves the number of characters on TOS and the address of them at TOS-1.<br>
+#. - prints TOS in an 8 character field including a space and a negative sign if negative<br>
+
+(n) HEXDIGIT - prints (n) as a hexadecimal digit, 16 > (n) > 0<br>
+
+VLIST - lists entire (selected) vocabulary in the format: address of 
+dictionary entry ( 6 bytes less than CFA ), character count, word 
+spelling up to 5 characters, excess (unknown) characters as dots.
+When VLIST is used the first time, i.e. with un-initialised 
+memory, it may only yield "0 words". Simply repeat the command.
+<br>
+'VLIST (word) - (pronounced tick-vee-list) lists all words in the      
+dictionary of a particular type, follow with an example of      
+the type of word. For example if SPEED is a variable then      
+'VLIST SPEED will list all variables.
+<p>
+
+<a href="#contents">Back to Contents</a><p>
+<hr>
+<a name="10.3"><h4>
+10.3 STACK (DATA) WORDS</h4>
+note TOS means Top Of Stack.
+<p>
+ASPACE - pushes a space character to stack - i.e. a constant of 
+value 20 hex.<br>
+0 - A constant of value 0<br>
+1 - A constant of value 1<br>
+! ("store") - stores TOS-1 into address on TOS.  Both removed from stack.<br>
+@ ("fetch") - gets data from address on TOS and replaces TOS.<br>
++! - adds TOS-1 to location given at TOS ie. the expression b=b+a would be written a b +!<br>
+C! ("see store") - stores 1 byte of TOS-1 at TOS address.  Both removed from stack.<br>
+C@ ("see fetch") - gets 1 byte from address at TOS and replaces TOS with it.<br>
+E! ("E-store") - stores TOS-1 into address in high memory on TOS. Both removed from stack.<br>
+E@ ("E-fetch") - gets data from address in hi memory on TOS and replaces TOS.<br>
+EC! ("E-C store") - stores 1 byte of TOS-1 at TOS address in high memory.  Both removed from stack.<br>
+EC@ ("E-C fetch") - gets 1 byte from address at TOS and replaces TOS with it.<br>
+X! ("X-store") - stores TOS-1 into address on TOS in low or high memory depending on the value 
+in BANK.  Both removed from stack.<br>
+X@ ("X-fetch") - gets data from address in low or high memory depending on the value in BANK on TOS and replaces TOS.<br>
+X+! ("X-plus-store") - adds TOS-1 into address on TOS in low or high memory depending on the value 
+in BANK.  Both removed from stack.<br>
+2! ("two-store") - stores TOS-2 into address on TOS and TOS-1 into the next address.<br>
+2@ ("two-fetch") - fetches data from address on TOS and next address leaving data from the address
+on TOS-1 and data from address+2 on TOS.<br>
+DUP ("doop") - a DUP --> a a.<br>
+DROP - removes top of stack.<br>
+SWAP - a b SWAP --> b a<br>
+OVER - a b OVER --> a b a<br>
+ROT - a b c ROT --> b c a<br>
+PICK - (n) PICK - picks the nth item from the stack and places a copy on top of stack, e.g. a b c d 2 PICK leaves a b c d c.<br>
+C0SET - changes byte at location given at TOS to zero.<br>
+C1SET - changes byte at location given at TOS to 01.<br>
+1+ - increment TOS.<br>
+1- - decrement TOS.<br>
+2+ - increment TOS twice (adds 2 to TOS).<br>
+2- - subtract 2 from TOS.<br>
+2* - multiply TOS by 2, unsigned (shift left).<br>
+2/ - divide TOS by 2, unsigned (shift right).<br>
+R> - move top of return stack to top of data stack.<br>
+>R - move top of data stack to top of return stack.<br>
+R - copies top of return stack to top of data stack.<br>
+= syntax: a b = leaves 1 if a=b or 0 if not (1=true).<br>
+> syntax: a b > leaves 1 if a greater than b<br>
+< syntax: a b < leaves 1 if a less than b<br>
+<b><></b> ("not equal") syntax: a b <> leaves 0 if equal, 1 if not equal.<br>
+0= - removes TOS and leaves true if TOS was zero<br>
+OR - 16 bit inclusive OR.<br>
+XOR - 16 bit exclusive OR.<br>
+AND - 16 bit and.<br>
+INC - increments contents of address on stack.<br>
+CMOVE - moves data block from one memory area to another,
+     syntax: (source) (destination) (number of bytes) CMOVE.<br>
+ECMOVE - moves data block from one memory area to another both within high memory (bank 1), syntax: (source) (destination) (number of bytes) ECMOVE.<br>
+The destination and source data must not overlap.
+<br>
+MOVUP - moves data block from low memory to high memory,
+     syntax: (source in bank 0) (destination in bank 1) (number of bytes) MOVUP.<br>
+MOVDN - moves data block from high memory area to low memory,
+     syntax: (source in bank 1) (destination in bank 0) (number of bytes) MOVDN.<br>
+FILL - (n)(a)(b) FILL - fills memory from (a) to (b) (inclusive) with value (n)<BR>
+<a href="#contents">Back to Contents</a><p>
+<hr><a name="10.4"><h4>
+10.4 ARITHMETIC WORDS</h4>
+<p>
+<b><font size="+1">+</font></b> - adds TOS to TOS-1, replaces both with answer.<br>
+<b><font size="+2">-</font></b> - subtracts TOS from TOS-1, replaces both with answer.<br>
+<b>*</b> - multiplies TOS * TOS-1, replaces both with answer.<br>
+U* - as above but with unsigned 16 bit integers.<br>
+ABS - changes TOS if negative to positive.<br>
+/MOD - TOS-1 divided by TOS: TOS is answer, TOS-1 is remainder.<br>
+U/MOD - as above but with unsigned integers.<br>
+M* - as * but leaving 32 bit answer; TOS= high 16 TOS-1= low.<br>
+D+ - adds 2 32-bit values leaving 32-bit answer.<br>
+D- - subtracts 32-bit value from 32-bit value, answer 32 bits.<br>
+D< - compares 2 32 bit values, leaves true if TOS-3,TOS-2 less than TOS-1,TOS.<br>
+D= - compares 2 32 bit values (4 stack entries) and leaves true if equal else false (1 stack entry).<br>
+<b>/</b> - TOS-1 divided by TOS, replace both with answer.<br>
+U/ - as above but with unsigned integers.<br>
+M/ - divides a 32 bit value (TOS-1 & TOS-2) by 16 bit value (TOS) leaving a 16 bit value.<br>
+MSQ - squares a 16 bit value leaving 32 bit answer.<br>
+MSQR - takes square root of 32 bit value leaving 16 bit answer.<br>
+SIN - converts angle in degrees to 2 decimal places to sine 
+fraction to 4 decimal places.<br>
+COS - as SIN but cosine.<br>
+ASIN - takes arcsine of fraction to 4 decimal places to angle in 
+degrees to 2 decimal places.<br>
+ACOS - as ASIN but arc-cos.<br>
+(b) BIT - leaves numeric value of bit number (b) i.e. 2^b<p>
+<a href="#contents">Back to Contents</a><p>
+
+<hr><a name="10.5"><h4>
+10.5 DEFINING WORDS</h4>
+<p>
+: ("colon") - this is the main defining word for defining a new 
+word.  Must be followed by the new word.  Puts system into 
+compile mode.<br>
+; ("semi colon") - end of definition (immediate word - means will 
+act immediately when system is in compile mode).<br>
+CONSTANT - syntax: (value) CONSTANT (name).<br>
+VARIABLE - syntax: VARIABLE (name) reserves 2 bytes in the 
+dictionary for a variable.<br>
+USER - syntax USER (name) - like VARIABLE but creates a new user 
+variable in the RAM area, incrementing UVP by 2. When invoked the 
+address of the variable is pushed to the stack. The advantage of 
+a USER variable over the normal VARIABLE is that after editing 
+and re-compiling the dictionary the value of a USER variable will 
+not have changed. When a USER variable is used it resets BANK to zero. To use the variable enter (value) (name) ! and (name) @ etc.<br>
+USARRAY - syntax (n) USARRAY (name) - is an array in the user variable area of (n) elements (n * 2 bytes). To use the array enter (value) (element-number) (name) ! and (element-number) (name) @ etc.<br>
+IMMEDIATE - makes a new word just defined operate immediately and 
+only when in compile mode, ie. when inside a : --- ; construct.<br>
+FORGET (word) - removes word and all subsequent words from 
+dictionary.  Resets the DP (dictionary pointer) to the position previously occupied by the word.<br>
+If the word is a user variable then UVP is set back to the address previously occupied by the variable, recovering the user variable space.<br>
+(RoboForth only) If the word is a PLACE or ROUTE then NEXT is set back to the address previously occupied by the place or route, recovering the data space.<br>
+, ("comma") - incorporates the 2-byte value on the stack into 
+dictionary.  Advances the DP by 2.<br>
+C, ("see comma") - incorporates the low byte from the stack into 
+the dictionary.  Advances the DP by 1.<br>
+LITERAL - incorporates that value which is on the stack into the 
+word being compiled as if it were a constant.<br>
+ALLOT - (n) ALLOT - change no. bytes allotted to a variable, 
+where (n) is added to the two bytes already reserved for the 
+variable. syntax: VARIABLE (name) (no. extra bytes) ALLOT<br>
+[ ("bracket") - switch to immediate mode<br>
+] - switch back to compile mode. When in compile mode these allow 
+insertion of words which are executed immediately and not 
+compiled.<br>
+['] ("bracket-tick-bracket")- like ' but for use in a definition. It compiles the PFA of 
+following word as a literal.<br>
+[COMPILE] - compiles the following word even if it is an 
+immediate word.
+<p>
+CREATE (word) - creates an INCOMPLETE dictionary entry for the 
+new word.  Adds a new 8-byte header to the dictionary plus the 
+first 2 bytes of the parameter field.  DP is advanced by 10.  
+When (word) is invoked the PFA address is pushed to stack.<br>
+DOES> - within the definition of a new defining word DOES> marks 
+the start of the run-time activity of the words which will be 
+defined using the new defining word. <br>Syntax:<br>
+(starts with colon)&nbsp; <b>:</b>&nbsp; (defining-word name)&nbsp; CREATE&nbsp; (activity when defining-word is used)&nbsp; DOES>&nbsp; (activity when final defined word is used)&nbsp; <b>;</b>&nbsp; (ends with semi-colon)<br>
+When the defining word is used the CREATE part of it adds the defined word to the dictionary. When the final created word is used its PFA goes on the stack and the 
+words after DOES> should make use of this value or DROP it.
+<p>
+CODE - generates header for machine code.
+Follow with the name of the code then the machine code installed 
+by C, or , then finish with the code for PCIY.<br> For example a word <br>
+REVERSE (definition : REVERSE MEP C@ MDP C! ;)<br> could be coded LDA 
+MEP STA MDP PCIY e.g. in machine code:-<br>
+CODE REVERSE 3A C, MEP , 32 C, MDP , E9FD ,<br>
+( Or you can use the word PCIY instead of E9FD )
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr><a name="10.6"><h4>
+10.6 CONTROL WORDS</h4><p>
+<font color="ff0000">WARNING:</font> All control loops are implemented using conditional short jump machine instructions. This means there is a maximum number of words between the beginning and end of a loop or decision tree of approximately 63 words. If exceeded the system will crash.
+<p>
+notes:<br>
+a (condition) is true if it is non zero (any value, not just 1), false if zero.<br>
+control words can not be used in immediate mode, only compiled into definitions.
+<p>
+<h4>Branching</h4>
+IF, ELSE & THEN<br>
+Form 1 syntax:<br>
+(condition) IF<br>
+  (words executed if true)<br>
+THEN<br>
+for example<br>
+<pre>: P-CHECK PRESSURE 1000 > IF VALVE OFF THEN ;</pre>
+<p>
+Form 2 syntax:<br>
+(condition) IF<br>
+  (words executed if true)<br>
+ELSE<br>
+  (words executed if false)<br>
+THEN<br>
+for example<br>
+<PRE>: P-CHECK PRESSURE 1000 > IF VALVE OFF ELSE VALVE ON THEN ;</PRE>
+<p>
+<h4>Repeating loops</h4>
+BEGIN, UNTIL, WHILE & REPEAT<br>
+Form 1 syntax:<br>
+BEGIN<br>
+  (function)<br>
+(condition) UNTIL<br>
+for example<br>
+<PRE>
+: P-CONTROL
+BEGIN
+  PRESSURE 1000 >
+  UNTIL
+VALVE OFF
+;</PRE>
+Form 2 syntax:<br>
+BEGIN<br>
+(condition) WHILE<br>
+  (function)<br>
+REPEAT<br>
+for example<br>
+<PRE>
+: P-CONTROL
+BEGIN
+  HEATER ON
+TEMPERATURE 800 < WHILE
+  INCREASE-HEAT
+REPEAT
+HEATER OFF
+;
+</PRE>
+<p>
+<h4>Counting loops</h4>
+DO, LOOP, +LOOP & LEAVE<br>
+Form 1 syntax:<br>
+(upper limit) (lower limit) DO<br>
+  (words - executed for upper minus lower number of times)<br>
+LOOP<br>
+The loop ends when the index reaches the upper limit so the words 
+are never executed with the index equal to the upper limit.
+<br>
+for example<br>
+<PRE>
+USER COUNTER
+: EX1
+0 COUNTER !
+10 0 DO
+  COUNTER INC
+LOOP
+COUNTER ?
+;
+EX1 10 OK
+</PRE>
+<P>
+Form 2 syntax:<br>
+(upper limit) (lower limit) DO<br>
+  (function)<br>
+(step) +LOOP<br>
+This counts from (lower) to (upper) in increments of (step) and finishes when the index equals or exceeds the upper limit. Then this value of index is NOT executed within the loop.<br>
+for example<br>
+<PRE>
+USER COUNTER
+: EX2
+0 COUNTER !
+10 0 DO
+  COUNTER INC
+2 +LOOP
+COUNTER ?
+;
+EX2 5 OK
+</PRE>
+<P>
+In the case<br>
+5 0 DO<br>
+&nbsp;&nbsp;BLAH<br>
+2 +LOOP<br>
+The loop exits when the index reaches 6 which is greater than the upper limit. blah is executed only for indexes 0, 2 and 4 and not for 6.<br>
+In the case<br>
+6 0 DO<br>
+&nbsp;&nbsp;BLAH<br>
+2 +LOOP<br>
+The loop exits when the index reaches 6 which is equal to the upper limit. blah is executed only for indexes 0, 2 and 4 and not for 6.<br>
+In the case<br>
+7 0 DO<br>
+&nbsp;&nbsp;BLAH<br>
+2 +LOOP<br>
+The loop exits when the index reaches 8 which is greater than the upper limit. blah is executed for indexes 0, 2, 4 and 6.
+<p>
+<h4>indexes of counting loops</h4>
+I - index of inner do loop is moved to stack.<br>
+J - index of next (second) loop.<br>
+Examples<br>
+<PRE>
+: EX3
+10 0 DO
+  I .
+LOOP
+;
+EX3 0 1 2 3 4 5 6 7 8 9 OK
+
+: EX4
+5 0 DO
+  I .
+2 +LOOP
+;
+EX4 0 2 4 OK
+
+: EX5
+4 1 DO
+  CR
+  3 0 DO
+    J . I .
+  LOOP
+LOOP
+CR
+;
+EX5
+1 0 1 1 1 2
+2 0 2 1 2 2
+3 0 3 1 3 2
+OK
+</PRE>
+counting backwards - example
+<PRE>
+: EX6
+0 10 DO
+  I .
+-1 +LOOP
+;
+EX6 10 9 8 7 6 5 4 3 2 1 0 OK
+
+: EX7
+0 10 DO
+  I .
+-2 +LOOP
+;
+EX7 10 8 6 4 2 0 OK
+</PRE>
+
+<P>
+LEAVE - syntax:<br>
+(upper limit) (lower limit) DO<br>
+  (words)<br>
+(condition for leaving) IF LEAVE THEN<br>
+  (maybe more words)<br>
+LOOP<br>
+<br>
+On executing LEAVE the loop terminates when, and not until, LOOP is next executed. This means that any more words after THEN will be executed before the loop is left.<br>
+Example<br>
+<PRE>
+: EX8
+HEATER ON
+100 0 DO
+  TEMPERATURE 500 = IF LEAVE THEN
+  100 MSECS
+LOOP
+HEATER OFF
+;</PRE>
+This word will run for 10 seconds (100 * 100mS) but if the temperature reaches 500 (e.g. 50.0 deg C) befofre the 10 secs are up then there is one more 100mS delay before the heater is turned off.
+
+<p>
+EXIT - leaves the entire word if executed- i.e. effectively jumps 
+to the semi-colon.<br>
+syntax: (condition) IF EXIT THEN.<br>
+Not to be used within a DO - LOOP.
+
+<p>
+<font color="ff0000">WARNING:</font> All control loops are implemented using conditional short jump machine instructions. This means there is a maximum distance between IF and THEN or BEGIN and UNTIL etc. of 127 bytes (approximately 63 words). If exceeded the system will crash.
+<p>
+
+<hr><a name="10.7">
+<h4>
+TIMING WORDS</h4>
+Simple delays can be introduced into any word with (n) USECS e.g.<br>
+<font color= 007F00><u>500 USECS</u></font> (500 microseconds)<br>
+MSECS is a ROBOFORTH word and without ROBOFORTH you can make it with<br>
+DECIMAL : MSECS 1000 0 DO 1000 USECS LOOP ;
+then for e.g. a 5 second delay enter 5000 MSECS<br>
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr><a name="10.8">
+<h4>
+10.7 DISK WORDS</h4><p>
+Note: these words exist in K11 but will not function unless the 
+RAMDISK solid state disk system is installed. This system is 
+based on an obsolete but highly efficient North Star DOS and is designed for rapid transfer of 
+data from extended memory to main memory, for example overlaying 
+matrix coordinates without delaying robot activity as would be 
+the case if data were transferred from PC.
+<p>
+DLOAD (filename) - loads file of FORTH text to edit buffer then 
+reads into line buffer as if typed.  The filename must be the 
+last word in the command line.  Extra words are ignored.  Each 
+file may DLOAD another file (last line).
+<br>
+READ disk to memory.
+(memory addr) (disk addr) (no. of sectors) (drive no.) READ
+<br>
+WRITE memory to disk.
+(memory addr) (disk addr) (no. of sectors) (drive no.) WRITE
+<br>
+DLIST (disabled) - directory of RAMDISK.
+<br>
+DLOOK (disabled)
+(address of string which is the filename, ending in return (0D) 
+or space (20) ) - DLOOK --> leaves address of location in DOS of 
+the directory entry + 8 i.e. to 2 bytes which contain the disk 
+address. The next 2 bytes are the file length.
+<br>
+DOS (disabled) - enter DOS command area.
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr><a name="11"> <h4>
+11. INSTRUCTIONS FOR USING Z-CARDS<p>
+<hr><a name="11.1">
+11.1 SUMMARY OF AVAILABLE MODULES
+</h4><p>
+CPU card: carries eZ80L92 processor, RAM memory, flash/rom memory and basic I/O. It carries the PB inputs, the PA buffered outputs and interfaces with the teach pad. It also carries main RS232 channel for the terminal and one spare RS232.<br>
+This card is part of basic K11 system.<p>
+DSP card: carries the DSP which controls the motor drives and also reads back from the encoders.<br>
+     This card is part of basic K11 system.<p>
+MULTI-I/O card: Provides 48 lines of I/O programmable as input or output, 
+a 4-channel analog-to-digital converter and a 2-channel digital-analog converter. <p>
+8-LINE BUFFER CARD: has 8 opto-isolated inputs or 8 opto-isolated outputs.<p>
+16-line opto-isolated I/O card providing 8 opto-isolated inputs and 8 opto-isolated and buffered outputs.
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr><a name="11.2">
+<h4>
+11.2 Z-CARD BUS
+</h4><p>
+The cards conform to the ST bus which is roughly equivalent to 
+the Z80 pin-out. All signals which are low true are prefixed with 
+'-' e.g. -WR meaning not-write.<p><pre>
+
+           (a)                            (c)
+----------------------------------------------------
+ 1   +15v                |  1  A0
+ 2   -15V                |  2  A1
+ 3   0V DIGITAL          |  3  A2
+ 4   -WAIT               |  4  A3
+ 5   -HALT               |  5  A4
+ 6   -M1                 |  6  A5
+ 7   -RFRSH              |  7  A6
+ 8   -WR                 |  8  A7
+ 9   -RD                 |  9  A8
+10   -MREQ               | 10  -RESET IN
+11   -IORQ               | 11  IOSEL
+12   +5V                 | 12  +5V
+13   CLOCK 32MHZ         | 13  -12V
+14   -NMI                | 14  -PF ( -POWERFAIL )
+15   OV ANALOG           | 15  OV ANALOG
+16   -BUSRQ              | 16  A9
+17   -INT                | 17  A10
+18   -RESET ( OUT )      | 18  A11
+19   -BUSAK              | 19  A12
+20   -INTAK              | 20  A13
+21   -PHANTOM            | 21  A14
+22   RESET ( OUT )       | 22  A15
+23   0V DIGITAL          | 23  0V DIGITAL
+24   D15                 | 24 D14
+25   D13                 | 25 D12
+26   D11                 | 26  SERIAL OUT (cpu)
+27   D10                 | 27  SERIAL IN (cpu)
+28   D9                  | 28 D8
+29   D7                  | 29  D6
+30   D5                  | 30  D4
+31   D3                  | 31  D2
+32   D1                  | 32  D0
+</pre><p>
+Pins 26 and 27 c are not 'bussed but are reserved for signals 
+unique to particular cards. The CPU card should be fitted in the 
+lowest slot because of its unique RS232 connections. The remaining cards can occupy 
+the remaining slots in any order.
+<p>
+<a href="#contents">Back to Contents</a><p>
+<hr><a name="11.3"><h4>
+11.3 INPUT-OUTPUT (I/O) ADDRESSING
+</h4><p>
+I/O cards are all addressed with address lines A0 to A7 only as 
+per original INTEL 8080 convention, plus -WR , -RD , -IORQ from the eZ80L92
+CPU. Every card has a board address which is a multiple of 10 
+hex. This is selected by a 4-way DIL switch which is identical on 
+every card. The address of any device is NX where N is the board 
+address and X is the address of the device within the card. 
+Switches 1-4 to OFF select addresses in a binary fashion 10hex to 
+80hex. All switches to the ON position denote a board address of 
+0X hex.<br>
+ST FORTH has certain words such as ADC which are 
+pre-coded device routines which expect to find certain cards at 
+certain addresses, although the device routines themselves are 
+given below and may be re-coded to different addresses. The 
+normal address for each card is given with the card details 
+below.
+<p>
+MODULE ADDRESSES NORMALLY EMPLOYED<br>
+<table border="1" cellspacing="0" cellpadding="3">
+	<tr>
+		<td>0x</td>
+		<td>Multi-function I/O card alternate</td>
+	</tr>
+	<tr>
+		<td>1x</td>
+		<td>DSP</td>
+	</tr>
+	<tr>
+		<td>2x</td>
+		<td>Multi-function I/O card primary</td>
+	</tr>
+	<tr>
+		<td>3x</td>
+		<td>General purpose opto-isolated cards</td>
+	</tr>
+	<tr>
+		<td>4x</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>5x</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>6x</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>7x</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>8x</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>9x</td>
+		<td>Reserved for PA, PB and PC I/O addresses</td>
+	</tr>
+	<tr>
+		<td>Ax</td>
+		<td>Reserved for PD I/O address</td>
+	</tr>
+	<tr>
+		<td>Bx</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Cx</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Dx</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Ex</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Fx</td>
+		<td></td>
+	</tr>
+</table>
+<br>
+
+<a href="#contents">Back to Contents</a><p>
+
+<hr><a name="11.4">
+<h4>
+11.4 BASIC ROBOT I/O</h4>
+
+<p>
+There are 4 ports which are called PA, PB, PC and PD whose 
+addresses are 96, 9A, 9E, A2.
+
+<h3>Outputs</h3>
+All outputs are controlled by PA. These are open collector Darlington drivers with a common rail of zero volts. There is a nominal 12 volt supply on the same connector, pins 11-15. This an unregulated supply which is nominaly 12 volts but could be as much as 15v, protected by a fuse in the rear panel. The 5v supply to the internal logic is derived from this 12v so if you blow the fuse the entire controller will stop.<br>
+Each output has a flywheel diode to the 12 volts line. Therefore if you use an external power supply you must not use more than 12 volts. Connect the ground of the external supply to the 0v line on pins 9 or 10.<br>
+The supply may optionally be 24 volts if ordered at time of purchase. It is changed by moving a soldered wire from the 12v fuse holder to the 24v fuse holder inside the controller.
+<p>
+An output bit may be controlled by the words ON and OFF e.g. PA 0 
+ON will energise the gripper.<br>
+The robot gripper is controlled by bit 0, all other outputs are available to the 
+user.
+<p>
+To turn any output bit on  i.e. to a logic '1', say bit 1 of port 
+PA, the syntax is e.g.:-<br>
+<font color=009c00><u>PA 1 ON</font></u> OK
+<br>
+which sets PA 1 to '1' but leaves all other bits unchanged.<br>
+<font color=009c00><u>PA 1 OFF</font></u> OK   turns it off again.<br>
+The electric gripper uses PA 0 and PA 1 (see Roboforth manual).
+<p>
+Suppose this were a pump, you could define PUMP:-<br>
+: PUMP PA 1 ; (which is the same as : PUMP 96 1 ;) thereafter use 
+PUMP ON and PUMP OFF.
+<p>
+How to use open collector outputs:<br>
+<img src="opcol.gif" border="0" width="357" height="189" alt="">
+<br>
+Using open collector outputs with an external supply:<br>
+<img src="extopcol.gif" border="0" width="357" height="248" alt=""><br>									  
+<font color=#ff0000>IMPORTANT:</font> When using an external power supply and loads are 
+inductive (e.g. solenoids) then flywheel diode must be fitted.</pre>
+<hr>
+<h3>Inputs</h3>
+All inputs are through port PB. The first 3 to 6 (least 
+significant) bits are reserved for the proximity detectors on the 
+robot for calibration - bit 0 for motor 1, bit 1 motor 2 etc. Any 
+remaining inputs are available to the user. Gripper confirmation is usually connected to PB 7.<br>
+All the inputs are logic with 1K pullups to the controller's 12 volt line. So no input must exceed 12 volts. There is no opto-isolation so the user must provide noise free signals, although all inputs are filtered against high frequencies.
+<p>
+Inputs may be read back with PB IN e.g.<br>
+<font color=009c00><u>PB IN <b>.</b></font></u>
+<br>
+An input bit may be interrogated 
+with the word BIT? e.g. PB 0 BIT? leaves true if the input is at 
+a '1'. This may be used in decision constructs e.g. PB 0 BIT? IF 
+<p>
+How to use inputs:<br>
+<img src="inputs.gif" border="0" width="357" height="189" alt="">
+<p>
+The teach box is connected to PC, whose upper 4 bits are 
+programmed as outputs and PD lower 4 bits programmed as inputs. The teach box 
+is arranged as a matrix between outputs and inputs giving 16 
+combinations which are decoded by the software. Diodes are fitted 
+in case a user presses two keys together.<br>
+<p>
+<a href="#contents">Back to Contents</a><p>
+<p>
+<hr><a name="11.5">
+<h3>11.5<br>                        </a> SERIAL PORTS</h3>
+The main port is serial port 0 and the second is serial port 1. The second port is optionally connected to a 25w D connector that connects to the CPU card - obtainable from ST Robotics. The second port is useful for connecting RS232 instruments to the controller so that the instrument can be read during robot motion. It can also be used to accept commands from another RS232 device such as another computer.
+<p>
+<b>Changing baud rate on port 0</b><br>
+The Baud rate always defaults to 19200 on a cold start. But you can change the baud rate temporarily.<p>
+The Baud rate factor is in location 9D44 named BAUD. The value of this factor is 2,000,000 divided by the required baud rate. So the default value is 2,000,000 / 19,200 = 104 (round to nearest integer) or 68 hex. So if you type:<br>
+<font color= 007F00><u>HEX BAUD ?</u></font> 
+you should see 68
+To change the baud rate enter a new value into BAUD then call the bit of code that programs the port to the new baud rate then change ROBWIN to the same baud rate.<br>
+For example to change to 56,000 (factor 2000/56 = 36 or 24 hex):<br>
+<font color= 007F00><u>24 BAUD !</u></font><br>
+<font color= 007F00><u>BA CALL</u></font> (reprograms port)
+You will lose communication with the controller. Click Comm, configuration and select 56,000 in the drop-down menu. Communication restores at 56k. If you mis-enter the baud rate and get lost simply press reset on the controller and restore RobWin to 19200. The fastest practical speed is 256,000 baud, using HEX 8 BAUD ! BA CALL<BR>
+Note that this may only work using the USB converter. The standard serial port may not go that fast.<br>
+If you USAVE then switch off the controller, then switch on with the key in warm start position then the higher baud rate remains. Cold start resets the baud rate to 19200.
+<p>
+<b>Second serial port</b><br>
+You will first need to initialize the port using a value calculated as above to set the baud rate. Put the value on the stack then jump to location 001F, for example<br>
+<font color= 007F00><u>HEX 68 1F JUMP</u></font><BR>
+will initialize the port to 19200 baud.<br>
+To access the second serial port change the value of IOFLAG from 0 to 1 with<br>
+<font color= 007F00><u>IOFLAG C1SET</u></font><BR>
+From this point on you can only communicate with the controller through the second serial port. Therefore make sure you issue all commands to end with<br>
+<font color= 007F00><u>IOFLAG C0SET</u></font><BR>
+e.g.
+<font color= 007F00><u>IOFLAG C1SET ASPACE EMIT IOFLAG C0SET</u></font><BR>
+will send a space character out of serial port 1 then return control to port 0.<br>
+<font color= 007F00><u>IOFLAG C1SET KEY IOFLAG C0SET</u></font><BR>
+will wait for a character into serial port 1 then return control to port 0.<br>
+You could define, say
+<font color= 007F00><u><b>:</b> KEY1 IOFLAG C1SET KEY IOFLAG C0SET <b>;</b></u></font><br>
+This word will of course hang until a character arrives. You may wish to check the status of the port before you change to channel 1.<br>
+You can do this:
+<pre>HEX
+CODE K2?
+D9 C,             ( EXX
+3E C, 0 C,        ( LD A,0
+ED C, 38 C, D5 C, ( READ FLAG
+F5 C,             ( PUSH FLAG TO STACK
+D9 C,             ( EXX
+PCIY ,            ( END
+</pre>
+This leaves 4 on the stack if there is no character and 0 if a character has arrived at the port.<br>
+You could use <font color= 007F00><u><b>:</b> K2 K2? 4 AND 0= IF KEY1 ELSE 0 THEN <b>;</b></u></font> or similar in a definition<BR>
+<br>
+Note that while KEY works with port 1, INKEY does not. INKEY still only returns the ascii value at port 0.<br>
+<br>
+If you simply enter IOFLAG C1SET then control will simply switch to port 1. You can then send or type commands into port 1 as you did with port 0. To return to port 0 enter IOFLAG C0SET into port 1.<br>
+BUG: for EPROMS version 10 (VA) and below the > character still appears on port 0 even though OK is on port 1. To correct this (if you wish) then perform the following patch:<br>
+<pre>3A 1FE2 C! 06 1FE3 C! A0 1FE4 C! C3 1FE5 C! C7 1FE6 C! 05 1FE6 C!</PRE>
+This should be typed all on one line at one time. Hit enter at the end.<br>
+<br>
+Connections to the second serial port (1) are on the 6-way HE-14 connector on the CPU board. Port 0 is also there. If fitted port 1 is wired to a rear 9-w D male connector.<br>
+
+<table border="1" summary="">
+	<tr>
+		<td>Port, function</td>
+		<td>HE-14 pin</td>
+		<td>9w D if fitted</td>
+	</tr>
+	<tr>
+		<td>port 0 TX</td>
+		<td>1</td>
+		<td> </td>
+	</tr>
+	<tr>
+		<td>port 0 RX</td>
+		<td>2</td>
+		<td> </td>
+	</tr>
+	<tr>
+		<td>ground (0v)</td>
+		<td>3</td>
+		<td> </td>
+	</tr>
+	<tr>
+		<td>port 1 TX</td>
+		<td>4</td>
+		<td>2</td>
+	</tr>
+	<tr>
+		<td>port 1 RX</td>
+		<td>5</td>
+		<td>3</td>
+	</tr>
+	<tr>
+		<td>ground (0v)</td>
+		<td>6</td>
+		<td>5</td>
+	</tr>
+	<tr>
+		<td>+5v</td>
+		<td> </td>
+		<td>9</td>
+	</tr>
+</table>
+
+<p>
+
+<p>
+<hr><a name="11.6">
+<h3>11.6<br>                        </a> ELECTRIC GRIPPER</h3>
+The electric gripper employs a 800mA constant current half bridge drive. This is fitted in the controller, usually in the space for channel 6 motor drive.
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr bgcolor="#eeeeee"> 
+		<td><b>Wiring colors for electric gripper drive module:</b></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Yellow/orange</td>
+		<td>signal IN</td>
+	</tr>
+	<tr>
+		<td>Red</td>
+		<td>Power +12-18v</td>
+	</tr>
+	<tr>
+		<td>Black</td>
+		<td>Ground</td>
+	</tr>
+	<tr>
+		<td>White/Grey</td>
+		<td>Outputs to motor</td>
+	</tr>
+</table>
+
+<hr><a name="11.7">
+<h4>
+11.7 POWER SUPPLY</h4>
+The power supply has a built in monitor to detect failing AC power. When AC power is satisfactory the green LED is on and the red LED is off. When AC power falls below a set level the red LED on the front panel lights and the green LED goes out. A reset is applied to the processor. When power is restored the RAM is reloaded from FLASH and any RAM contents prior to the power fail will be lost.
+<p>
+To change the AC voltage setting remove the controller lid and locate a 6-way screw terminal block. The mains power is connected on one side of the block and the other side has all the transformer taps. Refer to the diagram below. Choose as near to your AC voltage as possible.<br>
+"Live" and "Neutral" refer to power where one side is at the line voltage and the other side is around earth potential. For US 110v supplies neither side is neutral but each is 55v AC around earth potential. For this reason there are 2 fuses fitted in the IEC power connector at the rear of the controller.
+<p>
+<img src="k11b38_mains.gif">
+<p>
+<h3>How to increase the speed of the robot</h3>
+The top speed of the robot is limited by motor back-emf which in turn can only be overcome by high voltage. The HT is normally set to approximately 55v DC and the maximum voltage on the drivers is 80v. However you can not just increase the voltage to 80v because the chopping magnetic activity in the motor gets it hot. For a small increase in top speed you can increase the voltage by 10% as follows: remove the lid and locate the rectifier between the HT capacitor and the transformer. Normally this will have a yellow and orange wire from the transformer with push-on connectors. Simply remove the orange wire and replace it with the red wire.<br>
+Replacing the yellow wire with the blue wire raises the HT to 80v but this can only be used with R15 systems.
+<p>
+<hr><a name="11.14">
+<h4>11.14 General purpose opto-isolated I/O expansion</h4>
+
+<b>11-56</b> 8 in 8 out opto-coupled IO board<br>
+<br>
+The inputs are separately opto-coupled and should work with voltages from 5V to 24V.<br>
+The inputs are on a 25 way socket which connects to a 16 way 2 row HE14 connector J4 as in the table.<br>
+The outputs are in 2 separate groups of 4.<br>
+They have 1.5A Darlington drivers which pull down to the common ground for each group.<br>
+The positive supplies must also be brought to the connectors.<br>
+The outputs are on two 8 way 2 row HE14 connectors J2 and J3 as follows.
+<br>
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr bgcolor="#eeeeee"> 
+		<td><b>OUTPUTS (SA/TA)</b></td>
+		<td><b>INPUTS (SB/TB)</b></td>
+	</tr>
+	<tr>
+		<td>
+<table border="1" cellspacing="0" cellpadding="3">
+	<tr>
+		<td><b>25w D skt</b></td>
+		<td><b>Function</b></td>
+		<td><b>8W J2/J3</b></td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>output 7</td>
+		<td>J3-1</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>output 6</td>
+		<td>J3-3</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>output 5</td>
+		<td>J3-5</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>output 4</td>
+		<td>J3-7</td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>output 3</td>
+		<td>J2-1</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>output 2</td>
+		<td>J2-3</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>output 1</td>
+		<td>J2-5</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>output 0</td>
+		<td>J2-7</td>
+	</tr>
+	<tr>
+		<td>14</td>
+		<td>positive supply for outputs 4,5,6,7</td>
+		<td>J3-2</td>
+	</tr>
+	<tr>
+		<td>15</td>
+		<td>common ground for outputs 4,5,6,7</td>
+		<td>J3-4</td>
+	</tr>
+	<tr>
+		<td>16</td>
+		<td>common ground for outputs 4,5,6,7</td>
+		<td>J3-6</td>
+	</tr>
+	<tr>
+		<td>17</td>
+		<td>common ground for outputs 4,5,6,7</td>
+		<td>J3-8</td>
+	</tr>
+	<tr>
+		<td>18</td>
+		<td>positive supply for outputs 0,1,2,3</td>
+		<td>J2-2</td>
+	</tr>
+	<tr>
+		<td>19</td>
+		<td>common ground for outputs 0,1,2,3</td>
+		<td>J2-4</td>
+	</tr>
+	<tr>
+		<td>20</td>
+		<td>common ground for outputs 0,1,2,3</td>
+		<td>J2-6</td>
+	</tr>
+	<tr>
+		<td>21</td>
+		<td>common ground for outputs 0,1,2,3</td>
+		<td>J2-8</td>
+	</tr>
+</table>
+</td>
+</td>
+		<td>
+<table border="1" cellspacing="0" cellpadding="3">
+	<tr>
+		<td><b>25w D plug</b></td>
+		<td><b>Function</b></td>
+		<td><b>16w J4</b></td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>input 7 neg</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>input 6 neg</td>
+		<td>3</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>input 5 neg</td>
+		<td>5</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>input 4 neg</td>
+		<td>7</td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>input 3 neg</td>
+		<td>9</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>input 2 neg</td>
+		<td>11</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>input 1 neg</td>
+		<td>13</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>input 0 neg</td>
+		<td>15</td>
+	</tr>
+	<tr>
+		<td>14</td>
+		<td>input 7 pos</td>
+		<td>2</td>
+	</tr>
+	<tr>
+		<td>15</td>
+		<td>input 6 pos</td>
+		<td>4</td>
+	</tr>
+	<tr>
+		<td>16</td>
+		<td>input 5 pos</td>
+		<td>6</td>
+	</tr>
+	<tr>
+		<td>17</td>
+		<td>input 4 pos</td>
+		<td>8</td>
+	</tr>
+	<tr>
+		<td>18</td>
+		<td>input 3 pos</td>
+		<td>10</td>
+	</tr>
+	<tr>
+		<td>19</td>
+		<td>input 2 pos</td>
+		<td>12</td>
+	</tr>
+	<tr>
+		<td>20</td>
+		<td>input 1 pos</td>
+		<td>14</td>
+	</tr>
+	<tr>
+		<td>21</td>
+		<td>input 0 pos</td>
+		<td>16</td>
+	</tr>
+</table>
+</td>
+	</tr>
+</table>
+<br>
+<h4>How to connect an input:</h4>
+Simply apply a voltage to neg and pos to read an input as a '1'
+<h4>How to connect an output:</h4>
+Connect your external power supply pos and ground to the pin marked "pos supply" and the ground (negative) of your power supply to the pin marked "common ground".<br>
+The outputs are in two groups of 4 so can use two different supplies or the same supply.<br>
+Connect your load between the output pin and your power supply positive.<br>
+<h4>Board I/O address</h4>
+The board uses 2 addresses in io space: base and base+1.<br>
+The output data can be read or written at the base address.<br>
+The input data can be read at base+1.<br>
+<br>
+The link LK1 selects from 2 base addresses. The default is<br>
+<i>Link fitted</i> 30hex. So you can enter e.g. HEX 30 0 ON or 31 IN<br>
+The two addresses are named SA and SB<br>
+Then you can type e.g. SA 1 ON or SB IN<br>
+In some versions you may find that SA and SB do not exist so you can create them with:<br>
+HEX 30 CONSTANT SA <br>
+31 CONSTANT SB<br>
+<i>Link not fitted</i> 32hex.  The two addresses are named TA and TB<br>
+So for example you could type TA 1 ON or TB IN<br>
+<hr><a name="11.15">
+<h4>
+11.15 MULTI-FUNCTION I/O 11-48</h4>
+
+<h4>Functions:</h4>
+Analog input: 4 channels –10V to +10V.<br>
+Analog output: 2 channels –10V to +10V.<br>
+Digital I/O: 48 lines programmable.<br>
+<h4>Connections</h4>
+The IDC connectors on the board are brought out to chassis-mounted 25 way D plugs.<br>
+<h4>Addressing</h4>
+The board uses a block of 16 addresses in i/o space. The default base
+address is 32. If more than one board is used in a system each has a
+different base address (programmed into the PLD on the board).<br>
+<h4>Analog Input</h4>
+A Burr-Brown (now Texas Instruments) ADS7824 4-channel 12-bit A/D
+converter is
+used. Additional buffer amplifiers protect the inputs. The range is
+–10V to
++10V. On the board the 10-way IDC connector J2 is used for inputs also
+the rear panel connector AN (25w D socket) as shown in the table:<br>
+<br>
+
+<table style="width: 50%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+  <tr bgcolor="#eeeeee"> 
+      <td style="vertical-align: top;">AN pin (25w D socket)<br>
+      </td>
+      <td style="vertical-align: top;">J2 pin<br>
+      </td>
+      <td style="vertical-align: top;">Function<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">1<br>
+      </td>
+      <td style="vertical-align: top;">1<br>
+      </td>
+      <td style="vertical-align: top;">Gnd<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">14<br>
+      </td>
+      <td style="vertical-align: top;">2<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">2<br>
+      </td>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">In 0<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">15<br>
+      </td>
+      <td style="vertical-align: top;">4<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">5<br>
+      </td>
+      <td style="vertical-align: top;">In 1<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">16<br>
+      </td>
+      <td style="vertical-align: top;">6<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">4<br>
+      </td>
+      <td style="vertical-align: top;">7<br>
+      </td>
+      <td style="vertical-align: top;">In 2<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">17<br>
+      </td>
+      <td style="vertical-align: top;">8<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">5<br>
+      </td>
+      <td style="vertical-align: top;">9<br>
+      </td>
+      <td style="vertical-align: top;">In 3<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">18<br>
+      </td>
+      <td style="vertical-align: top;">10<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Refer to the <a
+ href="http://focus.ti.com/lit/ds/symlink/ads7824.pdf">ads7824 data sheet</a> (pdf) for a detailed description of operation. The convertor uses a block of 4 addresses at offset 4 from the board base address.
+The functions are shown in the table:<br>
+<br>
+<table style="width: 80%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+  <tr bgcolor="#eeeeee"> 
+      <td style="vertical-align: top;">Address offset<br>
+      </td>
+      <td style="vertical-align: top;">Write function<br>
+      </td>
+      <td style="vertical-align: top;">Read function<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">0<br>
+      </td>
+      <td style="vertical-align: top;">Write any data to select ADC
+channel 0</td>
+      <td style="vertical-align: top;">Start Convert and latch address
+for next conversion<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">1<br>
+      </td>
+      <td style="vertical-align: top;">Write any data to select ADC
+channel 1<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">2<br>
+      </td>
+      <td style="vertical-align: top;">Write any data to select ADC
+channel 2<br>
+      </td>
+      <td style="vertical-align: top;">Read most significant byte</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">Write any data to select ADC
+channel 3<br>
+      </td>
+      <td style="vertical-align: top;">Read Least significant 4
+bits on D4 to D7, 0 on D0 to D3</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+5 microseconds must be allowed for acquisition and 20 microseconds for conversion.<br>
+Valid data (from the previous conversion) can be read up to 12 microseconds after ‘start convert’ and then the new data after 20 microseconds.<br>
+The ROBOFORTH program below reads data from the specified channel and is fast enough for most applications. When a sequence of data values is to be read as quickly as possible the following procedure is suggested:<br>
+<br>
+Initialise: Set a timer for a 25-microsecond interval and start it.<br>
+<br>
+Then repeat the following:<br>
+1 Wait for the timer and restart it.<br>
+2 Select the channel for the conversion after next.<br>
+3 Start convert .<br>
+4 Read the data from the previous conversion.<br>
+<br>
+Note that the operation is pipelined: When a channel is selected its data will be read two steps later. Thus the first two readings in the above sequence will be undefined.<br>
+<br>
+One of the timers on the controller's ez80 may be used to time conversions. (see the <a
+ href="http://www.zilog.com/docs/ez80/ps0130.pdf">ez80L92 data sheet</a>)<br>
+This may be done from ROBOFORTH e.g.<br>
+<font color= 007F00><u>25 USECS</u></font> (25 microseconds)<br>
+<br>
+<h4>Analog Output</h4>
+An Analog Devices AD7237 2-channel 12-bit D/A converter is used. The
+outputs are amplified to a range of –10V to +10V. The outputs are
+brought out on a 10-way IDC connector J3 and the rear panel connector
+AN (25wD socket) as shown in the table:<br>
+<br>
+<table style="width: 50%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+  <tr bgcolor="#eeeeee"> 
+      <td style="vertical-align: top;">AN pin (25wD socket)<br>
+      </td>
+      <td style="vertical-align: top;">J3 pin<br>
+      </td>
+      <td style="vertical-align: top;">Function<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">6<br>
+      </td>
+      <td style="vertical-align: top;">1<br>
+      </td>
+      <td style="vertical-align: top;">Gnd<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">19<br>
+      </td>
+      <td style="vertical-align: top;">2<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">7<br>
+      </td>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">Output B<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">20<br>
+      </td>
+      <td style="vertical-align: top;">4<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">8<br>
+      </td>
+      <td style="vertical-align: top;">5<br>
+      </td>
+      <td style="vertical-align: top;">Output A<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">21<br>
+      </td>
+      <td style="vertical-align: top;">6<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">9<br>
+      </td>
+      <td style="vertical-align: top;">7<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">22<br>
+      </td>
+      <td style="vertical-align: top;">8<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">10<br>
+      </td>
+      <td style="vertical-align: top;">9<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">23<br>
+      </td>
+      <td style="vertical-align: top;">10<br>
+      </td>
+      <td style="vertical-align: top;">Gnd</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Refer to the <a
+ href="http://www.analog.com/UploadedFiles/Data_Sheets/149486957AD7237A_4=7A_0.pdf">AD7237
+data sheet</a> (pdf) for a detailed description of operation. The convertor uses a block of 4 addresses at the board base as shown in the table:<br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+  <tr bgcolor="#eeeeee"> 
+      <td style="vertical-align: top;">Address offset<br>
+      </td>
+      <td style="vertical-align: top;">Write function<br>
+      </td>
+      <td style="vertical-align: top;">Read function<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">0<br>
+      </td>
+      <td style="vertical-align: top;">Write DAC A input latch least
+significant byte </td>
+      <td style="vertical-align: top;">Load DACs A &amp; B from
+respective input latches </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">1<br>
+      </td>
+      <td style="vertical-align: top;">Write DAC A input latch most
+significant 4 bits on D0 to D3 </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">2<br>
+      </td>
+      <td style="vertical-align: top;">Write DAC B input latch least
+significant byte </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">Write DAC B input latch most
+significant 4 bits on D0 to D3 </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Note that it is necessary to load the data to the input latches and
+then transfer the data to the converters by reading at offset 0.
+<p>
+<b>ROBOFORTH CODE</b>
+The base board address is usually 20hex. This is defined in ROBOFORTH as a constant IOBASE
+<pre>
+DECIMAL
+IOBASE 2 + CONSTANT DABASE
+IOBASE 6 + CONSTANT ADBASE
+: ADC ( read ADC onto stack
+ ADBASE + 0 SWAP OUT
+ ADBASE IN DROP
+ 25 USECS
+ ADBASE IN DROP
+ 25 USECS
+ ADBASE 2 + IN 128 XOR 16 * ADBASE 3 + IN 16 / + ;
+: ADPRINT ADC . CR ;
+: DACA ( output stack to DAC channel A
+ DUP DABASE OUT 256 / DABASE 1+ OUT DABASE IN DROP
+;
+: DACB ( output stack to DAC channel B
+ DUP DABASE 2 + OUT 256 / DABASE 3 + OUT DABASE IN DROP
+;
+</pre>
+NOTE: ALL THESE WORDS ARE ALREADY PART OF ROBOFORTH - the definition is shown here for information only.
+<br><br>
+<font color= 007F00><u>n ADC</u></font> ( leaves value from ADC channel n on the stach<br>
+<font color= 007F00><u>v DACA</u></font> ( outputs v to DAC channel A<br>
+<font color= 007F00><u>v DACB</u></font> ( outputs v to DAC channel B<br>
+<br><b>All inputs and outputs are offset by 2048 (800 hex)</b><br>
+So <font color= 007F00><u>0 DACA</u></font> will ooutput minus 10 volts on channel A<br>
+<font color= 007F00><u>2048 DACA</u></font> will output zero volts on channel A<br>
+<font color= 007F00><u>4095 DACA</u></font> (FFF hex) will output plus 10 volts on channel A<br>
+Likewise the inputs are offset by 2048 so if zero is input on channel 0<br>
+<font color= 007F00><u>0 ADC <b>.</b> </u></font>will print 2048<br>
+plus 10 volts in will result in 4095 and minus 10 volts will result in zero.<br>
+Simply add/subtract 2048 (800 hex) from all calculations.
+<br><br>
+
+<h4>Digital IO</h4>
+One or two (see note) 82C55 Programmable peripheral interfaces are used. Refer to the <a
+ href="http://www.intersil.com/data/fn/fn2969.pdf">82C55 data sheet</a>
+for a detailed description of operation.<br>
+The devices are referred to as
+Q and R and their ports QA,QB,QC and RA,RB,RC. Q is addressed at (base+8), R is addressed at (base+12 decimal)(base+0C hex)<br>
+so the address of RA is base+8, RB base+9, RC base+10 and the R control port is at base+11 (base+0B hex).<br>
+Connections are brought out on
+three 20-way connectors: J4, J5 and J6. The pinout enables simple
+connections to be made to opto-coupled i/o boards 11-36 and 11-37. The
+onnections may also be brought out to 25w D male connectors (refered to as
+QQ, QR &amp; RR).<br>
+<br>
+<b>NOTE:</b> Since 2010 due to speed problems only 1 82C55 device is fitted, total 24 bits. Therefore only the Q ports are fitted and the R ports are not fitted. Your card may have both devices fitted but the card may freeze and ST makes no guarantees. If you have problems remove the second 82C55 device from its socket.<br>
+<br>
+The following table shows the pin connections for the board connectors
+and rear panel connectors:<br>
+<br>
+<table style="text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+  <tr bgcolor="#eeeeee"> 
+      <td style="vertical-align: top;">J4, J5, J6 pin <br>(on the card)
+      </td>
+      <td style="vertical-align: top;">QQ, QR, RR pin<br>(25 w D)
+      </td>
+      <td style="vertical-align: top;">J4 &amp; QQ function<br>
+      </td>
+      <td style="vertical-align: top;">J5 &amp; QR function<br>
+      </td>
+      <td style="vertical-align: top;">J6 &amp; RR function<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">1<br>
+      </td>
+      <td style="vertical-align: top;">1<br>
+      </td>
+      <td style="vertical-align: top;">QB0<br>
+      </td>
+      <td style="vertical-align: top;">QA0<br>
+      </td>
+      <td style="vertical-align: top;">RC0<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">2<br>
+      </td>
+      <td style="vertical-align: top;">14<br>
+      </td>
+      <td style="vertical-align: top;">QB1<br>
+      </td>
+      <td style="vertical-align: top;">QA1<br>
+      </td>
+      <td style="vertical-align: top;">RC1<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">2<br>
+      </td>
+      <td style="vertical-align: top;">QB2<br>
+      </td>
+      <td style="vertical-align: top;">QA2<br>
+      </td>
+      <td style="vertical-align: top;">RC2<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">4<br>
+      </td>
+      <td style="vertical-align: top;">15<br>
+      </td>
+      <td style="vertical-align: top;">QB3<br>
+      </td>
+      <td style="vertical-align: top;">QA3<br>
+      </td>
+      <td style="vertical-align: top;">RC3<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">5<br>
+      </td>
+      <td style="vertical-align: top;">3<br>
+      </td>
+      <td style="vertical-align: top;">QB4<br>
+      </td>
+      <td style="vertical-align: top;">QA4<br>
+      </td>
+      <td style="vertical-align: top;">RC4</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">6<br>
+      </td>
+      <td style="vertical-align: top;">16<br>
+      </td>
+      <td style="vertical-align: top;">QB5<br>
+      </td>
+      <td style="vertical-align: top;">QA5<br>
+      </td>
+      <td style="vertical-align: top;">RC5</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">7<br>
+      </td>
+      <td style="vertical-align: top;">4<br>
+      </td>
+      <td style="vertical-align: top;">QB6<br>
+      </td>
+      <td style="vertical-align: top;">QA6<br>
+      </td>
+      <td style="vertical-align: top;">RC6</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">8<br>
+      </td>
+      <td style="vertical-align: top;">17<br>
+      </td>
+      <td style="vertical-align: top;">QB7<br>
+      </td>
+      <td style="vertical-align: top;">QA7<br>
+      </td>
+      <td style="vertical-align: top;">RC7</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">9<br>
+      </td>
+      <td style="vertical-align: top;">5<br>
+      </td>
+      <td style="vertical-align: top;">+5V<br>
+      </td>
+      <td style="vertical-align: top;">+5V</td>
+      <td style="vertical-align: top;">+5V</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">10<br>
+      </td>
+      <td style="vertical-align: top;">18<br>
+      </td>
+      <td style="vertical-align: top;">GND<br>
+      </td>
+      <td style="vertical-align: top;">GND</td>
+      <td style="vertical-align: top;">GND</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">11<br>
+      </td>
+      <td style="vertical-align: top;">6<br>
+      </td>
+      <td style="vertical-align: top;">QC0<br>
+      </td>
+      <td style="vertical-align: top;">RB0<br>
+      </td>
+      <td style="vertical-align: top;">RA0<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">12<br>
+      </td>
+      <td style="vertical-align: top;">19<br>
+      </td>
+      <td style="vertical-align: top;">QC1<br>
+      </td>
+      <td style="vertical-align: top;">RB1</td>
+      <td style="vertical-align: top;">RA1</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">13<br>
+      </td>
+      <td style="vertical-align: top;">7<br>
+      </td>
+      <td style="vertical-align: top;">QC2<br>
+      </td>
+      <td style="vertical-align: top;">RB2</td>
+      <td style="vertical-align: top;">RA2</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">14<br>
+      </td>
+      <td style="vertical-align: top;">20<br>
+      </td>
+      <td style="vertical-align: top;">QC3<br>
+      </td>
+      <td style="vertical-align: top;">RB3</td>
+      <td style="vertical-align: top;">RA3</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">15<br>
+      </td>
+      <td style="vertical-align: top;">8<br>
+      </td>
+      <td style="vertical-align: top;">QC4<br>
+      </td>
+      <td style="vertical-align: top;">RB4</td>
+      <td style="vertical-align: top;">RA4</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">16<br>
+      </td>
+      <td style="vertical-align: top;">21<br>
+      </td>
+      <td style="vertical-align: top;">QC5<br>
+      </td>
+      <td style="vertical-align: top;">RB5</td>
+      <td style="vertical-align: top;">RA5</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">17<br>
+      </td>
+      <td style="vertical-align: top;">9<br>
+      </td>
+      <td style="vertical-align: top;">QC6<br>
+      </td>
+      <td style="vertical-align: top;">RB6</td>
+      <td style="vertical-align: top;">RA6</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">18<br>
+      </td>
+      <td style="vertical-align: top;">22<br>
+      </td>
+      <td style="vertical-align: top;">QC7<br>
+      </td>
+      <td style="vertical-align: top;">RB7</td>
+      <td style="vertical-align: top;">RA7</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">19<br>
+      </td>
+      <td style="vertical-align: top;">10<br>
+      </td>
+      <td style="vertical-align: top;">+5V<br>
+      </td>
+      <td style="vertical-align: top;">+5V</td>
+      <td style="vertical-align: top;">+5V</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">20<br>
+      </td>
+      <td style="vertical-align: top;">23<br>
+      </td>
+      <td style="vertical-align: top;">GND<br>
+      </td>
+      <td style="vertical-align: top;">GND</td>
+      <td style="vertical-align: top;">GND</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<b>Roboforth Software</b> is same as for basic I/O, i.e. (value) QA OUT, QB IN (value), QA (bit) ON or OFF, QB (bit) BIT? (leaves true/false), QB 0 1 WAIT - waits for QB bit 0 to go to a 1 etc.
+<br>
+<b>PROGPIA</b> (Program Peripheral Interface Adaptor) writes the value 83 <b>hex</b> into each control port and programs the I/O ports as follows:<br>
+QA out QB in QC lower 4 bits out, upper 4 bits in<br>
+RA out RB in RC lower 4 bits out, upper 4 bits in<br>
+You can redefine PROGPIA (add a new definition which will be higher in the dictionary than the original PROGPIA) for different input/output combinations. The built-in definition of PROGPIA is:<br>
+<pre>
+HEX
+: PROGPIA
+83 IOBASE 0B + OUT
+83 IOBASE 0F + OUT
+;
+</pre>
+If you wanted, for example to change QA to input and QB to output you could add a new definition thus:<br>
+<pre>
+HEX
+: PROGPIA
+92 IOBASE 0B + OUT
+83 IOBASE 0F + OUT
+;
+</pre>
+Don't forget that any numbers in definitions in your text file following this will be treated as HEX numbers so if they are decimal numbers follow with<br>
+<b>DECIMAL</b>
+<p>
+<b>(port) WATCH</b> (e.g. QB WATCH) will display 8 bits from the specified port as 1s and 0s (see PP in Roboforth manual)
+<p>
+<a href="#contents">Back to Contents</a><p>
+
+<hr><a name="11.16"><h4>
+11.16 I/O SIGNAL CONDITIONER</h4><br>
+This unit comprises a box containing opto-coupled input and output modules which should sit on or near 
+the robot controller.
+It requires the multi-I/O board 11-48
+<br>
+Each input module has 8 independently isolated channels.
+Each output module has 8 output channels arranged in two independent groups of four.
+A total of 23 channels are available.
+3 or 4 boards can be fitted to give any compination of inputs and outputs in multiples of 4 as follows
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr bgcolor="#eeeeee"> 
+      <td>IP Modules</td>
+      <td>O/P modules</td>
+      <td>Inputs</td>
+      <td>Outputs</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0</td>
+      <td>24</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1</td>
+      <td>20</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1</td>
+      <td>16</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2</td>
+      <td>12</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>8</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>3</td>
+      <td>4</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>24</td>
+    </tr>
+</table>
+
+The unit is connected to the controller by a screened cable to a 25 way connector on the rear panel of the controller.
+
+<h4>Opto-coupled input module 11-36</h4>
+
+This module has 8 independent input channels. These are accessed by a 16-way connector marked J3 and labeled in pairs + and - numbered 0 to 7. A LED indicates the state of each input. If no current flows in the input the controller reads a 1 sate and the LED is extinguished. A current of at least 5mA is required to turn the input on. The board has 2K2 resistors fitted suitable for use on 12V to 30V supplies. For 5V use 330R should be fitted.
+<p>
+The diagrams show how to use the module to interface to  a NPN or PNP proximity sensor or similar device or to a switch.
+<br>
+<table width="500" height="300"  border="0">
+    <tr>
+      <td><img src="switch.gif"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><img src="npn.gif"></td>
+      <td><img src="pnp.gif"></td>
+    </tr>
+</table>
+<p>
+<h4>Opto-coupled output module 11-37</h4>
+
+The output module has 8 NPN Darlington outputs arranged in two independent groups of four. Thus devices connected to two different supplies may be driven. There are two 6-way connectors marked J3 and J4 with connections for the four outputs each, marked 0 to 3 on J4 and 4 to 7 on J3 together with supply connections 0V and +V. It is important that both the ground and supply voltage are connected to each connector so that the catching diodes in the output drivers can prevent possible damage if driving an inductive load.
+The board has input pull-down resistors so that if its input is not connected the outputs will be switched off. It is normally driven by an 8255 PIA on the 11-48 card in the controller. When the controller is switched on the PIA is reset to input mode so in this case also the outputs will be turned off.
+
+Maximum ratings:
+	Current 1.5 Amps per channel
+	Voltage 35 Volts
+ 
+The diagram shows how a lamp load can be connected.<br>
+<img src="lamp.gif">
+<p>
+
+<a href="#contents">Back to Contents</a><p>
+
+<hr><a name="11.17"><h4>
+11.17 E-stop circuit</h4>
+On the rear is a jack plug and socket. The controller is shipped with the jack already in the socket, see below.<br><br>
+<img src="rearpanel.gif"><p>
+The jack is supplied with the two terminals shorted. You can instead wire this to any number of external normally closed safety devices. The circuit must be closed for the robot to run. If any device breaks the circuit the robot will stop and the software executes the contents of STOPVEC. This is the same as pressing the stop button on the front panel or teach pad. Normally there is an error message. See ROBOFORTH manual section 6.1 for software details.<br>
+The jack must not be removed even if you have no external circuit, it is the same as breaking the circuit so the shorted jack must be left in.
+<hr>
+<a name="12"><h4>
+12 CONNECTOR PINOUTS</h4><p>
+<div align="center"><b>Front Panel</b></div>
+<p>
+Connections from computer to controller are via an RS232 'null modem' cable. The controller has a 25w connector and the computer end is a 9 way connector. If you are using a USB converter it will have a 9 way connector.
+<p>
+<table width="90%" border="1" cellspacing="0" cellpadding="3">
+  <tr bgcolor="#eeeeee"> 
+          <th colspan="6"><b>Serial (RS232) port interface pinout and signals</b></th>
+        </tr>
+        <tr> 
+          <th width="60">9<br>
+            pin #</th>
+
+          <th width="60">25<br>
+            pin#</th>
+          <th>Acronym</th>
+          <th>Full name</th>
+          <th>Direction</th>
+          <th>Mean</th>
+
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">3</div>
+          </td>
+          <td width="60"> 
+            <div align="center">2</div>
+          </td>
+          <td> 
+            <div align="center">TxD</div>
+
+          </td>
+          <td>Transmit Data</td>
+          <td> 
+            <div align="center">»»</div>
+          </td>
+          <td>Transmits bytes out of PC</td>
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">2</div>
+
+          </td>
+          <td width="60"> 
+            <div align="center">3</div>
+          </td>
+          <td> 
+            <div align="center">RxD</div>
+          </td>
+          <td>Receive Data</td>
+
+          <td width="10"> 
+            <div align="center">««</div>
+          </td>
+          <td>Receives bytes into PC</td>
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">7</div>
+          </td>
+
+          <td width="60"> 
+            <div align="center">4</div>
+          </td>
+          <td> 
+            <div align="center">RTS</div>
+          </td>
+          <td>Request To Send</td>
+          <td> 
+            <div align="center">»»</div>
+
+          </td>
+          <td>RTS/CTS flow control</td>
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">8</div>
+          </td>
+          <td width="60"> 
+            <div align="center">5</div>
+
+          </td>
+          <td> 
+            <div align="center">CTS</div>
+          </td>
+          <td>Clear To Send</td>
+          <td> 
+            <div align="center">««</div>
+          </td>
+          <td>RTS/CTS flow control</td>
+
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">6</div>
+          </td>
+          <td width="60"> 
+            <div align="center">6</div>
+          </td>
+          <td> 
+            <div align="center">DSR</div>
+
+          </td>
+          <td>Data Set Ready </td>
+          <td> 
+            <div align="center">««</div>
+          </td>
+          <td> I'm ready to communicate</td>
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">4</div>
+
+          </td>
+          <td width="60"> 
+            <div align="center">20</div>
+          </td>
+          <td> 
+            <div align="center">DTR</div>
+          </td>
+          <td>Data Terminal Ready</td>
+
+          <td> 
+            <div align="center">»»</div>
+          </td>
+          <td>I'm ready to communicate</td>
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">1</div>
+          </td>
+
+          <td width="60"> 
+            <div align="center">8</div>
+          </td>
+          <td> 
+            <div align="center">DCD</div>
+          </td>
+          <td>Data Carrier Detect</td>
+          <td> 
+            <div align="center">««</div>
+
+          </td>
+          <td>Modem connected to another</td>
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">9</div>
+          </td>
+          <td width="60"> 
+            <div align="center">22</div>
+
+          </td>
+          <td> 
+            <div align="center">RI</div>
+          </td>
+          <td>Ring Indicator</td>
+          <td> 
+            <div align="center">««</div>
+          </td>
+          <td>Telephone line ringing</td>
+
+        </tr>
+        <tr> 
+          <td width="60"> 
+            <div align="center">5</div>
+          </td>
+          <td width="60"> 
+            <div align="center">7</div>
+          </td>
+          <td> 
+            <div align="center">SG</div>
+
+          </td>
+          <td>Signal Ground</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+<p>
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr bgcolor="#eeeeee"> 
+<th colspan="4"><b>Teach Pad connections</b></th>
+        </tr>
+	<tr>
+		<td>1</td>
+		<td>PD 4</td>
+		<td>6</td>
+		<td>PC 6</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>PD 5</td>
+		<td>7</td>
+		<td>PC 5</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>PD 6</td>
+		<td>8</td>
+		<td>PC 4</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>PD 7</td>
+		<td>9</td>
+		<td>screen (0v)</td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>PC 7</td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+PD are inputs, PC are outputs. STOP button connects to pins 4 and 5
+
+<hr><p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+<div align="center"><b>Rear Panel</b></div>
+	<tr>
+		<td>
+		<table border="1" cellspacing="0" cellpadding="3">
+<div align="center">Robot</div>
+  <tr bgcolor="#eeeeee"> 
+		<td></td>
+		<td>Robot Motor Drives (Bayonet)</td>
+		<td></td>
+		<td>Sensor (datum) inputs (J6,25way)</td>
+	</tr>
+	<tr>
+		<td>A</td>
+		<td>motor 1 coil 1</td>
+		<td>1</td>
+		<td>Sensor 1 (PB 0)</td>
+	</tr>
+	<tr>
+		<td>B</td>
+		<td>motor 1 coil 1</td>
+		<td>2</td>
+		<td>Sensor 2 (PB 1)</td>
+	</tr>
+	<tr>
+		<td>C</td>
+		<td>motor 1 coil 2</td>
+		<td>3</td>
+		<td>Sensor 3 (PB 2)</td>
+	</tr>
+	<tr>
+		<td>D</td>
+		<td>motor 1 coil 2</td>
+		<td>4</td>
+		<td>Sensor 4 (PB 3)</td>
+	</tr>
+	<tr>
+		<td>E</td>
+		<td>motor 2 coil 1</td>
+		<td>5</td>
+		<td>Sensor 5 (PB 4)</td>
+	</tr>
+	<tr>
+		<td>F</td>
+		<td>motor 2 coil 1</td>
+		<td>6</td>
+		<td>encoder 1 up</td>
+	</tr>
+	<tr>
+		<td>G</td>
+		<td>motor 2 coil 2</td>
+		<td>7</td>
+		<td>encoder 1 down</td>
+	</tr>
+	<tr>
+		<td>H</td>
+		<td>motor 2 coil 2</td>
+		<td>8</td>
+		<td>encoder 2 up</td>
+	</tr>
+	<tr>
+		<td>J</td>
+		<td>motor 3 coil 1</td>
+		<td>9</td>
+		<td>encoder 2 down</td>
+	</tr>
+	<tr>
+		<td>K</td>
+		<td>motor 3 coil 1</td>
+		<td>10</td>
+		<td>encoder 3 up</td>
+	</tr>
+	<tr>
+		<td>L</td>
+		<td>motor 3 coil 2</td>
+		<td>11</td>
+		<td>encoder 3 down</td>
+	</tr>
+	<tr>
+		<td>M</td>
+		<td>motor 3 coil 2</td>
+		<td>12</td>
+		<td>encoder 4 up</td>
+	</tr>
+	<tr>
+		<td> </td>
+		<td>chassis</td>
+		<td>13</td>
+		<td>encoder 4 down</td>
+	</tr>
+	<tr>
+		<td>N</td>
+		<td>motor 4 coil 1</td>
+		<td>14</td>
+		<td>encoder 5 up</td>
+	</tr>
+	<tr>
+		<td>P</td>
+		<td>motor 4 coil 1</td>
+		<td>15</td>
+		<td>encoder 5 down</td>
+	</tr>
+	<tr>
+		<td>R</td>
+		<td>motor 4 coil 2</td>
+		<td>16</td>
+		<td>+24-30v DC</td>
+	</tr>
+	<tr>
+		<td>S</td>
+		<td>motor 4 coil 2</td>
+		<td>17</td>
+		<td>digital 0volts (sensors)</td>
+	</tr>
+	<tr>
+		<td>T</td>
+		<td>motor 5 coil 1</td>
+		<td>18</td>
+		<td>15-20v for sensors</td>
+	</tr>
+	<tr>
+		<td>U</td>
+		<td>motor 5 coil 1</td>
+		<td>19</td>
+		<td>dig. 0v (encoders)<br>ground to robot</td>
+	</tr>
+	<tr>
+		<td>V</td>
+		<td>motor 5 coil 2</td>
+		<td>20</td>
+		<td>+5v for encoders</td>
+	</tr>
+	<tr>
+		<td>W</td>
+		<td>motor 5 coil 2</td>
+		<td>21</td>
+		<td>Sensor 6 (PB 5)</td>
+	</tr>
+	<tr>
+		<td>X</td>
+		<td>motor 6 coil 1</td>
+		<td>22</td>
+		<td>elec gripper</td>
+	</tr>
+	<tr>
+		<td>Y</td>
+		<td>motor 6 coil 1</td>
+		<td>23</td>
+		<td>encoder 6 up</td>
+	</tr>
+	<tr>
+		<td>Z</td>
+		<td>motor 6 coil 2</td>
+		<td>24</td>
+		<td>encoder 6 down</td>
+	</tr>
+	<tr>
+		<td>a</td>
+		<td>motor 6 coil 2</td>
+		<td>25</td>
+		<td>elec gripper</td>
+	</tr>
+	<tr>
+		<td>b</td>
+		<td>high power elec gripper</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>c</td>
+		<td>high power elec gripper</td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+</td>
+		<td valign=top>
+<table border="1" cellspacing="0" cellpadding="3">
+<div align="center">User</div>
+  <tr bgcolor="#eeeeee"> 
+		<td></td>
+		<td>User outputs - 15w D</td>
+		<td></td>
+		<td>User inputs - 9w D</td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>PA 7</td>
+		<td>1</td>
+		<td>PB 6</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>PA 6</td>
+		<td>2</td>
+		<td>PB 5 <font color="#ff0000">see note 2</font></td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>PA 5</td>
+		<td>3</td>
+		<td>Ovolts</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>PA 4</td>
+		<td>4</td>
+		<td>PB 3 <font color="#ff0000">see note 1</font></td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>PA 3</td>
+		<td>5</td>
+		<td>+12V</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>PA 2</td>
+		<td>6</td>
+		<td>PB 7</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>PA 1 (elec grip)</td>
+		<td>7</td>
+		<td>0 volts</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>PA 0 (gripper)</td>
+		<td>8</td>
+		<td>PB 4 <font color="#ff0000">see note 1</font></td>
+	</tr>
+	<tr>
+		<td>9</td>
+		<td>0 volts</td>
+		<td>9</td>
+		<td>+12 volts</td>
+	</tr>
+	<tr>
+		<td>10</td>
+		<td>0 volts</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>11</td>
+		<td>+12v</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>12</td>
+		<td>+12v</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>13</td>
+		<td>+12v</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>14</td>
+		<td>+12v</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>15</td>
+		<td>+12v</td>
+		<td></td>
+		<td></td>
+	</tr>
+</table>
+ <font color="#ff0000">note 1</font> These inputs are shared with robot sensors.<br>
+They can not be used with R12.<br>
+ <font color="#ff0000">note 2</font> This inputs are shared with robot 6th axis<br>
+ sensors. It can not be used with R12.<br><br>
+It <i>is</i> possible to share these inputs with an R17<br>
+providing the axis does not reach a sensor while an<br>
+input state is important. R17 sensors pull down.<br>
+Also make sure you do not hold down an input<br>
+shared by a sensor while the robot calibrates.<br><br>
+PB 5 may not be used at all with a 6th axis.
+</td>
+	</tr>
+</table>
+PA 0 and 1 not available if electric motor gripper is fitted.<br>
+Electric gripper may connect via the motor connector or sensor connector.<br>
+<p>
+<hr>
+©1989-2016 David N Sands
+</html>

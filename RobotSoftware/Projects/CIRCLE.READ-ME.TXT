@@ -1,0 +1,3 @@
+The CIRCLE project is an example of R12 drawing a circle on paper.
+Please see HELP28 in the help sheets folder.
+Also see the video CIRCLE.3GP in this folder.

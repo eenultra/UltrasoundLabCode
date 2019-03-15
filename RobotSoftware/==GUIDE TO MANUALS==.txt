@@ -1,0 +1,48 @@
+*****  GUIDE TO MANUALS *****
+
+Install RobWin 7 from robwin7.msi - double-click to install.
+(note Robwin65 is a legacy version)
+
+*****  PDF MANUALS **********
+Click the pdf directory to see these manuals:
+
+Setting up the robot:			r12 manual.pdf
+					r17 manual.pdf
+					r19 manual.pdf
+(absolutely the first manual to open)
+
+Getting started:			primer7.pdf
+Getting started with a 6-axis robot     primer-6axis.pdf
+
+Tutorial				tutorial7.pdf
+
+How to use RobWIn7			robwin7.pdf
+
+How to use the Android teach console.	nexus.pdf
+
+Service manual for R12			R12 SERVICE MANUAL.pdf
+Service manual for R17			R17 SERVICE MANUAL.pdf
+as above but with exploded diagrams	R17 SERVICE MANUAL.zip
+
+Tool changers				R12 Toolchangers.pdf
+					R17 Toolchangers.pdf
+
+Starting Forth				StartingFORTH_cover_page_v4
+use the link in that to download the complete Starting Forth book by Leo Brodie.
+
+*****  HTML MANUALS *********
+Click back to the disk root then click the HTML directory.
+Then double-click this file:
+==Double-click for HTML manuals==.htm
+This will open in your browser.
+
+Everything about the software:			manual15.htm for V15 or
+						manual16.htm for V16
+Everything about the controller:		sysman5.htm
+A complete glossary of all RoboForth words	gloss15.htm for V15 or
+						gloss16.htm for V16
+This has hyperlinks to the other 2 manuals to explain the words in more detail.
+
+*****  HELP SHEETS *********
+ in the Help sheets folder.
+For specific 'how to' issues.

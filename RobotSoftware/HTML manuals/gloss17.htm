@@ -1,0 +1,1575 @@
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+last revision 2015.12.27
+<title>Roboforth Glossary</title>
+<p>
+</head><p>
+
+<body>
+<body Background=#ffffff>
+<center> <table border=4 cellspacing=10 cellpadding=4> <tr><th><h2>ROBOFORTH II v16</h2></center></table></th><p>
+
+<center><h3>DICTIONARY (GLOSSARY)</h3></center></th><hr><p>
+
+This  glossary  contains all the words in ROBOFORTH which  are meaningful to the user.<br><p>
+FORTH kernel words are not included here; see the controller manual.<p>
+This entire glossay and RoboForth words are copyright D.Sands.
+<p>
+
+</center>
+Many  words  will  not work by themselves but  require  arguments either  before  or  after them and these  are  indicated  by  the following terms in brackets:-<p>
+
+
+(adr) is a 16-bit unsigned integer (memory address)<p>
+
+
+(Num)  is any positive integer.<p>
+
+
+(Val)  is any value,  either a positive or negative number  or  a constant.<p>
+
+
+(Pos)  A position by name or by (num) LINE.<p>
+
+
+(name) A word name only.<p>
+
+
+(filename) A file name in the computer.<p>
+
+
+NOTE: A variable leaves its value on the stack only by use of the @ sign meaning 'fetch'. To see its contents enter:<br>
+
+(variable name) ?<br>
+
+To change its contents enter:-<br>
+
+(value) (name) !<br>
+
+where ! is the FORTH word meaning 'store'.<p>
+
+A constant leaves its value on the stack without the use of the @ sign. To see its contents enter the constant's name followed by a period which is shortform for print.<br>
+
+(constant's name) .<br>
+
+To change its contents enter<br>
+
+(value) ' (name) !<br>
+
+where ' is the FORTH word 'tick' and ! is the FORTH word 'store'.<p>
+
+Constants  are invariably in protected memory so the memory  must 
+
+be unprotected before changing a constants value.<p>
+
+A tick word e.g. 'NEAR or 'LEARN implies that there is a dictionary search involved.<p>
+
+A question word e.g. ?STOP or ?TERMINAL implies that the word is a query, testing some hardware or software entity and in some but not all cases leaving a true or false on the stack.<p>
+
+For further information on each of these ROBOFORTH words, simply click on the word concerned. To subsequently return to this glossary, click the "back" button at the top of the screen.<p>
+
+<b>
+
+A/</b>
+<p>
+
+<a href="manual17.htm#11.2">(num) ABORT</a> - aborts leaving (num) in the variable ERR<p>
+
+
+<a href="manual17.htm#7.2.2">ABSOLUTE</a>  - sets all joints to absolute movements.
+<p>
+
+<a href="manual17.htm#5.1">ACCEL</a> - a variable that controls acceleration,
+
+     typical values from 500 to 4000<p>
+
+
+<a href="manual17.htm#3.1.1">ADD</a>  - usage (adr1) (adr2) ADD - adds two  coordinates  together, leaving the result in an address which is left on the stack.<p>
+
+
+<a href="manual17.htm#7.3.4">ADJUST</a> - adjusts down SPEED to prevent the "too tight" error.<p>
+
+
+<a href="manual17.htm#7.3">AL</a>  - Add to All - takes 5 or 6 values from the stack into the Cartesian variables and adds those values into every line of the currently selected route.<p>
+
+
+<a href="manual17.htm#3.1">ALL</a> - selects all joints for commands like MOVE, GLOBAL.<p>
+
+
+<a href="manual17.htm#3.2.2">ALIGN</a> - sets mode in which the wrist roll will adjust to the same angle  to  the waist whenever the waist moves  in Cartesian 
+     mode, provided the wrist is vertical (plus or minus 90.0 deg.). R19: Align mode keeps the hand at the same angle to the waist as the waist moves in Cartesian mode.<p>
+
+
+<a href="manual17.htm#7.3">AGAIN</a>  - a  word to 'LEARN onto the end of a ROUTE to repeat  the 
+
+     ROUTE  indefinitely but only in SEGMENTED mode.  Stops  with  escape key or  soft  stop 
+
+     button.<p>
+
+
+<a href="manual17.htm#7.2">APPROACH (place-name)</a> - sets the approach coordinates of a PLACE.<p>
+
+
+<a href="manual17.htm#3.1.1">(pos) ASSUME</a>  - changes coordinates of WHERE to  given  position 
+
+     without moving robot e.g. 5 LINE ASSUME, NEST ASSUME etc.<p>
+
+
+
+<a href="manual17.htm#10.2">AUTO (word)</a> sets (word) to be executed on power-up (or reset)<p>
+
+
+<a href="manual17.htm#7.3.3">AXES</a> extracts the Cartesian coordinates from the address on the stack (into X Y Z PITCH W TOOL-LENGTH YAW ROLL as appropriate)<p>
+
+
+#AXES a user variable in the parameter file with the number of axes your robot has.<p>
+
+
+<b>B/</b><p>
+
+<a href="sysman5.htm#10.2">BEEP</a> - beeps the computer<p>
+
+
+<a href="sysman5.htm#10.2">BLUETOOTH</a> - switches attention to the second serial port<p>
+
+
+<a href="manual17.htm#8.2">(port-address)  (bit-number) BIT?</a>  - returns a true      if the given 
+
+     input bit on an input port is true, otherwise zero.
+
+     example: PB 5 BIT? IF etc.<p>
+
+
+
+<a href="sysman5.htm#10.4">(bit-number) BIT</a> - converts a bit number into a numeric value.<p>
+
+<b>C/</b><p>
+
+<a href="manual17.htm#2.6">CALCHECK</a> - drives  all  joints  to their  datum  positions  and 
+
+     checks the position counts against the values in LIMITS. If the errors exceed a tolerance
+	 the robot stops and the error is reported.<p>
+
+
+<a href="manual17.htm#2.6">CALIBRATE</a>  - drives  all  joints  to their  datum  positions  and 
+
+     corrects the position counts to the values in LIMITS<p>
+
+
+<a href="manual17.htm#2.7">CALSEQ</a>  -  an array for R15, R19 determining the order  in  which  axes calibrate.<p>
+
+
+CARTASSUME  - same as AXES <p>
+
+
+CARTEACH  - same as JOG<p>
+
+
+<a href="manual17.htm#3.2">CARTESIAN</a>  - selects  cartesian  mode i.e  positioning  to  x-y-z  coordinates.<p>
+
+
+<a href="manual17.htm#9.4">CF</a>  - Cartesian Fetch, sends back 5 or 6 values of the motor counts.<p>
+
+
+<a href="manual17.htm#9.4">CG</a>  - Cartesian Get - takes 5 or 6 values from the stack into the Cartesian variables. Send the 5 or 6 values in reverse order ending with X, then CG.<p>
+
+
+<a href="manual17.htm#9.4">CM</a>  - Cartesian Move - takes 5 or 6 values from the stack into the Cartesian variables and moves the robot to that position. Send the 5 or 6 values first in reverse order ending with X, then CM.<p>
+
+
+<a href="manual17.htm#3.2">CARTWHERE</a> - displays cartesian coordinates even if in joint mode. 
+
+     These coordinates may not be valid - update with COMPUTE.<p>
+
+
+#CARTS  - the number of Cartesian axes. Usually the same as #AXES.<p>
+
+
+<a href="manual17.htm#3.2">CHECK</a> - similar to CALIBRATE but does not correct any errors.<p>
+
+
+<a href="manual17.htm#2.6">CL</a> - learns data in cartesian coordinates though system may be in joint mode.<p>
+
+
+<a href="manual17.htm#7.3.7">CLRDSP</a> - clears DSP busy flag (see ?RUN)<p>
+
+
+<a href="manual17.htm#7.4">(object)  COLLECT</a>  - sends the arm to the location of the  object  and GETs it (see GET)<p>
+
+
+<a href="manual17.htm#3.2">COMPUTE</a>  - computes new values for the cartesian variables X,Y,Z, W, PITCH from the motor counts.<p>
+
+
+<a href="manual17.htm#7.3.4">CONTINUOUS</a>  -  puts system into continuous mode i.e. will  run  a  ROUTE without stopping at each line.<p>
+
+
+<a href="manual17.htm#7.3.4">CONVERT</a>  -  converts the Cartesian coordinates of a route to joint coordinates. The original Cartesian coordinates will still be visible in RobWin.<p>
+
+
+<a href="manual17.htm#6">CREEP-FACTOR</a> - variable determining speed joint moves in TEACH<p>
+
+
+<a href="manual17.htm#8.3">CRITERION</a>  - a  vector variable for determining the  event  which  ends a search.<p>
+
+
+<a href="manual17.htm#7.3.7">CRUN</a>  - a continuous run but does not depend on  CONTINUOUS  mode 
+
+     and  CPU does not wait for DSP to finish. To stop the  robot 
+
+     execute STOP  - see also ?RUN<p>
+
+
+<b>D/</b><p>
+
+
+<a href="manual17.htm#2.6">DATUM</a> - sends selected joint to home position<p>
+
+
+<a href="manual17.htm#2.2">DE-ENERGISE  or DE-ENERGIZE</a> - removes power (and holding  torque) from all joints.<p>
+
+
+<a href="manual17.htm#7.3">(num)  DELETE  or (num) LINE DELETE</a> - removes the specified  line 
+
+     from  the  currently active ROUTE and shifts the other  line 
+
+     down  to close the gap.   LINE may be omitted.   Do not  use 
+
+     with PLACEs.<p>
+
+
+<a href="manual17.htm#8.5">DISABLE</a> - disable interrupts.<p>
+
+
+<a href="manual17.htm#7.2.3">DOWN</a> - moves robot to target position of a GRID or ROW,  the line 
+
+     number left in LINE# by NEAR<p>
+
+
+<a href="manual17.htm#7.2.4">DRY</a>  - sets a mode to test a CONTINUOUS ROUTE for errors  without 
+
+     running  the robot, syntax: DRY RUN. To actually  run  enter 
+
+     CONTINUOUS. SEGMENTED also cancels DRY mode.<p>
+
+
+<a href="manual17.htm#7.2.4">DRUN</a> - a dry run without changing mode<p>
+
+
+<a href="manual17.htm#7.2.4">DSPASSUME</a> - assumes position of last move made by the DSP.<p>
+
+
+DSPCHANS - the number of axes passed to/from the DSP (always 6).<p>
+
+
+<a href="manual17.htm#dsp">DSPMOVE</a>  - similar to MOVE but motion is controlled by  the  DSP.
+     Control  returns to the CPU before robot stops  moving.  The 
+
+     robot will not stop with the stop button. Enter STOP to stop 
+
+     the robot.<p>
+
+
+<a href="manual17.htm#12">DSPRDY</a> - waits for DSP to finish<p>
+
+
+<a href="manual17.htm#3.1.1">DSPSMOOTH</a> - same as XGOTO in SMOOTH mode i.e. motion is controlled 
+
+     by the DSP but control returns to the CPU before robot stops 
+
+     moving. The robot will not stop with the stop button.  Enter 
+
+     STOP to stop the robot.<p>
+
+DSPVEC  - variable for vectored execution - any word CFA in  this 
+
+     variable  will be executed while a CONTINUOUS path ROUTE  is 
+
+     running. The word will be executed many times i.e. treat  it 
+
+     like polling. If the word is to be executed only once use  a 
+
+     flag.<p>
+
+<b>E/</b><p>
+<a href="manual17.htm#4">ENC1</a> - reads value from encoder 1 register onto stack (see LATCH)<p>
+
+
+<a href="manual17.htm#4">ENC2 to ENC6</a> - similar to ENC1 but for encoders 2 to 6<p>
+
+
+<a href="manual17.htm#4">ENCABORT</a>  - word  which  aborts  with  encoder-stepper  mismatch 
+
+     message and ERR=2.<p>
+
+
+<a href="manual17.htm#4">ENCASSUME</a>  - changes the motor counts to those indicated  by  the 
+
+     encoders (copies line 3 to line 1 of WHERE<p>
+
+
+<a href="manual17.htm#4">ENCLEARN</a> - learns joint coordinates from the encoder counts.<p>
+
+
+<a href="manual17.htm#4">ENCCHECK</a>  - this  checks the encoder count  against  the  stepper 
+
+     count,  using  the conversion factors in ENCRATIOS.  If  the 
+
+     error  in  the encoder count is more than the  corresponding 
+
+     value  in the array ENCTOLS then the the system tries  again 
+
+     the number of times in the variable TRIES.<p>
+
+
+<a href="manual17.htm#4">ENCERR?</a> - leaves true (non-zero) on stack if there is an  encoder 
+
+     error   on  any  axis  which  exceeds  the  amount  in   the 
+
+     corresponding element of ENCTOLS<p>
+
+<a href="manual17.htm#4">ENCOFF</a> - disables encoders but leaves them displayed in WHERE.<p>
+
+
+<a href="manual17.htm#4">ENCON</a> - re-enables encoders.<p>
+
+
+<a href="manual17.htm#4">ENCRATIOS</a> - leaves the address of an array containing the ratio of encoder count to motor count, specifically the number of encoder counts for 10,000 motor counts.<p>
+
+
+<a href="manual17.htm#4">ENCSET</a> - this presets the encoder counters to correspond with the stepper count e.g. after calibration.<P>
+
+<a href="manual17.htm#4">ENCTEST</a> - continuous display of encoder counts (esc to stop).<p>
+
+
+<a href="manual17.htm#4">ENCTOLS</a> - leaves address of an array containing the maximum error  for any axis 	referred to the encoder count (not the motor count), 16 bits per element. The 	tolerence for axis 1 is obtained with ENCTOLS @, or changed with (val) <br>	ENCTOLS !, axis 2 ENCTOLS 2+, axis 3 ENCTOLS 4 + etc. For an R15 or R19 with 5 encoders the first axis is accessed in the first BYTE (ENCTOLS C@ or 	(val) ENCTOLS C!), the 5th axis is in the second BYTE. For an R12/R17 with 5 	encoders the 5th axis uses the same tolerance as the 4th axis.<p>
+
+
+<a href="manual17.htm#4">ENCVEC</a> - is an execution vector for ENCCHECK. In case of encoder error after      attempts in TRIES are used up the word whose CFA is in ENCVEC is executed. 	Normally contains ENCABORT.
+
+	To change to a different word enter SET ENCVEC (name)<p>
+
+
+<a href="sysman5.htm#9.2.3">EDBUF</a> - (edit buffer) constant, address of the text buffer.<p>
+
+
+<a href="sysman5.htm#9.2.3">EDLOAD</a> - compiles the text in the text buffer (not all versions.<p>
+
+
+<a href="manual17.htm#2.3">EEP</a>  - Encoder  Enable  Pattern - a variable in  which  bits  0-5 
+
+     determine which encoders are enabled.<p>
+
+
+<a href="manual17.htm#2.3">EFP</a> - Encoder Fit Pattern - a constant determining which encoders 
+
+     are actually fitted - loaded into EEP by START.<p>
+
+
+<a href="manual17.htm#8.5">ENABLE</a> - enable interrupts.<p>
+
+
+<a href="manual17.htm#3.1">ELBOW</a> - name of joint 3 (MEP = 4) - revolute robots only.<p>
+
+
+ELOAD (filename) - gets a text file from the PC running EMU8 into the text buffer EDBUF.<p>
+
+
+<a href="manual17.htm#7.4">EMPTY</a> - clears all the objects from a ROUTE.<p>
+
+
+<a href="manual17.htm#7.3.10">END-THERE</a> - changes the last line of a CARTESIAN ROUTE to the given position and all the other lines are adjusted accordingly. In other words makes the route a relative route that ends at the given position<p>
+
+
+<a href="manual17.htm#2.2">ENERGISE or ENERGIZE</a> - restores power and holding torque to all 
+
+     joints.<p>
+
+
+<a href="manual17.htm#7.2">ERASE</a> - erases all the coordinates from the current ROUTE.<p>
+
+
+<a href="manual17.htm#11.2">ERR</a> - variable containing error number after an ABORT<p>
+
+
+ERR1 - returns any encoder stepper mismatch for joint 1.<p>
+
+ERR2 to ERR6 - as ERR1 but for the other joints.<p>
+
+
+<a href="sysman5.htm#10.6">EXIT</a> immediately exits the current word<p>
+
+
+<a href="manual17.htm#3.1">EXTEND</a>  - name  of Y axis,  cartesian robots joint 2 or 3,  or  R  (radius) axis, joint 3, cylindrical robots <p>
+
+
+<b>F/</b><p>
+
+<a href="manual17.htm#8.3">FASTSEARCH</a>  - does  a  fast search for an event which  causes  an 
+
+     interrupt.<p>
+
+
+<a href="manual17.htm#7.2">FIRST#</a> - line number of ROUTE to start running from. Also applies to LISTROUTE. See also SEQUENCE<p>
+
+
+FLOAD  (filename) - automatically loads and compiles a text  file 
+
+     from a PC running EMU8<p>
+
+
+<a href="manual17.htm#6">FN</a>  - variable  to contain the CFA of a word to  be  executed  on 
+
+     pressing the FN key in TEACH mode.<p>
+
+
+<a href="manual17.htm#9.5">FORGET</a>  (name)  - deletes the specified word and all words  which 
+
+     were  created after it. This is really a FORTH kernel  word 
+
+     but extended so that if a USER variable is removed with FORGET then that user area is recovered.
+	 
+	 If a ROUTE or PLACE is removed the upper memory data area used by that entity is also recovered.<p>
+
+
+
+<a href="sysman5.htm#10.1">FORTH</a>  - selects the FORTH vocabulary in cases where a FORTH word 
+
+     (for example DROP) has been redefined for robot use.  The system will 
+
+     then select the word in its original context.<p>
+
+
+
+<a href="manual17.htm#6.1">FSTOP</a> - a flag which is set to '1' by ?STOP if the stop button is pressed.<p>
+
+<b>G/</B><p>
+
+<a href="manual17.htm#7.4">GET</a>  - closes  the gripper and removes the object name  from  the 
+
+     POSITION and puts it into OBJECT-HELD.<p>
+
+
+<a href="manual17.htm#9.4">GF</a>  - Globals Fetch. Sends 5 or 6 values from the Cartesian variables starting with X<p>
+
+
+
+GLOBAL  - sets the currently selected joint to a GLOBAL sense and 
+
+     all remaining joints to a LOCAL sense.<p>
+
+
+
+<a href="manual17.htm#3.1">(num) GLOBALS</a> - returns the address of the global motor count for 
+
+     joint number minus one (0 to 5)<p>
+
+
+
+<a href="manual17.htm#3.1.1">(pos) GOTO</a> - move whole arm to the position specified by the line number of a ROUTE.
+
+
+<a href="manual17.htm#3.1.1">(adr) -GOTO</a> - a faster form of  GOTO  which 
+
+     treats  all  coordinates   as motor coordinates even  if  in 
+
+     CARTESIAN mode and ignores the execution field (any 'LEARNed 
+
+     word).<p>
+
+
+
+<a href="manual17.htm#7.4">GOGET (object)</a> - sends the arm to the location of the object  and 
+
+     GETs it (see GET and COLLECT)<p>
+
+
+<a href="manual17.htm#2.4">GRIP</a> - close grippers; does not affect other joint selection.<p>
+
+
+
+<a href="manual17.htm#2.4">GRIPPER</a> - name of the output bit to the gripper - PA 0<p>
+
+
+<a href="manual17.htm#2.4">GTYPE</a> - a variable that tells RoboForth if it is an electric or pneumatic gripper.<p>
+
+
+<b>H/</b><p>
+
+<a href="manual17.htm#3.1">HAND</a> - selects the wrist pitch motor (MEP = 8) for commands like 
+
+     MOVE, MOVETO, LOCAL, etc.<p>
+
+
+
+<a href="manual17.htm#11">HERALD</a> - prints ROBOFORTH herald.<p>
+
+
+
+HIDE  -  selects mode whereby characters sent or  typed  are  not 
+
+     echoed  back to the screen. After the return at the  end  of 
+
+     the line a chevron > is printed, no new line, no OK. In HIDE
+
+     mode all ROUTEs and PLACEs are created in OLD mode (see  OLD 
+
+     and NEW. To cancel hide mode enter IOFLAG C0SET (pronounced
+
+     "I-O-flag see-nought-set") The | character (ascii 7C) does the same.<p>
+
+
+
+<a href="manual17.htm#7.4">HOLDING</a>  (object) - puts object into the variable OBJECT-HELD  so 
+
+     it is listed under OBJECT in the WHERE list.<p>
+
+
+
+<a href="manual17.htm#2.5">HOME</a>  - a command to return the arm to the home position and also 
+
+     sets  the system to all global mode.
+<p>
+
+<b>I/</b><p>
+
+<a href="sysman5.htm#11.4">(port) IN</a> - reads input port and leaves 8-bit value on stack.<p>
+
+<a href="sysman5.htm#10.2">INKEY</a> - returns value of last keyboard key pressed. zero 
+
+     if none pressed.<p>
+
+
+<a href="manual17.htm#6">INKEYPAD</a> - returns value of teach pad key being pressed. zero 
+
+     if none pressed.<p>
+
+
+
+<a href="manual17.htm#7.3">(num) INSERT or (num) LINE INSERT</a> - shifts up all the lines  from 
+
+     the specified line upwards to make a space, then inserts the 
+
+     current  arm  coordinates  into  that  line.   LINE  may  be 
+
+     omitted.<p>
+
+
+
+<a href="manual17.htm#7.3.1">(num)  'INSERT (name)</a> - same as INSERT but inserts a ROBOFORTH II 
+
+     or FORTH word instead. LINE may be omitted.<p>
+
+
+INTFLAG -  a 1-byte variable normally containing 0,  but contains 
+
+     80 hex if a non-maskable interrupt has occurred.<p>
+
+<a href="manual17.htm#8.5">INT-TIME</a> -  a user variable containing the time in millisecs for a timer interrupt.
+	 <p>
+
+<a href="manual17.htm#8.5">INTVEC</a> -  a user variable containing the address of a word to be executed upon interrupt using SET INTVEC (word). 
+	 <p>
+  `
+
+
+<a href="manual17.htm#7.2.3">(num)  INTO</a>  - normally used with GRID or ROW - moves the arm  to 
+
+     line (num) of the ROUTE using the last line of the ROUTE  as 
+
+     a  relative  approach position by adding this last  line  to 
+
+     line  (num).  The last line must be a relative  position  (R 
+
+     when listed). - cartesian robots only.<p>
+
+
+
+<a href="manual17.htm#7.4">(object) ISAT (pos)</a> - inserts the object into position specified.
+
+     To clear an object field enter 0 ISAT (pos)<p>
+
+<b>J/</b><p>
+
+<a href="manual17.htm#7.3">JL</a> - learns joint coordinates when in cartesian mode.<p>
+
+
+<a href="manual17.htm#5.1">JERK</a> - variable determining rate of acceleration.<p>
+
+
+<a href="manual17.htm#9.4">JMA</a> - Joint Move Absolute. Requires 5 values on stack or 6 for 6-axis robot.
+
+
+<a href="manual17.htm#9.4">JMR</a> - Joint Move Relative. Requires 5 values on stack or 6 for 6-axis robot.
+
+
+<a href="manual17.htm#6">JOG</a> - same as CARTEACH in V4 - similar to TEACH but moves the end      
+
+     effector  in increments in cartesian mode, where  J1=X-axis,      
+
+     J2=Y-axis, J3=Z-axis, J4=pitch, J5=roll (W), FN=plunge  (see      
+
+     PLUNGE) To change increment press space bar.<p>
+
+
+
+<a href="manual17.htm#3.2">JOINT</a> - selects joint mode i.e.  motor coordinates from CARTESIAN coordinates.<p>
+
+
+
+<a href="manual17.htm#3.2">JOINTWHERE</a> - displays joint coordinates even if in CARTESIAN mode.<p>
+
+
+
+<a href="manual17.htm#7.3">JR</a>  - like  REPLACE but replaces with joint coordinates while  in 
+
+     cartesian mode. (see JL)<p>
+
+
+
+(adr) <a href="sysman5.htm#10.1">JUMP</a> - forces processor to jump to address (n)<p>
+
+
+
+<b>
+
+K/</b><p>
+
+<a href="sysman5.htm#10.2">KEY</a> - system waits for a keyboard key to be pressed, leaving its ASCII value on the stack.<p>
+
+
+
+<a href="manual17.htm#6">KEYPAD</a>  - system holds waiting for a teach pad key to be pressed, 
+
+     then returns hex value of key pressed. (similar to KEY)<p>
+
+
+
+<b>
+
+L/</b><p>
+
+<a href="manual17.htm#7.3">LAST#</a>  - last line of a ROUTE to be RUN up to and including this line. Also applies to LISTROUTE. May not have a value greater than MOVES. See also SEQUENCE<p>
+
+
+<a href="manual17.htm#7.3">LEARN</a> - learns a new position into the currently active ROUTE.<p>
+
+
+<a href="manual17.htm#7.3.1">'LEARN</a> -  same as LEARN but learns a ROBOFORTH II  or FORTH word 
+
+     instead of a coordinate.<p>
+
+
+
+LEN - a variable containing the length from the shoulder pivot to 
+
+   the wrist pivot after a cartesian move - revolute robots only.<p>
+
+
+
+LEVEL - returns the level of sub-routine call.<p>
+
+
+
+<a href="manual17.htm#3.1">LIFT</a> - name of Z axis, cartesian robots joint 3 or 2, cylindrical robots joint 3.<p>
+
+<a href="manual17.htm#2.6">LIMITS</a>  - an  array containing the coordinates of  the  proximity 
+
+     detectors used by CALIBRATE, DATUM and CHECK.<p>
+
+
+
+<a href="manual17.htm#7.2">(num) LINE</a> - computes the memory address (in bank 1) of the data for the line      
+
+     number  specified within the currently active ROUTE;  leaves      
+
+     the address on the stack.<p>
+
+
+
+<a href="manual17.htm#7.2">LINE#</a> - variable containing next line number to be executed.<p>
+
+
+
+(n) LINES - prints n line feeds on the screen<p>
+
+
+
+LISTALL - lists the entire data area with hex  addresses,  entity 
+
+     names and coordinates.<p>
+
+
+
+<a href="manual17.htm#7.3">LISTFLAG</a>  - a one byte variable;  if = 1 then a ROUTE will be listed as it is executed.<p>
+
+
+
+<a href="manual17.htm#7.3">LIST: (route-name)</a> - lists another (not active) ROUTE.<p>
+
+
+
+<a href="manual17.htm#7.3">LISTROUTE</a> - lists the positions learned into the currently active  ROUTE.<p>
+
+
+
+<a href="manual17.htm#7.3">L.</a> - same as LISTROUTE.<p>
+
+
+
+<a href="manual17.htm#7.3">LL</a> - LEARN then LISTROUTE.<p>
+
+
+
+<a href="manual17.htm#3.1">(num) LOCALS</a> returns the address of the current local motor count 
+
+     for joint number minus one (0 to 5) e.g. 1 LOCALS @<p>
+
+
+LOOK -  scans ahead along the user's command line.  If it sees  a      
+
+     number  leaves  it on the stack; if a  constant  leaves  its      
+
+     value  on the stack; if a variable or any other word  leaves      
+
+     the variable address or parameter address on the stack.<p>
+
+<b>
+
+M/</b><p>
+
+<a href="manual17.htm#3.2">MAXLEN</a>  - a constant,  maximum possible length from the shoulder pivot to  the 
+
+     wrist pivot - revolute robots only.<p>
+
+
+
+<a href="manual17.htm#2.3">MCP</a>  (Motor Calibrate Pattern)
+
+     - a 1 byte variable (use C@ C!) where each bit  corresponds 
+
+     to  a  motor;  if bit=1 the joint will move  with  ONLIM  or 
+
+     OFFLIM.<p>
+
+
+
+<a href="manual17.htm#2.3">MDP</a>  (Motor Direction Pattern)
+
+     - a  1 byte variable (use C@ C!) where each bit  corresponds 
+
+     to a motor; if bit=1 the motor will run in reverse.<p>
+
+
+
+<a href="manual17.htm#2.3">MEP</a>  (Motor Enable Pattern)
+
+     - a  1 byte variable (use C@ C!) where each bit  corresponds 
+
+     to a motor.  If the bit=1 the corresponding motor is selected.<p>
+
+
+<a href="manual17.htm#5.2">MICRO</a> - multiplication factor for  micro-stepping.  This  value  is loaded into the DSP  by  START.
+<p>
+
+<a href="manual17.htm#5.2">MICROS</a> - an array containing multiplication factors for  micro-stepping.  These  values are loaded into the DSP  by  START. 
+
+<p>
+<a href="manual17.htm#3.2">MINLEN</a>  - A constant, minimum distance in mm * 10 from the wrist pivot to the 
+
+     rotational centre of the waist.<p>
+
+
+(num) <a href="manual17.htm#8.4">MSECS</a> - delays (num) milliseconds.<p>
+
+<a href="manual17.htm#8.4">MSECS?</a> (num) - event timer: time in milliseconds since last reset. Time value is left on stack<p>
+
+(num) <a href="manual17.htm#8.4">RESETMS</a> - resets event timer to zero.<p>
+
+
+<a href="manual17.htm#11">MODE</a>  -  Tells you what mode system is in - joint  or  cartesian, 
+
+     simple or smooth etc.<p>
+
+
+
+MOTORS - a constant, number of axes in system.<p>
+
+
+
+<a href="manual17.htm#3.1">(val)  MOVE</a> - moves selected joint by (val) number of  steps.  In 
+
+     Cartesian mode requires 3 values: (x) (y) (z) MOVE changes X 
+
+     coordinate by (x), Y coord by (y), Z coord by (z). W and PITCH are left unchanged.<p>
+
+
+
+<a href="manual17.htm#3.1">(val)  -MOVE </a>- (dash-move) same as MOVE but works in joint mode, requiring  a 
+
+     joint  selection  and  single argument  even  if  system  in  Cartesian mode.<p>
+
+<a href="manual17.htm#7.3">MOVES</a> - a pseudo-variable which holds the number of lines in  the 
+
+     currently active ROUTE. This is in memory bank 1 so use MOVES E@<p>
+
+
+
+<a href="manual17.htm#3.1">(val)  MOVETO</a> - moves selected joint to absolute position  (val). 
+
+     In Cartesian mode requires 3 arguments - (X) (Y) (Z)  MOVETO 
+
+     moves  robot to absolute position X,Y,Z where each value  is 
+
+     in mm * 10.  W and PITCH are left unchanged. You can change them with !(store) or
+	 
+	 the TOOLSET command.<p>
+
+
+<a href="manual17.htm#3.1">(val) -MOVETO</a> - (dash-move-to) same as MOVETO but works in joint mode, requiring  a 
+
+     joint  selection  and  single argument  even  if  system  in  Cartesian mode.
+
+<b><p>
+
+N/</b><p>
+
+(pfa)  NAME - types out the name of the word whose pfa is on  the 
+
+     stack, for example OBJECT-HELD @ NAME<p>
+
+
+
+<a href="manual17.htm#7.2.3">(pos) NEAR</a>  - sends robot to the near position in a matrix (grid) or row.<p>
+<p>
+
+<a href="manual17.htm#7.2.3">(num)  NEARAD</a> - leaves the address of the approach position of position (n) in a GRID or ROW  i.e. the last line added to line (num) where the last line must be a relative coordinate (marked R).
+<p>
+
+
+<a href="manual17.htm#7.3">'NEAR  (place-name)  GOTO</a> - immediate mode  only  phrase,  drives 
+
+     robot to a PLACE's approach position.<p>
+
+
+
+<a href="manual17.htm#7.1">NEW</a> - cancels OLD mode (see OLD)<p>
+
+
+
+<a href="manual17.htm#7.1">NEXT</a> - variable containing next memory address available for data<p>
+
+
+
+<a href="manual17.htm#3.2.2">NONALIGN</a> - cancels ALIGN mode.<p>
+
+
+
+<a href="manual17.htm#5">NORMAL</a>   -   restores  all  system  variables  such   as   SPEED, 
+
+     acceleration etc. to default values.<p>
+
+<b>
+
+O/</b><p>
+
+<a href="manual17.htm#7.4">OBJECT (name)</a> - creates new object with given name.<p>
+
+
+
+<a href="manual17.htm#7.4">OBJECT-HELD</a> - a variable containing the PFA address of an  object 
+
+     name.<p>
+
+
+
+<a href="manual17.htm#7.4">OBJECTS</a> - lists all objects in system<p>
+
+
+
+<a href="manual17.htm#7.4">OBAD</a> - converts a LINE address to the address where an object  is 
+
+     stored in a ROUTE line - syntax (num) LINE OBAD. Examples:
+
+     (object-name) (num) LINE OBAD ! or 0 (num) LINE OBAD !<P>
+
+<a href="manual17.htm#8.1">OFF</a>  -  syntax (adr) n OFF - turns bit n of output  port  address 
+
+     (adr) to a zero. Open collector goes open circuit.<p>
+
+
+
+<a href="manual17.htm#2.6">OFFLIM</a>  -  low level routine drives selected  axis/axes  off  the      
+
+     calibration proximity detector(s).<p>
+
+
+
+<a href="manual17.htm#2.6">OFFSPD</a>  -  a  constant containing speed that axes  move  off  the 
+
+     calibration proximity detectors.<p>
+
+
+
+<a href="manual17.htm#7.1">OLD</a> - selects mode whereby when a ROUTE or PLACE is created it is 
+
+     matched up with an existing entry in the data area. In  this 
+
+     way  a  ROUTE recovers existing data instead  of  having  to 
+
+     LEARN  all  over  again and a PLACE picks  up  the  original 
+
+     coordinates rather than present position of robot.<p>
+
+
+
+<a href="manual17.htm#8.1">ON</a>  -  syntax (adr) n ON- turns bit n of output  port  address 
+
+     (adr) to a logic true. Open collector turns on.
+
+     example: PA 1 ON<p>
+
+
+
+<a href="manual17.htm#2.6">ONLIM</a>  -  low  level  routine  drives  selected  axes  onto   the 
+
+     calibration proximity detectors.<p>
+
+
+
+<a href="manual17.htm#2.6">ONSPD</a>  -  a constant determining speed that axes search  for  the 
+
+     calibration proximity detectors.<p>
+
+
+
+ORIGIN - a cartesian position where X,Y,Z,W, PITCH are all zero.<p>
+
+
+<a href="sysman5.htm#11.4">(num) (port) OUT</a> - outputs 8-bit value (num) to (port).<p>
+
+
+<a href="manual17.htm#10.3">OUTER</a>  -  re-entrant outer interpreter.<p>
+
+
+
+<b>
+
+P/</b><p>
+
+<a href="manual17.htm#11.1">P</a> - prints binary representation of input port PB<p>
+ 	 	 	
+
+
+<a href="manual17.htm#8.1">PA</a> - address of primary output port (used by gripper etc.)<p>
+
+
+
+<a href="manual17.htm#8.2">PB</a> - address of primary input port (proximity detectors).<p>
+
+
+<a href="manual17.htm#2.6">PITCH</a>  - a  variable containing angle of hand  to  horizontal  in cartesian mode.
+
+<p>
+
+<a href="manual17.htm#7.2">PLACE  (name)</a>  - creates  a new PLACE (named position)  with  the 
+
+     given  name.  Thereafter using (name) alone drives the robot 
+
+     to the position at the time of creation. See also PLEARN and 
+
+     APPROACH.<p>
+
+
+<a href="manual17.htm#7.2">PLACES</a> - lists all PLACEs so far created.<p>
+
+
+
+<a href="manual17.htm#7.2">PLEARN</a> - learns coordinates into a PLACE.<p>
+
+
+
+<a href="manual17.htm#3.2.2">(val)  PLUNGE</a>  - move  the  end effector (val)  *  0.1mm  in  the 
+
+     direction  it  is pointing.
+	 
+	 On an R19 it applies to angles in the X-Y plane and ALIGN must be used first.
+	 
+	 <p>
+
+
+
+<a href="manual17.htm#points">POINT  (name)</a>  - creates a new entity which contains the  current 
+
+     cartesian position. Usage (name) GOTO (XGOTO in v10.0)<p>
+
+
+
+<a href="manual17.htm#3.2">POINTS</a> - lists all points so far created.<p>
+
+
+
+<a href="sysman5.htm#11.4">PORT</a> - obsolete word, see controller manual for details of user ports.<p>
+
+
+
+<a href="manual17.htm#3.1.1">POSITION</a>  - a variable containing the parameter field address  of 
+
+     the last position accessed by name or (num) LINE.<p>
+
+
+
+<a href="manual17.htm#7.3.3">POSNS</a> - the number of positions in a ROW, in a GRID it is the
+     number of positions in each row i.e. number of columns.<p>
+
+<a href="manual17.htm#11.1">PP</a> - continuous display of PB in binary (P) (esc to stop).<p>
+
+<a href="manual17.htm#3.2">PREVIOUS</a> - restores previous cartesian position to the  cartesian 
+     variables W,X,Y,Z, PITCH after an error.<p>
+
+<a href="manual17.htm#8.1">PROGPIA</a> - reprograms the PIA ports (part of START).<p>
+
+
+<a href="manual17.htm#9.2">PSAVE</a> - saves current ROBOFORTH RAM image to flash memory.<p>
+
+
+
+PURGE - empties the stack<p>
+
+
+
+<a href="manual17.htm#7.4">PUT</a>  - opens  the gripper to position zero,  removes object  name 
+
+     from  OBJECT-HELD and puts the object name into the  current 
+
+     POSITION i.e. last position accessed by name or (num) LINE
+
+<b><p>
+
+R/</b><p>
+
+
+<a href="manual17.htm#9.3">RECEIVE</a> - downloads data from EMU8 to controller memory, syntax:
+
+     (start-addr) (#bytes (multiple of 256)) RECEIVE DROP<p>
+
+<a href="manual17.htm#3.1">RELATIVE</a>  - starts count of a local position relative to the starting position.
+<p>
+
+
+
+<a href="manual17.htm#7.3">(pos)  REPLACE or (num) REPLACE</a> - replace the coordinates of  the named  position or
+
+      line number with the coordinates of where the robot is now.<p>
+
+
+
+<a href="manual17.htm#7.3.1">'REPLACE</a> - same as REPLACE but replaces the line with a FORTH  or 
+
+     ROBOFORTH  II word.  Syntax:  (num) LINE 'REPLACE (word)  or 
+
+     (num) 'REPLACE (word)<p>
+
+
+
+<a href="manual17.htm#7.3">(num) RESERVE</a>  - reserves  extra space for  (num)  lines  to  be 
+
+     learned in a ROUTE. No use once a new data entity has been created.<p>
+
+
+<a href="manual17.htm#2.1">RESET</a>  - software reset, leaving project intact.<p> 
+
+
+<a href="manual17.htm#2.1">RESTART</a>  - software reset executing the word whose CFA is currently in TURNKEY.<p> 
+
+
+<a href="manual17.htm#3.2">RESUME</a>  - resume motion to the Cartesian target position before the robot was stopped by the stop button.<p> 
+
+
+<a href="manual17.htm#2.1">RESTORE</a>  - restores original SPEED value after using ADJUST or SMOOTH.<p> 
+
+
+<a href="manual17.htm#7.2">RETRACE</a> - same as RUN but runs ROUTE in reverse order.<p>
+
+
+<a href="manual17.htm#3.1">REVERSE</a> - sets all selected motors to reverse.<p>
+
+
+<a href="manual17.htm#8.5">RETURN</a> -  return from interrupt. Must be the last word in a definition which is executed by timed or input interrupts.
+	 <p>
+
+<a href="manual17.htm#7.2.3">RLEARN</a> - learns a relative position into the route. Usually used with ROW and GRID<p>
+
+
+<a href="manual17.htm#7.3">RNORM</a> - restores the start and finish lines changed by SEQUENCE to first and last lines.
+<p>
+
+RNORM  - restores start and finish pointers (set by SEQUENCE)  to the first and last lines
+
+     of a ROUTE.<p>
+
+
+
+<a href="manual17.htm#2.1">ROBOFORTH</a> - erases all user dictionary down to the core ROBOFORTH 
+
+     words.<p>
+
+
+
+<a href="manual17.htm#7.3.6">?RUN</a> - leaves 0 if DSP is ready, 1 if busy. Other status values indicate that a line contains GRIPPER or SETPA and this is used to sychronize I/O activity with the CPU.
+<p>
+
+
+
+ROBOT  - selects the robot vocabulary again after using the  word 
+
+     FORTH (see above).<p>
+
+
+
+<a href="manual17.htm#2.6">RON </a> - a  constant in some systems only determining  acceleration 
+
+     and deceleration in ONLIM.<p>
+
+<a href="manual17.htm#7.3">ROUTE  (name)</a> - creates a new ROUTE with the given name and makes 
+
+     it the currently active ROUTE. Thereafter using (name) alone 
+
+     activates the ROUTE so that RUN,  LISTROUTE, GOTO etc. apply 
+
+     to this ROUTE.<p>
+
+
+
+<a href="manual17.htm#7.3">ROUTES</a> - lists all ROUTEs so far created.<p>
+
+
+
+<a href="manual17.htm#7.3.3">ROW</a>  - starts a procedure to generate an 1-dimensional  array  of 
+
+    positions given only the positions of each end.<p>
+
+
+
+<a href="manual17.htm#7.3.3">ROWS</a> - the number of rows in a GRID<p>
+
+
+<a href="manual17.htm#7.3.2">RTYPE</a>  - changes the current ROUTE type to from its
+     current type to current mode i.e. JOINT to CARTESIAN
+     or vice versa.<p>
+
+
+
+<a href="manual17.htm#7.3">RUN</a>  - runs  the  current ROUTE in sequence  lioe  by  line  (see SEQUENCE and RETRACE)<p>
+
+
+
+<a href="manual17.htm#9.1.2">RUN-LIST</a> - the name of the start of the data area.<p><b>
+
+<b>S/</b><p>
+
+
+<a href="manual17.htm#7.3">(num1) (num2) SEQUENCE</a> - sets a limited range of lines to be RUN.<p>
+
+
+
+<a href="manual17.htm#7.3">SEGMENTED</a> - opposite of CONTINUOUS i.e. robot will stop
+
+     momentarily at leach line in a ROUTE.<p>
+
+
+<a href="manual17.htm#7.3.11">SEGTIME</a> - time DSP sets for each segment i.e. the distance between one line of a route and the next is completed in this time (if possible). See TIMED
+
+
+<a href="manual17.htm#6">SET</a> - sets an execution vector (e.g. FN, CRITERION, STOPVEC, DSPVEC, INTVEC, ENCVEC)<p>
+
+
+
+<a href="manual17.htm#2.5">SETHOME</a> - sets all WHERE coordinates to zero; same as SET-GLOBAL-
+
+     HOME if in GLOBAL (absolute)mode,  same as SET-LOCAL-HOME if 
+
+     in LOCAL (relative) mode, or according to MSP if MIXED.<p>
+
+
+
+<a href="manual17.htm#2.6">SETLIMITS</a>  - over-writes the array LIMITS with the current  robot 
+
+     coordinates.<p>
+
+
+
+<a href="manual17.htm#2.5">SET-LOCAL-HOME</a> - sets the local position to all zeros,  does  not 
+
+     affect the global position counts.<p>
+
+
+
+SET-GLOBAL-HOME - sets the global position to all zeros, does not 
+
+     affect the local position counts.<p>
+
+
+
+(num) SETMEP - ORs the new bit pattern in (num) into MEP<p>
+
+
+<a href="manual17.htm#7.3.1">(num) SETPA</a> - a word to include in a route using insert function. When encountered in a CONTINUOUS RUN the argument learned with SETPA is returned from the DSP in ?RUN<p>
+
+SETTLE  - settling time function to prevent encoders  being  read 
+
+too early. The time, in milliseconds, is in ' SETTLE 2+<p>
+
+
+
+<a href="manual17.htm#5">SETTINGS</a> - displays the values in all the motor control variables 
+
+     and  permits  entry of new values for  each  variable.  Just 
+
+     press return to retain existing value.<p>
+
+
+
+<a href="manual17.htm#3.1">SHOULDER</a> - name of joint 2 (MEP=2) - revolute robots only.<p>
+
+
+
+(adr) SHOW - displays the coordinates at address (adr)<p>
+
+
+
+<a href="manual17.htm#8.3">SLOWSEARCH</a> - does a slow search for an event.<p>
+
+
+
+(num) SIZE - sets initial size of a newly created ROUTE in lines.<p>
+
+
+
+<a href="manual17.htm#7.3.5">SMOOTH</a> - selects interpolated motion and reduces speed to avoid too tight errors.<p>
+
+
+
+<a href="manual17.htm#5">SPEED</a>   - controls speed, same as CSPEED, 
+
+      typical values from 500 to 20000<p>
+	  
+
+
+<a href="manual17.htm#2.1">START</a>   - reprograms   the  output   port,   re-initialises   the 
+
+     acceleration profile,  motor phase patterns, sets speed etc. 
+
+     to  default  value,  sets the current position to all  zeros      
+
+     (global  and local) deselects all joints and sets the  sense           
+
+     of all joints to GLOBAL.<p>
+
+
+
+<a href="manual17.htm#2.1">STARTOVER</a>  - effectively  erases all the data in the  run-list  - 
+
+     actually  only  resets the pointer to the start of the  run-list  which  means that OLD can be used to recover  the  old 
+
+     data.
+	 <p>
+	 
+<a href="manual17.htm#7.2.8">START-HERE</a> - changes the start of a CARTESIAN ROUTE to where the robot currently is and changes the other lines by the same amount. In other words makes the route a relative route that starts at the robots current position.
+<p>
+
+START-ADDR - this is a function leaving the address of the header 
+
+     of the currently active ROUTE.  START-ADDR @ yields the next 
+
+     available address for the next data entity.<p>
+
+
+<a href="manual17.htm#8.5">START-TIMER</a> -  starts timer interrupts.
+	 <p>
+
+
+
+<a href="manual17.htm#3.1">(Val)  STEPS</a> - all motors selected by TELL (joint-name) move  the 
+
+     number  of  steps  specified.  If a motor's MDP bit =  1  it     
+
+     moves backwards.   If (val) is negative then all motors move      
+
+     backwards except motors with MDP bit = 1 which move forward.      
+
+     The  steps are not counted (don't appear in WHERE),  however           
+
+     you may insert UPDATE-WHERE between (val) and STEPS.<p>
+
+
+<a href="manual17.htm#6.1">STOP</a> - stops the robot if running under DSP control.<p>
+
+
+<a href="manual17.htm#6.1">STOPABORT</a> - aborts with stop button message and ERR=3.<p>
+
+
+<a href="manual17.htm#5.1">STOPACC</a> - much higher value for ACCEL used to decelerate motors in an emergency.<p>
+
+
+<a href="manual17.htm#6.1">STOPVEC</a> - a variable to contain the CFA of word to be executed by vectored execution    
+
+     if the stop button is pressed.<p>
+
+
+
+<a href="manual17.htm#6.1">STOP?</a>  - leaves  true if the stop button is being pressed.<p>
+
+?STOP - if the stop button is pressed sends STOP command to the DSP and sets flag 
+
+     FSTOP to 1.<p>
+
+
+
+<a href="manual17.htm#6.1">STOPCHECK</a> - Checks stop button<p>
+
+
+<a href="manual17.htm#8.5">STOP-TIMER</a> -  stops timer interrupts.
+	 <p>
+
+
+
+<b>T/</b><p>
+
+
+<a href="manual17.htm#1.5.2">?TERMINAL</a> - leaves true on stack if escape key has been pressed.<p>
+
+
+
+TARGET  - address  to  which motor coordinates are  assembled  by 
+
+     TRANSFORM. Can use TARGET -GOTO<p>
+
+
+
+<a href="manual17.htm#6">TEACH</a>  - enters  "teach mode" for control by holding down  single 
+
+     keys. To change speed press the space bar.<p>
+
+
+
+<a href="manual17.htm#6">(TEACH)</a> - same as TEACH but does not ask for creep speed first.
+
+     -See CREEP-FACTOR<p>
+
+
+
+<a href="manual17.htm#3.1">TELL</a>  - clears  all  previous joint selections ready  for  a  new 
+
+     selection  by joint name - for commands like  MOVE,  MOVETO, 
+
+     LOCAL.<p>
+
+
+<a href="manual17.htm#7.3.11">TIMED</a> - sets DSP to a fixed time interval between lines of a route. Always use CONTINUOUS TIMED. To cancel TIMED mode just enter CONTINUOUS or SEGMENTED<p>
+
+
+<a href="manual17.htm#2.4">TON</a> - the length of time in uSecs for the on-pulse in PWM control of electric gripper.<p>
+
+
+<a href="manual17.htm#3.2.2">TOOL-LENGTH</a>  - distance in units of 0.1mm from hand axis  (pivot) 
+
+     to  point within end effector to be positioned in  cartesian 
+
+     mode. 5-axis systems only.<p>
+
+
+<a href="manual17.htm#3.2.2">TOOLSET</a> - change hand axis angles and tool length.<p>
+
+
+
+<a href="manual17.htm#3.1">TRACK</a>  - name  of  joint 1 on cartesian robots,  or  joint  5  on 
+
+cylindrical robots or joint 6 on track mounted revolute robots <p>
+
+
+
+<a href="manual17.htm#5">TRACKSPEED</a> - speed limit for the track on an cartesian robots.<p>
+
+
+
+<a href="manual17.htm#9.3">TRANSMIT</a> - uploads data from controller memory to EMU8, syntax:
+
+     (start-addr) (#bytes (multiple of 256)) TRANSMIT<p>
+
+
+
+<a href="manual17.htm#3.2">TRANSFORM</a>  - transforms  from  values  in the  variables  X  Y  Z 
+
+     PITCH,  W  and  TOOL-LENGTH or OFFSET to  motor  coordinates 
+
+     which are assembled at address TARGET.<p>
+
+
+
+<a href="manual17.htm#4">TRIES</a>  - variable determining number of attempts by  ENCCHECK  to 
+
+     correct encoder error.<p>
+
+
+
+<a href="manual17.htm#3.1">(val) TWIST</a> - turns the wrist by value-controls joint 5 (MEP=16).<p>
+
+<b>U/</b><p>
+
+<a href="manual17.htm#7.3">UNLEARN</a> - removes the last line learned in a ROUTE.<p>
+
+
+
+<a href="manual17.htm#2.4">UNGRIP</a> - opens the gripper.<p>
+
+
+
+<a href="manual17.htm#3.1">UNTWIST</a>  takes out any twist in the wrist.<p>
+
+
+
+<a href="manual17.htm#7.3.3">UP</a> - moves robot back to the approach position of a GRID or ROW.<p>
+
+
+
+(val)  UPDATE-WHERE  - updates WHERE with the value according  to 
+
+     bits set in MEP. If an MEP bit is '1' (true) then the amount
+
+     that motor has moved is added into the motor coordinate.  If 
+
+     the  corresponding  MDP bit is '1' the value  is  subtracted 
+
+     from the motor coordinate. The value (val) is left behind on 
+
+     the stack.<p>
+
+
+
+<a href="manual17.htm#5">UPSPEED</a> - speed limit used when the lift axis is going up.<p>
+
+
+
+<a href="manual17.htm#9.1.2">USAVE</a> - saves user software and data to flash memory<p>
+
+
+(num) USECS - delays (num) microseconds. resolution is 10 microseconds<p>
+
+<a href="manual17.htm#1.5">USER (name)</a> - creates a user variable. also see <a href="sysman5.htm#10.5">defining words</a>
+<p>
+
+<b>V/</b><p>
+
+<a href="manual17.htm#1.5">VARIABLE (name)</a> - creates a variable. also see <a href="sysman5.htm#10.5">defining words</a><p>
+
+<a href="manual17.htm#3.1.1">VIEW (Pos)</a> - view the coordinates of the position.<p>
+
+
+
+'VLIST  usage 'VLIST (word) lists all words in the dictionary  of 
+
+     the same type as the example word which follows 'VLIST.<p>
+
+<b>
+
+W/</b><p>
+
+<a href="manual17.htm#3.2">W</a>  - variable  containing  target  value times  0.1  degrees  of 
+
+rotation of wrist (twist or roll) in cartesian mode.<p>
+
+
+
+<a href="manual17.htm#3.1">WAIST</a>  - name  of  base rotate movement (MEP=1)  - not  cartesian 
+
+     robots<p>
+
+
+
+<a href="manual17.htm#8.2">(port)  (bit)  (1or0) WAIT</a> - wait for specified bit of  specified 
+
+     port to go to 1 or 0 as given - 3 arguments on stack.<p>
+
+
+
+<a href="manual17.htm#3.1">WHERE</a>  - returns  the current position of the arm  i.e.  all  the 
+
+     motor coordinates.<p>
+
+<a href="manual17.htm#7.4">WHEREIS (object)</a> - returns the location (position) of the object.<P>
+
+
+
+<a href="manual17.htm#7.2">WHICH</a> - returns which ROUTE is currently active.<p>
+
+
+<a href="manual17.htm#3.2">WORKSPACE</a>  - Cartesian robots only. An array containing 6  16-bit 
+
+     (2-byte) elements, representing:<pre>
+
+     element  function      address
+
+     0: maximum X value   WORKSPACE
+     1: maximum Y value   WORKSPACE 2 +
+
+     2: maximum Z value   WORKSPACE 4 +
+
+     3: minimum X value   WORKSPACE 6 +
+
+     4: minimum Y value   WORKSPACE 8 +
+
+     5: minimum Z value   WORKSPACE 10 +
+
+</pre><p>
+
+<a href="manual17.htm#7.3">WITHDRAW</a> - after invoking a PLACE name,  WITHDRAW pulls the robot 
+
+     back from the target position to the approach position.<p>
+
+
+
+<a href="manual17.htm#3.1">WRIST</a>  - selects  the wrist twist motor for commands  like  MOVE, 
+
+     MOVETO, LOCAL, etc. - (joint 5, MEP=16 on revolute robots 
+
+     joint 4, MEP=8 on cylindrical robots )<p>
+
+<a href="manual17.htm#11">WRU </a>- (Who are you?) - returns the serial number of the robot.<p>
+
+<a href="manual17.htm#11">WWW </a>- (What Went Wrong?) - tells you why the robot stopped.<p>
+
+<b>
+
+X/Y/Z/</b><p>
+
+<a href="manual17.htm#3.2">X</a> - variable containing target value times 0.1mm for X coordinate in cartesian mode.<p>
+
+
+<a href="manual17.htm#3.1.1">(pos) XGOTO</a> - move whole arm to the position specified in a specfied address, or by name  or by (num) LINE.  The  position will be assumed to contain motor coordinates if  in  JOINT mode, or cartesian coordinates if in CARTESIAN mode. The address can be in either bank, determined by the value of BANK 0 or 1.<br>
+Normally the data entity used will set the bank to the correct value. If not you will need to write BANK C0SET or BANK C1SET according to which bank the data will be in.
+<p>
+
+<a href="manual17.htm#8.5">XRETURN</a> -  return from a timer interrupt and then disables further interrupts. Must be the last word in a definition which is executed by timed interrupts. 
+
+<p>
+(value) XTOOL - moves the tool at right angles to it's orientation by (value) * 0.1mm i.e. X direction in TOOL coordinates. Only available with the Android teach console.
+
+<p>
+<a href="manual17.htm#3.2">Y</a> - variable containing target value times 0.1mm for Y coordinate 
+
+in cartesian mode.<p>
+
+<p>
+(value) YTOOL - moves the tool at right angles to it's orientation i.e. Y direction in TOOL coordinates. Only available with the Android teach console.
+
+
+<a href="manual17.htm#3.2">Z</a> - variable containing target value times 0.1mm for Z coordinate 
+
+in cartesian mode.<p>
+
+
+<p>
+(value) ZTOOL - moves the tool in direction it is pointing, same as PLUNGE.
+
+
+</html>

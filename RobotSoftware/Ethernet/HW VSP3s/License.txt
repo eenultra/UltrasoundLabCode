@@ -1,0 +1,42 @@
+The Software Product under the Freeware License is provided free of charge.
+---------------------------------------------------------------------------
+
+Even though a license fee is not paid for the use of the Freeware Version software, it does
+not mean that there are no conditions for using such software:
+
+1. The Licensee will not have any proprietary rights to the Software. The Licensee acknowledges
+and agrees that the Licensor retains all copyrights and other proprietary rights in and to the
+Software.
+
+2. The Licensee must reproduce all copyright notices and any other proprietary legends on 
+any copy of the Software.
+
+3. The Licensee may not disassemble, reverse-engineer, modify or alter in any way the 
+installer program without the Licensor’s specific approval. The Licensee is not authorized 
+to use any plug-in or enhancement that permits to save modifications to a file with the 
+Software licensed and distributed by the Licensor.
+
+4. The Software under this License may contain the components developed by third-parties. 
+The structure, organization and code of such components are the valuable trade secrets and 
+confidential information of the third-party and are protected by copyright and third-party license 
+agreement. The Licensee may not:
+
+        4.1 incorporate such third-party components into software and hardware, developed by the 
+        Licensee, without the third-party’s special permission;
+
+        4.2 provide such third-party components to accompany software and hardware, sold by the 
+        Licensee, without the third-party’s special permission.
+
+5.  Private & Commercial license of HW VSP
+
+        5.1 Private use license
+
+        There are no restrictions to use and distribution of this software by private individuals; 
+        however, we kindly ask that you add a link to your website (or blog) that points to our 
+        website, www.HW-group.com, preferably in the form shown below.
+
+	5.2 Commercial license
+
+        Organizations and other legal entities may use and distribute this software only if they
+        display a link to the http://www.HW-group.com  named as "Using HW VSP powered by HW group"
+        on the website on the company or if they receive authorisation from HW group in written form.

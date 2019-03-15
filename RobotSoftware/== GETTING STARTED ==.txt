@@ -1,0 +1,27 @@
+*****  GETTING STARTED *****
+
+Most of the following is outlined in the manual specific to your robot i.e. if you have an R12 then read r12manual.pdf. This manual is located in the pdf manuals folder.
+
+STEP 1
+If you are using a USB converter then install that. On most versions of Windows the USB converter installs itself, being an FTDI type. If it does not then install it from the USB drivers folder.
+
+STEP 2
+Find out what COM port has been allocated to the USB converter. You can use Device Manager for this. Instructions are in the robot manual.
+
+STEP 3
+Install RobWin 7 from robwin7.msi - double-click to install. Once installed run Robwin7.exe and click comms, choose the com port number found in step 2. Or if you are using a COM1 serial port then choose 1.
+It's best to load the appropriate cfg file using settings. Please read Robwin7.pdf located in pdf manuals.
+
+STEP 4
+Set up the robot as described in the robot manual.
+
+STEP 5
+Next we advise using the getting started manual, primer7.pdf (for a 5-axis robot) or primer-6axis.pdf (for a 6-axis robot).
+
+For in depth study of the RoboForth system please read tutorial7.pdf located in the pdf manuals folder. Simply double-click an htm file to open it in your browser.
+
+We hope you enjoy your experience.
+Any problems at all just contact us.
+support@strobotics.com
++1 609 584 7522
++44 1223 420 288

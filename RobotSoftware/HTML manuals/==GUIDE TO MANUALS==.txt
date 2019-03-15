@@ -1,0 +1,51 @@
+*****  GUIDE TO MANUALS *****
+
+*****  PDF MANUALS **********
+Click the pdf directory to see these manuals:
+
+Setting up the robot:			r12man.pdf, r17man.pdf or r19man.pdf
+					(absolutely the first manual to open)
+
+
+Getting started:			primer7.pdf
+
+Tutorial				tutorial7.pdf
+
+The 7 suffix means they are to be used with Robwin7 and have the icons of Robwin7
+Robwin7 works with Windows 7, Vista and XP
+
+If you are using a much older version of Windows e.g. 98 or 95 then use RobWin 68.
+Then refer to documents of the same name but with 6 suffix e.g.
+					primer6.pdf
+					tutorial6.pdf
+RobWin65 is a special version with RobWin68 icons but with a separate communications "console".
+Otherwise stick to RobWin7.
+
+How to use RobWIn7			robwin7.pdf
+
+*****  HTML MANUALS *********
+Click back to the disk root then click the HTML directory.
+Then double-click this file:
+==Double-click for HTML manuals==.htm
+This will open in your browser.
+
+Everything about the controller:	sysman5.htm
+
+Everything about the software:		manual13.htm
+
+
+HELP SHEETS - in the pdf directory.
+
+1 - how to reload RoboForth
+2 - using a nest
+3 - diagnosing errors
+4,5,6 - deleted
+7 - Using CARTESIAN mode in 2-D planes
+8 - deleted
+9 - drive chain adjustment
+10 - Configuring the R17 for low speeds
+11 - Using the I/O
+12 - Error messages
+13 - Absolute calibration
+14 - Tool changers
+

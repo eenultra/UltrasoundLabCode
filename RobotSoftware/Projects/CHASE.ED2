@@ -1,0 +1,132 @@
+( CHASE COORDINATES )
+: BUFZ ( wait for buffer empty
+BEGIN
+ 24 SPSB SPRB
+78 < UNTIL
+;
+: NEXTSEG
+TRANSFORM DROP ( convert to motor values
+  DSPCHANS @ 0 DO
+       TARGET I IND @ DUP ( IND is just 2* +
+       OLDP I IND @
+       - SWAP ( leave rel pos on stack, axis 6 on top
+       OLDP I IND ! ( store rel pos in oldp
+  LOOP
+  1 ( flag for DSP ) TSEG
+?STAT
+;
+: GETCART
+( GET THE NEXT COORDINATES TO AIM FOR
+;
+: CHASE
+VSET ( send ACCEL to DSP
+CFLAG C1SET ( enable DSPASSUME
+
+( set starting position
+DSPCHANS @ 0 DO
+     I GLOBALS @ OLDP I IND !
+LOOP
+( send initial zero move to DSP
+MVST ( start new move
+     0 0 0 0 0 0 1 TSEG ( first segment zero move
+MVRN ( start a run sequence
+
+( now enter loop to collect coordinates and send to DSP
+BEGIN ( loop that collects next coordinates
+    BUFZ ( wait for buffer empty before sending next coords
+    GETCART ( get the next coordinates
+    NEXTSEG ( send motor values to DSP
+    ( status from NEXTSEG ) 0 > IF ( fail if non zero
+        STOP
+        BEGIN ?RUN 0= UNTIL ( wait for DSP to stop
+        DSPASSUME
+        ." Segment too long" 31 ABORT
+    THEN
+?TERMINAL UNTIL
+
+MVND ( end move sequence
+DSPRDY ( wait for DSP to stop
+DSPASSUME ( update counts from DSP
+;
+
+
+( EXAMPLE TO GET A KEY FROM 0 TO 9, ADD 1 AND PICK A LINE FROM 1 TO 10
+USER LASTKEY
+: GETCART1
+INKEY 47 > IF
+( INKEY DUP . EMIT
+  INKEY LASTKEY @ <> IF
+    INKEY DUP LASTKEY !
+    15 AND ( STRIP ASCII ) DUP . 1+ LINE AXES WHERE
+  THEN
+THEN
+;
+: KP ( KEYPICK
+VSET
+CFLAG C1SET
+LIST1 ( invoke route name once to save time - not in every loop
+13 LASTKEY !
+DSPCHANS @ 0 DO
+    I GLOBALS @ OLDP I IND ! ( set 1st position
+LOOP
+MVST ( start new move
+    0 0 0 0 0 0 1 TSEG ( first segment zero move
+MVRN ( start a run sequence
+BEGIN
+    BUFZ ( wait for buffer empty before sending next coords
+    GETCART1 ( get the next coordinates
+    NEXTSEG ( send motor values to DSP
+    ( status from NEXTSEG ) 0 > IF ( fail if non zero
+        STOP
+        BEGIN ?RUN 0= UNTIL ( wait for DSP to stop
+        DSPASSUME
+        ." Segment too long" 31 ABORT
+    THEN
+?TERMINAL UNTIL
+MVND
+BEGIN ?RUN 0= UNTIL
+DSPASSUME
+;
+
+( EXAMPLE TO RANDOM JUMP AROUND USING LINE NUMBERS IN SEQUENCE
+CREATE SEQUENCE
+1 , 5 , 3 , 9 , 10 , 4 , 2 , 8 , 7 , 3 , 1 , 0 , ( 0 means stop
+VARIABLE SEQ
+: GETCART2
+SEQ @ 2* SEQUENCE + @ DUP . LINE AXES ( WHERE
+SEQ INC
+;
+: RJ ( RANDOM JUMP
+VSET
+CFLAG C1SET
+LIST1 ( invoke route name once to save time - not in every loop
+0 SEQ !
+DSPCHANS @ 0 DO
+    I GLOBALS @ OLDP I IND ! ( set 1st position
+LOOP
+MVST
+    0 0 0 0 0 0 1 TSEG ( 24 SPSB SPRB . ( FIRST SEGMENT ZERO MOVE
+MVRN
+BEGIN
+    BUFZ
+    GETCART2
+    NEXTSEG
+    ( STATUS ) 0 > IF
+        STOP
+        BEGIN ?RUN 0= UNTIL ( wait for DSP to stop
+        DSPASSUME
+        ." Segment too long" 31 ABORT
+    THEN
+SEQ @ 2* SEQUENCE + @ 0 = ?TERMINAL OR UNTIL
+MVND
+BEGIN ?RUN 0= UNTIL
+DSPASSUME
+;
+: INIT
+START
+LIST1 1 GOTO
+ENCOFF
+500 SEGTIME !
+2000 ACCEL !
+VSET
+;

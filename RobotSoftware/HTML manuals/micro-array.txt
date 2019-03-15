@@ -1,0 +1,8 @@
+<h4>R17</h4>
+<h4>R15/R19</h4>
+There is a different scale factor for each axis and these are in the array MICROS. The scaling factor for the waist/ first axis is MICROS, next axis MICROS 2 +, 3rd axis MICROS 4 + and so on. The resulting number of steps will therefore be different from the number of steps per rev and different from the number of microsteps per rev. The steps counted by the controller are called system steps.
+<p>
+To change the number of microsteps in an axis change the value in MICROS that corresponds, for example to change the value for an R19 extend, axis 3 to a value of 5 enter:<br>
+<font color= 007F00><u>5 MICROS 4 + <b>!</b></u></font><br>
+This will not take effect until you type START or DSPINIT<br>
+Remember that if you change the microstep ratio you must also change the encoder ratio. Note also that the final step rate (pulse rate to the drives) is constant i.e. if you double the microstep rate you will not double speed, you will only double how far the motor moves. The time taken will also be double because the speed does not change.

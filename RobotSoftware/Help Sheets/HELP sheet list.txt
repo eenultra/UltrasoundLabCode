@@ -1,0 +1,32 @@
+Help Sheet List
+
+1 - how to reload RoboForth
+2 - using a nest
+3 - deleted
+4 - deleted
+5 - deleted
+6 - deleted
+7 - Using CARTESIAN mode in 2D planes (also in the tutorial)
+8b - R19 robot Risk Assessment
+9 - deleted
+10 - Configuring the R17 for low speeds
+11 - Using the I/O
+12 - Error messages
+13 - Setting up R12 from scratch
+14 - Tool changers
+15 - Timed Segments/ constant speed.
+16 - Absolute calibration R12.
+17 - loading lists of coordinates from another program.
+18 - chasing coordinates
+19 - continuous read back of position while robot in motion.
+20 - data logging
+21 - using stacks (physical stacks not Forth)
+22 - Android Remote Desktop
+23 - Changing from electric to pneumatic gripper.
+24 - 6th axis sensor adjustment.
+25 - Using bluetooth for the serial connection.
+26 - Converting roll to yaw using the T-adaptor.
+27 - How to use the optional joint inversion mode (if installed)
+28 - An example of drawing a circle on paper.
+29 – How to recover a project from the controller if PC crashed.
+
