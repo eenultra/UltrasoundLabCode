@@ -88,7 +88,7 @@ function [success, cardInfo] = spcMInitCardByIdx (cardIdx)
             
             i = 1;
             
-            while (i <= cardInfo.AI.rangeCount) & (i <= mRegs(SPCM_MAX_AIRANGE))
+            while (i <= cardInfo.AI.rangeCount) %& (i <= mRegs(SPCM_MAX_AIRANGE)) %can't find anything about this in the mau
                 [errorCode, cardInfo.AI.rangeMin(i)] = spcm_dwGetParam_i32 (cardInfo.hDrv, mRegs('SPC_READRANGEMIN0') + (i - 1));
                 [errorCode, cardInfo.AI.rangeMax(i)] = spcm_dwGetParam_i32 (cardInfo.hDrv, mRegs('SPC_READRANGEMAX0') + (i - 1));
                 i = i + 1;
