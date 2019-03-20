@@ -62,16 +62,16 @@ for i=1:length(xPoints)
         else
             rasterY  = j;
         end
-        
-        pErr = -2;
-        posFlag = 0;
-        while posFlag == 0
-        LS3moveNC(xPoints(i),yPoints(rasterY),zSt,50); 
-        pos = L3Sgetpos;
-            if (roundn(pos(1), pErr) == roundn(xPoints(i), pErr)) && (roundn(pos(2), pErr) == roundn(yPoints(rasterY), pErr))
-              posFlag = 1;  
-            end
-        end
+        LS3move(xPoints(i),yPoints(rasterY),zSt,50)
+%         pErr = -2;
+%         posFlag = 0;
+%         while posFlag == 0
+%         LS3move(xPoints(i),yPoints(rasterY),zSt,50); 
+%         pos = L3Sgetpos;
+%             if (roundn(pos(1), pErr) == roundn(xPoints(i), pErr)) && (roundn(pos(2), pErr) == roundn(yPoints(rasterY), pErr))
+%               posFlag = 1;  
+%             end
+%         end
         
         avDAT0 = zeros(cardInfo.setMemsize,nPulse);
         for k=1:nPulse

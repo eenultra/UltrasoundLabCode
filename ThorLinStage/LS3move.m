@@ -38,26 +38,28 @@ zLS.SetAbsMovePos(0,mZ);zLS.MoveAbsolute(0,0==1);
 
 
 t1 = clock; % current time
-while(etime(clock,t1)<timeout)
-    
-     [xdrv,xPos]= xLS.GetPosition(0,0);
-     [ydrv,yPos]= yLS.GetPosition(0,0);
-     [zdrv,zPos]= zLS.GetPosition(0,0);
-     
-%      xCheck = IsMoving(xLS.GetStatusBits_Bits(0));
-%      yCheck = IsMoving(yLS.GetStatusBits_Bits(0));
-%      zCheck = IsMoving(zLS.GetStatusBits_Bits(0));
-     
-     %disp([num2str(xCheck) ' ' num2str(yCheck) ' ' num2str(zCheck)]);
-     
-    if (roundn(xPos, pErr) == roundn(mX, pErr)) && (roundn(yPos, pErr) == roundn(mY, pErr)) && (roundn(zPos, pErr) == roundn(mZ, pErr))
+while(etime(clock,t1)<timeout)   
+     [xdrv,xPos]= xLS.GetPosition(0,0);     
+    if (roundn(xPos, pErr) == roundn(mX, pErr)) 
         break
     end
 end
 
-[xdrv,xPos]= xLS.GetPosition(0,0);
-[ydrv,yPos]= yLS.GetPosition(0,0);
-[zdrv,zPos]= zLS.GetPosition(0,0);
+t2 = clock; % current time
+while(etime(clock,t2)<timeout)   
+    [ydrv,yPos]= yLS.GetPosition(0,0);     
+    if (roundn(yPos, pErr) == roundn(mY, pErr))
+        break
+    end
+end
+
+t3 = clock; % current time
+while(etime(clock,t3)<timeout)
+     [zdrv,zPos]= zLS.GetPosition(0,0);    
+    if (roundn(zPos, pErr) == roundn(mZ, pErr))
+        break
+    end
+end
 
 pos = [xPos,yPos,zPos]; %in mm
 
