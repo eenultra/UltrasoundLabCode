@@ -40,7 +40,7 @@ end
 
 % ***** do card setup *****
 cardInfo.nDat        = nDat; % number of mem segments used in aquire
-cardInfo.lDat        = nDat-1 * 1024 ; % after trig mem length
+cardInfo.lDat        = (nDat-1) * 1024 ; % after trig mem length
 cardInfo.setMemsize  = nDat * 1024 ; % total mem length
 cardInfo.pre_lDat    = 1024; % pre-mem length 
 
@@ -85,6 +85,7 @@ end
 %[errorCode, Dat_Ch0] = spcm_dwGetData (cardInfo.hDrv, 0, cardInfo.setMemsize, cardInfo.setChannels, 0);
 disp(['Sampling rate set to '  num2str(cardInfo.setSamplerate/1E6) ' MHz']);
 disp(['Dynamic Range Ch0: ' num2str(drCh(1)) ' mV, Dynamic Range Ch1: ' num2str(drCh(2)) ' mV']);
-disp(['Post trigger acquisition time ' num2str((cardInfo.setMemsize/cardInfo.setSamplerate)*1E6) ' us']);
+disp(['Pre trigger acquisition time ' num2str((cardInfo.pre_lDat/cardInfo.setSamplerate)*1E6) ' us']);
+disp(['Post trigger acquisition time ' num2str((cardInfo.lDat/cardInfo.setSamplerate)*1E6) ' us']);
 disp('Card Configured'); 
 
