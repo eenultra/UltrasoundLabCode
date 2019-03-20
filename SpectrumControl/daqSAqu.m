@@ -43,7 +43,6 @@ end
 
 if errorCode == 263  % 263 = ERR_TIMEOUT   
    spcMErrorMessageStdOut (cardInfo, '... Timeout occurred !!!', false);
-   SPcardEn;
    return;
 else
 
