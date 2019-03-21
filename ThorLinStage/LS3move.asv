@@ -3,9 +3,9 @@
 %James McLaughlan
 %University of Leeds
 %Feb 2019
-%updated Mar 2019
 
 function pos = LS3move(mX,mY,mZ,sRange)
+
 % all values are in mm
 global xLS yLS zLS
 
@@ -28,9 +28,9 @@ if (mX > maxRange) || (mY > maxRange) || (mZ > maxRange)
     return  
 end
 
-xLS.SetAbsMovePos(0,mX);xLS.MoveAbsolute(0,0==1);
-yLS.SetAbsMovePos(0,mY);yLS.MoveAbsolute(0,0==1);
-zLS.SetAbsMovePos(0,mZ);zLS.MoveAbsolute(0,0==1);
+xLS.SetAbsMovePos(0,mX);xLS.MoveAbsolute(0,0==1);pause(0.1)
+yLS.SetAbsMovePos(0,mY);yLS.MoveAbsolute(0,0==1);pause(0.1)
+zLS.SetAbsMovePos(0,mZ);zLS.MoveAbsolute(0,0==1);pause(0.1)
 
 t1 = clock; % current time
 while(etime(clock,t1)<timeout)
@@ -51,17 +51,14 @@ while(etime(clock,t1)<timeout)
     if (NEWzPos >= (mZ - pErr)) && (NEWzPos <= (mZ + pErr))
         zCheck = 1;
     end 
-    %disp(['y position= ' num2str(NEWyPos) ' mm, aiming for between = ' num2str(mY-pErr) '-' num2str(mY+pErr) ' mm' ]);
-    %disp(['xCheck = ' num2str(xCheck) ', yCheck = ' num2str(yCheck) ' zCheck = ' num2str(zCheck)]);
+    disp(
+    disp(['xCheck = ' num2str(xCheck) ', yCheck = ' num2str(yCheck) ' zCheck = ' num2str(zCheck)]);
+    %checkVal = xCheck + yCheck + zCheck
     
     if (xCheck == 1 && yCheck == 1 && zCheck == 1) 
-        %disp('should be moving on');
+        disp('should be moving on');
         break
     end
-    clear NEWxPos NEWyPos NEWzPos   
-    xLS.MoveAbsolute(0,0==1);
-    yLS.MoveAbsolute(0,0==1);
-    zLS.MoveAbsolute(0,0==1);
 end
 
 pause(0.1);

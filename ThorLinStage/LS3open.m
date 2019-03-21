@@ -116,5 +116,3 @@ while(etime(clock,t1)<timeout)
     break
 end
 
-disp('Finished');
-

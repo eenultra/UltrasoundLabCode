@@ -26,9 +26,9 @@ global cardInfo
 
 nPulse = 10;   % number of repeat laser pulses at a specific location
 % start position for scan
-zSt    = 25;   % fixed z position for scan in mm
-ySt    = 25;   % y start position for scan in mm
-xSt    = 25;   % x start position for scan in mm
+zSt    = 15;   % fixed z position for scan in mm
+ySt    = 15;   % y start position for scan in mm
+xSt    = 15;   % x start position for scan in mm
 % scan geometry 
 yRng = 10;   % y scan range in mm
 yRes = 1;  % y resolution in mm 
