@@ -30,10 +30,10 @@ zSt    = 25;   % fixed z position for scan in mm
 yCt    = 25;   % y centre position for scan in mm
 xCt    = 25;   % x centre position for scan in mm
 % scan geometry 
-yRng = 10;   % y scan range in mm
-yRes = 1;  % y resolution in mm 
-xRng = 10;   % x scan range in mm
-xRes = 1;  % x resolution in mm
+yRng = 0.1;   % y scan range in mm
+yRes = 0.01;  % y resolution in mm 
+xRng = 0.1;   % x scan range in mm
+xRes = 0.01;  % x resolution in mm
 
 if yCt-(yRng/2) < 0 || xCt-(xRng/2) < 0
     disp('Outside of movement range');
@@ -94,10 +94,10 @@ for i=1:length(xPoints)
         mapDat(i,rY) = range(vltDat(datSt:datEn,rY));
         figure(4);imagesc(xPoints,yPoints,mapDat);colormap('hot');colorbar;drawnow;
     end
-    save ([fname '_x' num2str(xPoints(i)*1E3) 'um.mat'],'xPoints','yPoints','vltDat','mapDat','zSt','t','fs','cardInfo');
+    %save ([fname '_x' num2str(xPoints(i)*1E3) 'um.mat'],'xPoints','yPoints','vltDat','mapDat','zSt','t','fs','cardInfo');
 end
 
-save ([fname '_map.mat'],'xPoints','yPoints','mapDat','zSt','t','fs','cardInfo');
+%save ([fname '_map.mat'],'xPoints','yPoints','mapDat','zSt','t','fs','cardInfo');
 
 %%
 
