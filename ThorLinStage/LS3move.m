@@ -5,18 +5,14 @@
 %Feb 2019
 %updated Mar 2019
 
-function pos = LS3move(mX,mY,mZ,sRange)
+ %pErr =  error on move, +/- 0.1 for linear, 0.01 for compact 
+ 
+function pos = LS3move(mX,mY,mZ,sRange,pErr)
 % all values are in mm
 global xLS yLS zLS
 
-timeout = 10;     % timeout for waiting the move to be completed
+timeout = 10;      % timeout for waiting the move to be completed
 maxRange = sRange; % 25mm for linear stages, 50mm for compact stages
-
-if sRange == 50
-    pErr     = 0.01;%changed to % of move %-2;     % error on move, +/- 0.1 (-1 sig fig) for linear, 0.01 (-2 sig fig) for compact 
-else
-    pErr     = 0.1;%changed to % of move %-1;     % error on move, +/- 0.1 (-1 sig fig) for linear, 0.01 (-2 sig fig) for compact 
-end
 
 if (mX > maxRange) || (mY > maxRange) || (mZ > maxRange)
     disp('Movement out of range of stage');
@@ -72,6 +68,6 @@ pause(0.1);
 pos = [xCPos,yCPos,zCPos]; %in mm
 
 %disp(['x = ' num2str(roundn(xPos, pErr)) 'mm, y = ' num2str(roundn(yPos, pErr)) 'mm, z = ' num2str(roundn(zPos, pErr)) 'mm']);
-disp(['x = ' num2str(xCPos) 'mm, y = ' num2str(yCPos) 'mm, z = ' num2str(zCPos) 'mm']);
+%disp(['x = ' num2str(xCPos) 'mm, y = ' num2str(yCPos) 'mm, z = ' num2str(zCPos) 'mm']);
 
 end

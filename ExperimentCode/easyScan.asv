@@ -27,21 +27,16 @@ global cardInfo
 nPulse = 10;   % number of repeat laser pulses at a specific location
 % start position for scan
 zSt    = 25;   % fixed z position for scan in mm
-yCt    = 25;   % y centre position for scan in mm
-xCt    = 25;   % x centre position for scan in mm
+yCt    = 25;   % y start position for scan in mm
+xSt    = 25;   % x start position for scan in mm
 % scan geometry 
 yRng = 10;   % y scan range in mm
 yRes = 1;  % y resolution in mm 
 xRng = 10;   % x scan range in mm
 xRes = 1;  % x resolution in mm
-
-if yCt-(yRng/2) < 0 || xCt-(xRng/2) < 0
-    disp('Outside of movement range');
-    return
-end
 % define scan vectors
-yPoints = yCt-(yRng/2):yRes:yCt+(yRng/2);
-xPoints = xCt-(xRng/2):xRes:xCt+(xRng/2);
+yPoints = ySt:yRes:ySt+yRng;
+xPoints = xSt:xRes:xSt+xRng;
 
 %% Start Scan
 
