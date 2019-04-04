@@ -1,10 +1,21 @@
 %%
+% generates a comb filter prior to processing, should only need to be used
+% once. 
+
 %higher drive power it can undergo non-linear oscillation,
 %including collapse, and the acoustic emissions generated may comprise broadband
 %emissions and superharmonics (nif0), ultraharmonics ((2ni+1)f0/2) and subharmonics
 %(f0/ni) of the drive frequency (where ni is a positive integer).
 
-N   = 2^16;
+% needs to match param's used in hifuPlot - but run prior as that program
+% needs the filters generated here. 
+
+% University of Leeds
+% James McLaughlan
+% April 2019
+
+
+N   = 2^16; 
 fs  = 250E6;
 Nh  = 20;
 res = round(fs/N);
@@ -30,4 +41,4 @@ end
 ulComb = combF;
 bbComb = 1-combF;
 
-%%%%
+save('CombFiltNew.mat','ulComb','bbComb');
