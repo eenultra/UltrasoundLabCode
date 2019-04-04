@@ -1,12 +1,8 @@
 % this code should be run on the output from all PCD processed by hifuPlot
-% it will loop through all exposures and repeats 
-%'out_20150823_R5_NR40_850nm_Lon_95mV' - this is an example of filename, it
-% will read in this file and collate broadband/ultraharmonic data
+% it will loop through all exposures and 
 
-% University of Leeds
-% James McLaughlan
-% April 2019
-
+%'out_20150823_R5_NR40_850nm_Lon_95mV' - this is an example of filename it
+%will read in this file and collate broadband/ultras
 clear all
 
 dV  = [20 40 60 80 100 120 140 160 180 200 220]; % different mV setting on Agilent for each repeat
