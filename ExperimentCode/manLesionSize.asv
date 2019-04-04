@@ -44,22 +44,17 @@ for ii = 1:length(imageNames) % this code loops through all images in dir
         A = abs(total*(D*D)); % converts to area typically mm2 depends what units D is
     end
     
-    out(ii,1) = cellstr(imName); % saves data in xls sheet
-    out(ii,2) = cellstr(num2str(max(A))); % saves data in xls sheet
-    % I have found that due to inconstancies in how imageNames is found, I find the best way to collate the data
-    % is by manually arranging repeat datasets. I'm sure this could be
-    % automoated but I find this the easiest way. 
+    out(ii,1) = cellstr(imName);
+    out(ii,2) = cellstr(num2str(max(A)));
     
-    clear x y z % clears values before processing the next image
+    clear x y z
 end
 
-save('lesion_dat.mat','out','A'); % saves data to a mat file
-xlswrite('lesionData',out); % also saves to a .xls file (see comment above)
+save('lesion_dat.mat','out','A');
+xlswrite('lesionData',out);
 
 break
-%% Everything beyond this point is not needed and is only here for me to keep consistant how I plot/display the data
-% feel free to use the code, but it is not part of the image processing
-
+%%
 %pnp = [0.91 1.19 1.43 1.69 1.92 2.13 2.34 2.53 2.71];
 % 20 40 60 80 100 120 140 160 180 200 220
 pnp = [0.20 0.62 0.91 1.19 1.43 1.69 1.92 2.13 2.34 2.53 2.71];
