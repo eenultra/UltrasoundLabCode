@@ -1,3 +1,9 @@
+% a program for generated a video from the frames aquired during HIFU
+% exposures, when using the dinolite.
+
+% University of Leeds
+% James McLaughlan
+% April 2019
 
 VidDIR = 'U:\Ultrasound\Postdoc\James McLaughlan\Lab Computers\DAQ\20170524-NRHIFU\HIFU\Videos'; % location of stored videos and frames
 rootCD = 'U:\Ultrasound\Postdoc\James McLaughlan\Lab Computers\DAQ\20170524-NRHIFU\HIFU\RAW';    %location of files
