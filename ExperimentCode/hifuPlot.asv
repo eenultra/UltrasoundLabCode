@@ -77,16 +77,16 @@ for j=1:si(1) % loops through all files found in SI
     end
 
     t   = linspace(0,17,Len); % creates time vector
-    tSt = find( t>= 1.0 &  t <=1.1,1,'First'); % finds HIFU on time
-    tEn = find( t>= 16.0 & t <=16.1,1,'First'); % finds HIFU off time
+    tSt = find( t>= 1.0 &  t <=1.1,1,'First'); 
+    tEn = find( t>= 16.0 & t <=16.1,1,'First');
 
-    bbF  = bbF-bbF(1,1); % scales dB value with noise level from no HIFU
-    ulF  = ulF-ulF(1,1); % scales dB value with noise level from no HIFU
-    TbbF = trapz(bbF(tSt:tEn))/dur; % integrates broadband over all HIFU exposure duration
-    TulF = trapz(ulF(tSt:tEn))/dur; % integrates ultraharmonic over all HIFU exposure duration
+    bbF  = bbF-bbF(1,1);
+    ulF  = ulF-ulF(1,1);
+    TbbF = trapz(bbF(tSt:tEn))/dur;
+    TulF = trapz(ulF(tSt:tEn))/dur;
     
-    save(['out_' name '.mat'],'t','bbF','ulF','F_dat','TbbF','TulF'); % saves data with same file name as inputted with 'out_' at the front to be read by hifuAll
-    % loops to next data set
+    save(['out_' name '.mat'],'t','bbF','ulF','F_dat','TbbF','TulF');
+    
 end
 
 
