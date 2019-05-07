@@ -56,7 +56,7 @@ end
 save('lesion_dat.mat','out','A'); % saves data to a mat file
 xlswrite('lesionData',out); % also saves to a .xls file (see comment above)
 
-break
+return
 %% Everything beyond this point is not needed and is only here for me to keep consistant how I plot/display the data
 % feel free to use the code, but it is not part of the image processing
 
