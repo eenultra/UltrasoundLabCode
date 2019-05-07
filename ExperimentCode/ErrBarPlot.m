@@ -7,7 +7,7 @@ X = [mean(Off),mean(onOff),mean(offOn)];
 sX = [std(Off),std(onOff),std(offOn)];
 
 %%
-bar(X,'FaceColor',[0.5 0 0],'EdgeColor',[0 0 0],'LineWidth',1.5);hold on
+bar(X,'FaceColor',[0 0.5 0],'EdgeColor',[0 0 0],'LineWidth',1.5);hold on
 errorbar(1:3,X,sX,'Marker','.','LineStyle','none','Color',[0 0 0],'LineWidth',1.5,'MarkerSize',5);%hold on
 hold off
 ylabel('Lesion Area (mm^2)','fontsize',18);
