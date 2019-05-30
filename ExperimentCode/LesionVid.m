@@ -5,10 +5,10 @@
 % James McLaughlan
 % April 2019
 
-VidDIR = 'U:\Ultrasound\Postdoc\James McLaughlan\Lab Computers\DAQ\20170524-NRHIFU\HIFU\Videos'; % location of stored videos and frames
-rootCD = 'U:\Ultrasound\Postdoc\James McLaughlan\Lab Computers\DAQ\20170524-NRHIFU\HIFU\RAW';    %location of files
+VidDIR = 'N:\Faculty-of-Engineering\Research\I3S\Ultrasound\Postdoc\James McLaughlan\Lab Computers\DAQ\20190430-HIFUNR'; % location of stored videos and frames
+rootCD = 'N:\Faculty-of-Engineering\Research\I3S\Ultrasound\Postdoc\James McLaughlan\Lab Computers\DAQ\20190430-HIFUNR\RAW';    %location of files
 
-SI   = ls('20170524*.mat');
+SI   = ls('20190430*.mat');
 si   = size(SI);
 fnt  = 16;
 ln   = 2;
@@ -19,7 +19,7 @@ resY = 1/200;%/225; % mm/pix
 X =  linspace(-resX*(1280/2),resX*(1280/2),1280);%1280;
 Y =  linspace(-resY*(1024/2),resY*(1024/2),1024);%1024;
 
-for j=45:si(1)
+for j=1:si(1)
     
     disp(['Processing ' num2str(j) ' of ' num2str(si(1))]);
     id   = find(SI(j,:) == '.',1,'last');
