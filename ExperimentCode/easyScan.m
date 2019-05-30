@@ -13,9 +13,9 @@ aqTime     = 5;                         % approx total aquisition time in us
 aqInt      = round((aqTime * fs)/1024); % approx number of mem blocks needed for aqTime
 chDR       = [200 200];                 % [Ch0 Ch1] dynamic range in mV
 chIM       = [1 1];                     % channel input impedance, 1 - 50Ohm, 0 - 1MOhm
-TrigType   = 0;                         % if 1 then external trig is used, internal all else 
+TrigType   = 1;                         % if 1 then external trig is used, internal all else 
 
-LS3open;                                               % connect and init thorlab stages !!CHECK S/N are correct!!
+%LS3open;                                               % connect and init thorlab stages !!CHECK S/N are correct!!
 daqStSingleAq(aqInt,noChannels,fs,chDR,chIM,TrigType); % check card is powered and connected!
 
 global cardInfo
@@ -24,16 +24,16 @@ global cardInfo
 
 %% Configure 2D scan area, it is assumed that height (z) is preconfig'd due to time of flight.
 
-nPulse = 10;   % number of repeat laser pulses at a specific location
+nPulse = 20;   % number of repeat laser pulses at a specific location
 % start position for scan
-zSt    = 25;   % fixed z position for scan in mm
-yCt    = 25;   % y centre position for scan in mm
-xCt    = 25;   % x centre position for scan in mm
+zSt    = 35;   % fixed z position for scan in mm
+yCt    = 20;   % y centre position for scan in mm
+xCt    = 29.5;   % x centre position for scan in mm
 % scan geometry 
-yRng = 0.1;   % y scan range in mm
-yRes = 0.01;  % y resolution in mm 
-xRng = 0.1;   % x scan range in mm
-xRes = 0.01;  % x resolution in mm
+yRng = 1;   % y scan range in mm
+yRes = 0.1;  % y resolution in mm 
+xRng = 1;   % x scan range in mm
+xRes = 0.1;  % x resolution in mm
 
 if yCt-(yRng/2) < 0 || xCt-(xRng/2) < 0
     disp('Outside of movement range');
@@ -49,7 +49,7 @@ mapDat = zeros(length(xPoints),length(yPoints));
 datSt = 500;  % start point of real data
 datEn = 5000; % end point of real data
 
-fname = '190220_TestScan';
+fname = '190530_TestScan';
 
 figure(4);
 imagesc(xPoints,yPoints,mapDat);
@@ -101,7 +101,7 @@ end
 
 %%
 
-close all
+%close all
 daqEnSingleAq;
 
 
