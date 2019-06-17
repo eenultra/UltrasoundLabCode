@@ -30,7 +30,44 @@ disp(['Current Position: ' num2str(CNC_CurrentPosition()) '     Commanded Positi
 agopen         % check the COM port, usually COM4 using RS232 - USB cable
 PS5000aConfig; % Load configuration information for PicoScope
 
-%%
+%% Config PicoScope
+
+
+
+
+
+%% Set scan ranges and data Aqu
+
+
+
+
+%% Peform Scan
+
+
+
+
+%% Close hardware
+
+agclose
+picoStop
+
+% Park CNC system
+CNC_MovePosition(0,0,100,0,true);
+
+disp('Apply clamps to vertical (Z) axis. Then press any key to continue.')
+pause
+ 
+CNC_DisableDrives();
+
+CNC_CloseConnection();
+
+
+
+
+
+
+
+
 
 
 
