@@ -27,7 +27,8 @@ CNC_Home();
 CNC_Status();
 disp(['Current Position: ' num2str(CNC_CurrentPosition()) '     Commanded Position: ' num2str(CNC_CommandedPosition())])
 
-agopen % check the COM port, usually COM4 using RS232 - USB cable
+agopen         % check the COM port, usually COM4 using RS232 - USB cable
+PS5000aConfig; % Load configuration information for PicoScope
 
 %%
 
