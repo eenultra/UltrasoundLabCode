@@ -4,13 +4,13 @@
 
 numCaptures = 10; % Set number of captures - can be less than or equal to the number of segments.
 trigCh      = 1; % 0-ChA, 1-ChB, 4-EXT define trig channel
-trigLevel   = 40; %mV - rising edge trig level
+trigLevel   = 500; %mV - rising edge trig level
 %Avaliable Dynamic Ranges
 %PS5000A_10MV: 0, PS5000A_20MV: 1, PS5000A_50MV: 2, PS5000A_100MV: 3, PS5000A_200MV: 4, PS5000A_500MV: 5
 %PS5000A_1V: 6, PS5000A_2V: 7 PS5000A_5V: 8, PS5000A_10V: 9,PS5000A_20V: 10,PS5000A_50V: 11,PS5000A_MAX_RANGES: 12
 ChARng      = 3; % set range for ChA
-ChBRng      = 3; % set range for ChB
-nMaxSamp    = 2^9; % Freq set to 1 GS/s, can not exceed nMaxSamples
+ChBRng      = 8; % set range for ChB
+nMaxSamp    = 2^13; % Freq set to 1 GS/s, can not exceed nMaxSamples
 nPreTrig    = 128;
 nPosTrig    = nMaxSamp - nPreTrig;
 
