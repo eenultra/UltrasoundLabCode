@@ -58,9 +58,9 @@ yRes = 0.5;   % mm
 zRes = 0.25; % mm
 
 % mm, scan range used for axis
-xScanRange = -10:xRes:10;   xFlag = 1;
+xScanRange = 0;             xFlag = 0; %-10:xRes:10;
 yScanRange = -50:yRes:30;   yFlag = 1; %-20:yRes:10; 
-zScanRange = 0;             zFlag = 0; % -6:zRes:6;
+zScanRange = -10:xRes:10;   zFlag = 1; % -6:zRes:6;
 %Flag is to define scan plane below, XY,XZ,YZ
 
 % mm, convert to points to scan around pre-defined focal region
@@ -87,10 +87,9 @@ pnpMap = squeeze(zeros(length(xScanPoints),length(yScanPoints),length(zScanPoint
 
 hydroCal = 343; % for membrane 343mV/MPa @ 1MHz, 349 mV/MPa @ 3MHz
 
-
 %% Movement Check
 
-datName = '190618_H102-98_R2_';
+datName = '190619_H102-98_R1_';
 str = input('Have you checked that the Transducer/Hydrophone can move safelty in this range? [y/n] ','s');
 
 if str == 'y'

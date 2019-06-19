@@ -8,9 +8,9 @@ trigLevel   = 500; %mV - rising edge trig level
 %Avaliable Dynamic Ranges
 %PS5000A_10MV: 0, PS5000A_20MV: 1, PS5000A_50MV: 2, PS5000A_100MV: 3, PS5000A_200MV: 4, PS5000A_500MV: 5
 %PS5000A_1V: 6, PS5000A_2V: 7 PS5000A_5V: 8, PS5000A_10V: 9,PS5000A_20V: 10,PS5000A_50V: 11,PS5000A_MAX_RANGES: 12
-ChARng      = 8; % set range for ChA -5 for beamplot at 50mV
-ChBRng      = 10; % set range for ChB -8 for beamplot at 50mV
-nMaxSamp    = 2^12; % Freq set to 1 GS/s, can not exceed nMaxSamples -2^13 for beamplot
+ChARng      = 5; % set range for ChA -5 for beamplot at 50mV - 8 for pk p
+ChBRng      = 8; % set range for ChB -8 for beamplot at 50mV -10 for pk p
+nMaxSamp    = 2^13; % Freq set to 1 GS/s, can not exceed nMaxSamples -2^13 for beamplot
 nPreTrig    = 128;
 nPosTrig    = nMaxSamp - nPreTrig;
 
