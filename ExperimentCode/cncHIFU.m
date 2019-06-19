@@ -53,15 +53,15 @@ picoConfig;
 
 %% Set scan ranges and data Aqu
 
-xRes = 0.5; % mm
-yRes = 1;   % mm
-zRes = 0.5; % mm
+xRes = 0.25; % mm
+yRes = 0.5;   % mm
+zRes = 0.25; % mm
 
 % mm, scan range used for axis
-xScanRange = -5:xRes:5; xFlag = 1;
-yScanRange = 0;         yFlag = 0; %-20:yRes:10; 
-zScanRange = -5:zRes:5; zFlag = 1;
-%Flag is to define scan plane below, XY, XZ,YZ
+xScanRange = -10:xRes:10;   xFlag = 1;
+yScanRange = -50:yRes:30;   yFlag = 1; %-20:yRes:10; 
+zScanRange = 0;             zFlag = 0; % -6:zRes:6;
+%Flag is to define scan plane below, XY,XZ,YZ
 
 % mm, convert to points to scan around pre-defined focal region
 xScanPoints = xScanRange + x1;
@@ -73,14 +73,14 @@ disp(['Start/End points for, x= ' num2str(xScanPoints(1)) ' mm, ' num2str(xScanP
 disp(['Start/End points for, y= ' num2str(yScanPoints(1)) ' mm, ' num2str(yScanPoints(end)) ' mm']);
 disp(['Start/End points for, z= ' num2str(zScanPoints(1)) ' mm, ' num2str(zScanPoints(end)) ' mm']);
 
-%CNC_MovePositionLinear(x,y,z, 0 ,false) check points manually before
+%CNC_MovePositionLinear(x,y,z, 0 ,true) check points manually before
 %proceeding. 
 
 CNC_Status();
 disp(' ');
 disp(['Current Position: ' num2str(CNC_CurrentPosition()) ' mm']);
 
-%% Define Data
+% Define Data
 scanData = squeeze(zeros(length(xScanPoints),length(yScanPoints),length(zScanPoints),nMaxSamp));
 pppMap = squeeze(zeros(length(xScanPoints),length(yScanPoints),length(zScanPoints)));
 pnpMap = squeeze(zeros(length(xScanPoints),length(yScanPoints),length(zScanPoints)));
@@ -131,15 +131,15 @@ if str == 'y'
                 pnpMap(i,j)     = abs(min(mean(chA,2)))/hydroCal;
                 clear chA;
                 
-                figure(1);plot(timeNs/1E3,scanData(i,j,:));colormap;drawnow
-                figure(2);plot(timeNs/1E3,mean(chB,2));colormap;drawnow
+                figure(1);plot(timeNs/1E3,squeeze(scanData(i,j,:)));drawnow
+                figure(2);plot(timeNs/1E3,mean(chB,2));drawnow
                 figure(3);imagesc(iRange,jRange,pnpMap);colormap;drawnow
             end
         end
     agoff
     
     disp('saving data....');
-    save(datName,'xScanPoints','yScanPoints','zScanPoints','x1','y1','z1','f0','mV','pppMap','pnpMap','scanData','hydroCal','c','timeNs', 'chB');
+    save([datName '.mat'],'xScanPoints','yScanPoints','zScanPoints','x1','y1','z1','f0','mV','pppMap','pnpMap','scanData','hydroCal','c','timeNs', 'chB');
 end
 
 CNC_MovePosition(x1,y1,z1,0,true); %return to focus position
