@@ -25,3 +25,5 @@ errorCode = spcm_dwSetParam_i32 (cardInfo.hDrv, 100, 12);
 % ----- read the one channel that was acquired as 16 bit integer values -----
 [errorCode, Dat_Ch0] = spcm_dwGetData (cardInfo.hDrv, 0, cardInfo.setMemsize, cardInfo.setChannels, 0);
 spcMCloseCard (cardInfo);
+
+plot(Dat_Ch0);

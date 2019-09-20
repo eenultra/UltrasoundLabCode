@@ -46,7 +46,7 @@ zLS = actxcontrol('MGMOTOR.MGMotorCtrl.1',[20 20 600 400], zf);pause(1);
 % Start Control
 xLS.StartCtrl;
 % Set the Serial Number
-xSN = 27252508;%27501235; % put in the serial number of the hardware
+xSN = 27501235; %27252508;% put in the serial number of the hardware
 set(xLS,'HWSerialNum', xSN);
 % Indentify the device
 xLS.Identify; 
@@ -55,7 +55,7 @@ pause(5); % waiting for the GUI to load up;
 % Start Control
 yLS.StartCtrl;
 % Set the Serial Number
-ySN = 27252617;%27501294; % put in the serial number of the hardware
+ySN = 27501294; % 27252617;%put in the serial number of the hardware
 set(yLS,'HWSerialNum', ySN);
 % Indentify the device
 yLS.Identify; 
@@ -64,7 +64,7 @@ pause(5); % waiting for the GUI to load up;
 % Start Control
 zLS.StartCtrl;
 % Set the Serial Number
-zSN = 27504090;%27501290; % put in the serial number of the hardware
+zSN = 27501290; % 27504090;%put in the serial number of the hardware
 set(zLS,'HWSerialNum', zSN);
 % Indentify the device
 zLS.Identify; 
@@ -115,6 +115,4 @@ while(etime(clock,t1)<timeout)
     end
     break
 end
-
-disp('Finished');
 
