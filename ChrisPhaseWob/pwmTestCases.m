@@ -3,7 +3,7 @@
 %Dimensions: [wobble amount x element num x time]
 
 %% What wobbles do you want to test?
-wobRange = 6*pi;%(1:0.5:6)*pi;
+wobRange = 2*pi;%(1:0.5:6)*pi;
 
 %Amplitude
 amp = 1;%0.23;
@@ -17,7 +17,7 @@ fc = 1.7e6;
 fs = 160E6;%100*fc;
 %Time vector (100 cycles)
 %In reality this will be 100000s of cycles...
-t = 0:1/fs:3.21E-3;%0:1/fs:20/fc;
+t = 0:1/fs:20/fc;%3.21E-3;%0:1/fs:20/fc;
 %Number of elements in the 10-strip
 nElem = 8;
 for wobIdx=1:length(wobRange)
