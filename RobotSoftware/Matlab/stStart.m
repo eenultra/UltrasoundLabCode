@@ -13,7 +13,7 @@ rtcmd = 'START';
 stCommand(rtcmd)
 
 stCal = input('Do you want calibrate? y/n ','s');
-if strcmp(stCal,'y');
+if strcmp(stCal,'y')
    isHomed = input('Is the arm homed? y/n ','s');
     if strcmp(isHomed,'n');
         rtcmd = 'DE-ENERGISE';
