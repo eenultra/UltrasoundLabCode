@@ -24,10 +24,10 @@ global cardInfo
 
 %% Configure 2D scan area, it is assumed that height (z) is preconfig'd due to time of flight.
 
-nPulse = 20;   % number of repeat laser pulses at a specific location
+nPulse = 50;   % number of repeat laser pulses at a specific location
 % start position for scan
-zSt    = 33;   % fixed z position for scan in mm
-yCt    = 21;   % y centre position for scan in mm
+zSt    = 36.5;   % fixed z position for scan in mm
+yCt    = 19.3;   % y centre position for scan in mm
 xCt    = 25;   % x centre position for scan in mm
 % scan geometry 
 yRng = 10;   % y scan range in mm
@@ -46,14 +46,14 @@ xPoints = xCt-(xRng/2):xRes:xCt+(xRng/2);
 %% Start Scan
 
 mapDat = zeros(length(xPoints),length(yPoints));
-datSt = 2.6E4;  % start point of real data
-datEn = 3.2E4; % end point of real data
+datSt = 2.46E4;  % start point of real data
+datEn = 3.0E4; % end point of real data
 
-fname = '191202_900nm';
+fname = '200302_800nm';
 
-expDetails.wavelength = '900nm';
+expDetails.wavelength = '800nm';
 expDetails.spotsize = '1mm';
-expDetails.splitEngergy = '0.736mJ averaged';
+expDetails.splitEngergy = '0.766mJ averaged';
 
 figure(4);
 imagesc(xPoints,yPoints,mapDat);
@@ -64,6 +64,7 @@ input('Ready to start?');
 
 posErr = 0.01; %error on move, +/- 0.1 for linear, 0.01 for compact 
 nS     = 0; %to give scan count
+
 for i=1:length(xPoints)
     vltDat = zeros(cardInfo.setMemsize,length(yPoints));
     for j=1:length(yPoints) 
@@ -97,6 +98,7 @@ for i=1:length(xPoints)
         vltDat(:,rY) = mean(avDAT0,2);
         mapDat(i,rY) = range(vltDat(datSt:datEn,rY));
         figure(4);imagesc(xPoints,yPoints,mapDat);colormap('hot');colorbar;drawnow;
+        figure(5);plot(vltDat(datSt:datEn,rY));drawnow;
     end
     save ([fname '_x' num2str(xPoints(i)*1E3) 'um.mat'],'xPoints','yPoints','vltDat','mapDat','zSt','t','fs','cardInfo');
 end
