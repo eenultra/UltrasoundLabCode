@@ -14,8 +14,8 @@ disp('Connecting and initialising stages, please wait');
 %% Create Matlab Figure Container
 xfpos    = get(0,'DefaultFigurePosition'); % figure default position
 xfpos(1) = xfpos(1) - xfpos(1)+20;
-xfpos(3) = 650; % figure window size;Width
-xfpos(4) = 450; % Height
+xfpos(3) = 600; % figure window size;Width
+xfpos(4) = 400; % Height
 
 yfpos    = xfpos;
 yfpos(1) = xfpos(1) + (0.5*xfpos(3));
@@ -41,12 +41,12 @@ yLS = actxcontrol('MGMOTOR.MGMotorCtrl.1',[20 20 600 400], yf);pause(1);
 zLS = actxcontrol('MGMOTOR.MGMotorCtrl.1',[20 20 600 400], zf);pause(1);
 
 %% Initialize
-%S/N are for the 3 cubes used with the linear  %compact linear% stages
+%S/N are for the 3 cubes used with the linear stages [%compact%]
 
 % Start Control
 xLS.StartCtrl;
 % Set the Serial Number
-xSN = 27501235; %27252508;% put in the serial number of the hardware
+xSN = 27252508;% put in the serial number of the hardware 27501235; %
 set(xLS,'HWSerialNum', xSN);
 % Indentify the device
 xLS.Identify; 
@@ -55,7 +55,7 @@ pause(5); % waiting for the GUI to load up;
 % Start Control
 yLS.StartCtrl;
 % Set the Serial Number
-ySN = 27501294; % 27252617;%put in the serial number of the hardware
+ySN = 27252617;%put in the serial number of the hardware 27501294; %
 set(yLS,'HWSerialNum', ySN);
 % Indentify the device
 yLS.Identify; 
@@ -64,7 +64,7 @@ pause(5); % waiting for the GUI to load up;
 % Start Control
 zLS.StartCtrl;
 % Set the Serial Number
-zSN = 27501290; % 27504090;%put in the serial number of the hardware
+zSN = 27504090;%put in the serial number of the hardware 27501290; %
 set(zLS,'HWSerialNum', zSN);
 % Indentify the device
 zLS.Identify; 
