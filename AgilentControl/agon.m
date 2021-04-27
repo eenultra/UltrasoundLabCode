@@ -1,4 +1,4 @@
-function agon;
+function agon
 %agon
 %Turns output of AG on
 
