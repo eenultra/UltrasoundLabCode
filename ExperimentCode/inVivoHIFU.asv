@@ -38,9 +38,9 @@ expName = '210514_HIFU_M5_3065';
 %% Locations for HIFU Exposures
 
 res   = 0.5; %mm distance between exposures
-centX = 2.5;  %mm centre pos for exposure
-centY = 12.5;  %mm centre pos for exposure
-centZ = 16.5;  %mm centre pos for exposure
+centX = 8.5;  %mm centre pos for exposure
+centY = 8.5;  %mm centre pos for exposure
+centZ = 14;  %mm centre pos for exposure
 
 expPOS = [centX-res,centY+res,centZ;...  % HIFU location 1 -0.5x,+0.5y
          centX+res,centY+res,centZ;...   % HIFU location 2 +0.5x,+0.5y
