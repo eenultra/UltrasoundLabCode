@@ -20,7 +20,7 @@ CNC.SoftwareLimits.R.Enabled = false;
 
 disp('Initializing CNC...') 
 
-CNC_OpenConnection('COM3');
+CNC_OpenConnection('COM7');
 CNC_EnableDrives();
 
 CNC_Home();

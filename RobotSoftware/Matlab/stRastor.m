@@ -10,8 +10,8 @@ for i=1:length(zRange)
     x = xRange(k); %x-axis position
     y = yRange(j); %y-axis position
     z = zRange(i); %z-axis position
-    p = 90;         %pitch
-    r = 90;        %rotation
+    p = 0;         %pitch
+    r = 0;        %rotation
 
     out = stCartMove([x y z p r]);
     

@@ -6,7 +6,8 @@ function POS = stWhere
 
 global ST
 
-stCommand('WHERE')
+stCommand('CARTESIAN');pause(0.2);
+stCommand('WHERE'); pause(0.1);
 
 L1 = fscanf(ST, '%s');
 L2 = fscanf(ST, '%s');

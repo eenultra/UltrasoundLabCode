@@ -1,0 +1,250 @@
+MATLAB:I18n:InconsistentLocale - The system locale setting, English (United Kingdom)_United Kingdom.1252, is different from the user locale setting, English (United States)_United States.1252. 
+Compiler version: 4.9 (R2008b)  
+mcc -o 'LUARP' -W 'WinMain:LUARP' -d 'U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src' -T 'link:exe' -v 'U:\PhD\Pete\My UARP\LUARP_1_1\LUARP_GUI.m'  
+Warning: Name is nonexistent or not a directory: 
+C:\MATLAB\R2008b\toolbox\compiler\patch.  
+Warning: Name is nonexistent or not a directory: 
+C:\MATLAB\R2008b\toolbox\compiler\patch.  
+Processing C:\MATLAB\R2008b\toolbox\matlab\mcc.enc 
+Processing C:\MATLAB\R2008b\toolbox\signal\mcc.enc 
+Processing U:\PhD\Pete\My UARP\LUARP_1_1\LUARP_GUI.fig 
+Processing C:\MATLAB\R2008b\toolbox\matlab\guide\guideopts.fig 
+Processing C:\MATLAB\R2008b\toolbox\control\mcc.enc 
+Processing C:\MATLAB\R2008b\toolbox\matlab\winfun\actxcontrolselect.fig 
+Processing C:\MATLAB\R2008b\toolbox\shared\controllib\mcc.enc 
+Processing C:\MATLAB\R2008b\toolbox\matlab\winfun\actxcontrolcreateproperty.fig 
+Processing C:\MATLAB\R2008b\toolbox\ident\mcc.enc 
+Processing C:\MATLAB\R2008b\toolbox\stats\mcc.enc 
+Processing C:\MATLAB\R2008b\toolbox\images\mcc.enc 
+Processing C:\MATLAB\R2008b\toolbox\shared\imageslib\mcc.enc 
+Processing include files... 
+2 item(s) added. 
+Processing directories installed with MCR... 
+The file U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src\mccExcludedFiles.log contains a list of functions excluded from the CTF archive. 
+17 item(s) added. 
+Generating MATLAB path for the compiled application... 
+Created 58 path items. 
+Begin validation of MEX files: Thu Aug 23 13:05:35 2012  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\bdschur.mexw32'.  
+Found M-file 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\bdschur.m'.  
+MEX file  
+    'C:\MATLAB\R2008b\toolbox\control\ctrlutil\bdschur.mexw32'  
+ is valid. It contains 'mexFunction.'  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\ddaeresp.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\ddaesim.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\frdelay.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\frkernel.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\hlyapslv.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\lyapslv.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\matscale.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\mimozero.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\normrank.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\quadgp1.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\quadgp2.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\ssfresp.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\ssresp.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\sssim.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\sylvslv.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\tfresp.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\tfsim.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\triperm.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\zpkboderesp.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\zpkfresp.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\zpkresp.mexw32'.  
+No conflicting M-file found. Validating 'C:\MATLAB\R2008b\toolbox\control\ctrlutil\zpksim.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\ident\nlident\@linear\soevaluate.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\ident\nlident\@wavenet\soevaluate.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\images\iptutils\private\iptregistry.mexw32'.  
+Found M-file 'C:\MATLAB\R2008b\toolbox\images\iptutils\private\iptregistry.m'.  
+MEX file  
+    'C:\MATLAB\R2008b\toolbox\images\iptutils\private\iptregistry.mexw32'  
+ is valid. It contains 'mexFunction.'  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\buffer.mexw32'.  
+Found M-file 'C:\MATLAB\R2008b\toolbox\signal\signal\buffer.m'.  
+MEX file  
+    'C:\MATLAB\R2008b\toolbox\signal\signal\buffer.mexw32'  
+ is valid. It contains 'mexFunction.'  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\df1filter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\df1sosfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\df1tfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\df1tsosfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\df2filter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\df2sosfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\df2tfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\df2tsosfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\dfantisymmetricfirfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\dffirfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\dffirtfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\dfsymmetricfirfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\latticeallpassfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\latticearfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\latticearmafilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\latticecafilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\latticecapcfilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\latticemamaxphasefilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\latticemaminphasefilter.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\private\sosfiltmex.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\private\upfirdnmex.mexw32'.  
+No conflicting M-file found.  
+Validating 'C:\MATLAB\R2008b\toolbox\signal\signal\statespacefilter.mexw32'.  
+No conflicting M-file found.  
+End validation of MEX files: Thu Aug 23 13:05:35 2012  
+Warning: Name is nonexistent or not a directory: 
+C:\MATLAB\R2008b\toolbox\compiler\patch.  
+Deleting 51 temporary MEX authorization files.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_15968_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_11035_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_9155_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_1140_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_11480_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_5363_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_14013_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_2364_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_22424_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_4774_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_18439_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_10610_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_8442_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_17850_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_22882_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_27876_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_2654_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_8093_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_30157_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_21664_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_27246_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_20190_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_14832_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_20930_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_22695_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_3229_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_15291_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_7818_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_29205_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_24129_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_5451_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_11698_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_23389_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_8041_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_5901_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_9214_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_9217_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_26660_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_25893_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_4116_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_28384_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_9060_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_1041_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_21646_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_1020_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_27056_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_6281_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_30798_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_12160_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_29722_4584.auth'.  
+Removing: 'C:\DOCUME~1\efy3prs\LOCALS~1\Temp\mathworks_tmp_4584_24234_4584.auth'.  
+Parsing file "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP_GUI.m" 
+	(Referenced from: "Compiler Command Line").  
+Parsing file "C:\MATLAB\R2008b\toolbox\compiler\deploy\deployprint.m" 
+	(Referenced from: "Compiler Command Line").  
+Parsing file "C:\MATLAB\R2008b\toolbox\compiler\deploy\printdlg.m" 
+	(Referenced from: "Compiler Command Line").  
+Generating file "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src\LUARP_main.c".  
+Generating file "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src\LUARP_delay_load.c".  
+Generating file "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src\readme.txt".  
+Generating file "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src\LUARP_mcc_component_data.c".  
+Executing command: mbuild  -O -v -output "LUARP" -I"U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src" "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src\LUARP_main.c" "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src\LUARP_delay_load.c" "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src\LUARP_mcc_component_data.c" -link exe  -env MCR_DELAYLOAD=/delayload:mclmcrrt79.dll -env MCR_DELAYLIB=delayimp.lib -outdir "U:\PhD\Pete\My UARP\LUARP_1_1\LUARP\src"  
+ This is mbuild Copyright 1984-2006 The MathWorks, Inc. 
+ 
+-> Default options filename found in C:\Documents and Settings\efy3prs\Application Data\MathWorks\MATLAB\R2008b 
+---------------------------------------------------------------- 
+->    Options file           = C:\Documents and Settings\efy3prs\Application Data\MathWorks\MATLAB\R2008b\compopts.bat 
+->    COMPILER               = lcc 
+->    Compiler flags: 
+         COMPFLAGS           = -c -Zp8 -I"C:\MATLAB\R2008b\sys\lcc\include" -noregistrylookup 
+         OPTIMFLAGS          = -DNDEBUG 
+         DEBUGFLAGS          = -g4 
+         arguments           =  -IU:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC 
+         Name switch         = -Fo 
+->    Pre-linking commands   =  
+->    LINKER                 = lcclnk 
+->    Link directives: 
+         LINKFLAGS           = -tmpdir "U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\." -L"C:\MATLAB\R2008b\sys\lcc\lib" -libpath "C:\MATLAB\R2008b\extern\lib\win32\lcc" 
+         LINKFLAGSPOST       = mclmcrrt.lib 
+         Name directive      = -o "U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP.exe" 
+         File link directive =  
+         Lib. link directive =  
+         Rsp file indicator  = @ 
+->    Resource Compiler      =  
+->    Resource Linker        =  
+---------------------------------------------------------------- 
+ 
+ 
+--> lcc  -IU:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC -c -Zp8 -I"C:\MATLAB\R2008b\sys\lcc\include" -noregistrylookup -FoC:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\LUARP_main.obj -IC:\MATLAB\R2008b\extern\include -IC:\MATLAB\R2008b\simulink\include -DNDEBUG U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP_main.c 
+ 
+ 
+--> lcc  -IU:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC -c -Zp8 -I"C:\MATLAB\R2008b\sys\lcc\include" -noregistrylookup -FoC:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\LUARP_delay_load.obj -IC:\MATLAB\R2008b\extern\include -IC:\MATLAB\R2008b\simulink\include -DNDEBUG U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP_delay_load.c 
+ 
+Warning U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP_delay_load.c: 21  static `void function(void) FailedToLoadMCR' is not referenced 
+0 errors, 1 warnings 
+ 
+--> lcc  -IU:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC -c -Zp8 -I"C:\MATLAB\R2008b\sys\lcc\include" -noregistrylookup -FoC:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\LUARP_mcc_component_data.obj -IC:\MATLAB\R2008b\extern\include -IC:\MATLAB\R2008b\simulink\include -DNDEBUG U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP_mcc_component_data.c 
+ 
+    Contents of C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\mbuild_tmp.rsp: 
+  C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\LUARP_main.obj  C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\LUARP_delay_load.obj  C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\LUARP_mcc_component_data.obj 
+ 
+ 
+--> lcclnk -o "U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP.exe" -tmpdir "U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\." -L"C:\MATLAB\R2008b\sys\lcc\lib" -libpath "C:\MATLAB\R2008b\extern\lib\win32\lcc"  @C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\MBUILD~1.RSP  mclmcrrt.lib 
+ 
+Manually moving LUARP.exe to U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP.exe 
+Manually moving LUARP.lib to U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP.lib 
+Manually moving LUARP.exp to U:\PHD\PETE\MYUARP~1\LUARP_~1\LUARP\SRC\LUARP.exp 
+ 
+--> "if exist C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\templib.def del C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\templib.def" 
+ 
+ 
+--> "if exist C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\templib_stub.obj del C:\DOCUME~1\EFY3PRS\LOCALS~1\TEMP\MBUILD~1\templib_stub.obj" 
+ 

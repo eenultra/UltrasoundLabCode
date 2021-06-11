@@ -9,4 +9,3 @@ stCommand('DE-ENERGISE');
 pause(0.5);
 fclose(ST);     % CLOSE COM
 delete(ST);       % CLEARS WORKSPACE OF SERIAL CONNECTION. TEMPORARY. USE DELETE TO REMOVE ENTIRELY
-clear all;

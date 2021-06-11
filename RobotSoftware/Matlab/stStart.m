@@ -4,10 +4,15 @@
 %May 2017
 
 global ST
-ST = serial('COM4','BaudRate',19200,'DataBits',8);   % SETS SERIAL, PLEASE CHANGE TO COM REQUIRED
+ST = serial('COM2','BaudRate',19200,'DataBits',8);   % SETS SERIAL, PLEASE CHANGE TO COM REQUIRED
 set(ST,'Terminator','CR');                           % SETS THE TERMINATION TYPE
 ST.OutputEmptyFcn = @instrcallback;                  % SETS READ CALLBACK (NEEDED)
 fopen(ST);                                           % OPENS COMS
+
+fprintf(ST, 'ROBOFORTH');                                % SENDS ROBOFORTH
+fprintf(ST, ' \n\r ');                                   % SENDS ADDITIONAL CR (NEEDED)
+flushinput(ST) ;                                         % FLUSH INPUT BUFFER
+flushoutput(ST);
 
 rtcmd = 'START';
 stCommand(rtcmd)
@@ -22,21 +27,19 @@ if strcmp(stCal,'y');
         rtcmd = 'ENERGISE';
         stCommand(rtcmd)
     end
-   rtcmd = 'START';
-   stCommand(rtcmd)
    pause(2);
-   rtcmd = 'CALIBRATE';
-   stCommand(rtcmd)
    disp('Calibrating, please wait');
+   rtcmd = 'CALIBRATE';
+   stCommand(rtcmd);pause(0.1); 
 end
 
-%isCart = input('Do you want Cartesian (i.e. Rev Kin)? y/n ','s');
-%if strcmp(isCart,'y');
-   rtcmd = 'CARTESIAN';
-   stCommand(rtcmd)                               
-%end
+isCal   = input('Is arm calibrated? y/n ','s');
+calTest = strcmp(isCal,'y');
 
+rtcmd = 'CARTESIAN';
+stCommand(rtcmd);pause(0.2);                               
 
+POS = stWhere
         
 
 

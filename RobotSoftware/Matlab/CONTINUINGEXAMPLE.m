@@ -11,8 +11,8 @@ CONTROLLER = fscanf(ST, '%s');                           % READS CONTROLLER
 pause(1);
 if regexp(CONTROLLER, 'OK');                            % IF CONTROLLER READS 'OK'
     fprintf( 'STARTING\n' )                             % FOR DEBUGGING- REMOVE
-    fprintf(s, 'START');                                % SENDS START
-    fprintf(s, ' \n\r ');                               % SENDS ADDITIONAL CR (NEEDED)
+    fprintf(ST, 'START');                                % SENDS START
+    fprintf(ST, ' \n\r ');                               % SENDS ADDITIONAL CR (NEEDED)
     flushinput(ST) ;                                     % FLUSH INPUT BUFFER
     flushoutput(ST);                                     % FLUSH OUTPUT BUFFER
     pause(1);
