@@ -110,7 +110,7 @@ switch cardInfo.cardFunction
        end
 end
 
-% ***** start card for acquisition *****
+%% ***** start card for acquisition *****
 
 % ----- we'll start and wait until the card has finished or until a timeout occurs -----
 timeout_ms = 5000;
@@ -145,7 +145,7 @@ else
     % ***** get analog input data *****
     if cardInfo.cardFunction == mRegs ('SPCM_TYPE_AI')
         % ----- set dataType: 0 = RAW (int16), 1 = Amplitude calculated (float) -----
-        dataType = 0;
+        dataType = 1;
     
         switch cardInfo.setChannels
         
@@ -185,7 +185,7 @@ end
 fprintf (' ... acquisition ended, data has been transferred to PC memory.\n');
 
 
-% ***** plot data *****
+%% ***** plot data *****
 if cardInfo.cardFunction == 1
     
     % ***** plot analog data *****

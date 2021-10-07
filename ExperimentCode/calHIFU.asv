@@ -3,13 +3,13 @@
 
 Runs    = 3; % number of repeats
 mVrange = 20:20:460; % Agilent Voltage Range
-freq    = 3.3E6; % Trasnducer Freq
+freq    = 3.55E6; % Trasnducer Freq
 pDur    = 20E-6; % Pulse duration, in us
 nBst    = round(freq*pDur); % number of cycles for this pulse duration and freq
 
-fnOff;
-
-agSetVolt(20E-3); % sets low voltage to start
+agopen
+agoff;
+agSetVolt(25E-3); % sets low voltage to start
 agSetFreq(freq);  % sets ultrasound freq
 agSetBcnt(nBst);  % sets number of cycles in burst
 

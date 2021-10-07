@@ -28,17 +28,36 @@ end
 mRegs = spcMCreateRegMap ();
 mErrors = spcMCreateErrorMap ();
 
-[success, cardInfo] = spcMInitCardByIdx (0);
+% single card
+deviceString = '/dev/spcm0';
+
+[success, cardInfo] = spcMInitDevice (deviceString);
 
 if (success == true)
-    disp('Card Initialised');
-    fprintf (spcMPrintCardInfo (cardInfo));
-    else
+    % ----- print info about the board -----
+    cardInfoText = spcMPrintCardInfo (cardInfo);
+    fprintf (cardInfoText);
+else
     spcMErrorMessageStdOut (cardInfo, 'Error: Could not open card\n', true);
     return;
 end
 
+% ----- check whether we support this card type in the example -----
+if (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_AI')) & (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_DI')) & (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_DIO'))
+    spcMErrorMessageStdOut (cardInfo, 'Error: Card function not supported by this example\n', false);
+    return;
+end
+
 % ***** do card setup *****
+% ----- set channel mask for max channels -----
+if cardInfo.maxChannels == 64
+    chMaskH = hex2dec ('FFFFFFFF');
+    chMaskL = hex2dec ('FFFFFFFF');
+else
+    chMaskH = 0;
+    chMaskL = bitshift (1, cardInfo.maxChannels) - 1;
+end
+
 cardInfo.nDat        = nDat; % number of mem segments used in aquire
 cardInfo.lDat        = (nDat-1) * 1024 ; % after trig mem length
 cardInfo.setMemsize  = nDat * 1024 ; % total mem length
@@ -75,7 +94,7 @@ end
 
 cardInfo.setChannels = nCh;
 for i=1 : cardInfo.setChannels 
-    [success, cardInfo] = spcMSetupAnalogPathInputCh (cardInfo, i-1, 0, drCh(i), imCh(i), 0, 0, 0);  
+    [success, cardInfo] = spcMSetupAnalogPathInputCh (cardInfo, i-1, 0, drCh(i), imCh(i), 0, 0, 0)  
     if (success == false)
         spcMErrorMessageStdOut (cardInfo, 'Error: spcMSetupInputChannel:\n\t', true);
         return;
