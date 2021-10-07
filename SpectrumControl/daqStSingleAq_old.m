@@ -16,13 +16,9 @@
 
 function daqStSingleAq(nDat,nCh,sampleFreq,drCh,imCh,trigType) %nChannels,
 
-% helper maps to use label names for registers and errors
 global mRegs;
 global mErrors;
 global cardInfo;
- 
-mRegs = spcMCreateRegMap ();
-mErrors = spcMCreateErrorMap ();
 
 if isempty(cardInfo) == 0
     disp('Card already connected, closing...'); 
@@ -31,10 +27,6 @@ end
 
 mRegs = spcMCreateRegMap ();
 mErrors = spcMCreateErrorMap ();
-
-% ***** use device string to open single card or digitizerNETBOX *****
-% digitizerNETBOX
-%deviceString = 'TCPIP::XX.XX.XX.XX::inst0'; % XX.XX.XX.XX = IP Address, as an example : 'TCPIP::169.254.119.42::inst0'
 
 % single card
 deviceString = '/dev/spcm0';
@@ -51,7 +43,7 @@ else
 end
 
 % ----- check whether we support this card type in the example -----
-if (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_AI')) && (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_DI')) && (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_DIO'))
+if (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_AI')) & (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_DI')) & (cardInfo.cardFunction ~= mRegs('SPCM_TYPE_DIO'))
     spcMErrorMessageStdOut (cardInfo, 'Error: Card function not supported by this example\n', false);
     return;
 end
@@ -71,24 +63,13 @@ cardInfo.lDat        = (nDat-1) * 1024 ; % after trig mem length
 cardInfo.setMemsize  = nDat * 1024 ; % total mem length
 cardInfo.pre_lDat    = 1024; % pre-mem length 
 
-%[success, cardInfo] = spcMSetupModeRecStdSingle (cardInfo, 0, 1, cardInfo.setMemsize, cardInfo.lDat); %spcMSetupModeRecStdSingle (cardInfo, chEnableH, chEnableL, memSamples, postSamples) - The „chEnableH“ (upper 32 channels) and „chEnableL“ (lower 32 channels) parameter must form together a valid channel enable mask while „memSamples“ and „postSamples“ gives memory size and post trigger in samples per channel.
-
-% ----- standard single, all channels,  -----    
-[success, cardInfo] = spcMSetupModeRecStdSingle (cardInfo, chMaskH, chMaskL, cardInfo.setMemsize, cardInfo.lDat);
-if (success == false)
-    spcMErrorMessageStdOut (cardInfo, 'Error: spcMSetupModeRecStdSingle:\n\t', true);
-    return;
-end
+[success, cardInfo] = spcMSetupModeRecStdSingle (cardInfo, 0, 1, cardInfo.setMemsize, cardInfo.lDat); %spcMSetupModeRecStdSingle (cardInfo, chEnableH, chEnableL, memSamples, postSamples) - The „chEnableH“ (upper 32 channels) and „chEnableL“ (lower 32 channels) parameter must form together a valid channel enable mask while „memSamples“ and „postSamples“ gives memory size and post trigger in samples per channel.
 
 [success, cardInfo] = spcMSetupClockPLL (cardInfo, sampleFreq*1E6, 0);  % clock output : enable = 1, disable = 0
 if (success == false)
     spcMErrorMessageStdOut (cardInfo, 'Error: spcMSetupClockPLL:\n\t', true);
     return;
 end
-    if (success == false)
-        spcMErrorMessageStdOut (cardInfo, 'Error: spcMSetupClockPLL:\n\t', true);
-        return;
-    end
 
 if trigType == 1 % external triggering
      % ----- extMode = SPC_TM_POS, trigTerm = 0, pulseWidth = 0, singleSrc = 1, extLine = 0 -----
