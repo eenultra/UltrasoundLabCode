@@ -37,7 +37,7 @@ vData  = zeros(cardInfo.setMemsize,length(mVrange),Runs);
 probe    = 10;  % scope probe atten x10
 
 % data locations, check manually
-vSt = 300; vEn  = 900;
+vSt = 1000; vEn  = 2500;
 pSt = 10000;pEn  = 14000;
 
 %%
@@ -47,7 +47,7 @@ for i=1:Runs
     for j=1:length(mVrange)
         fnSetVolt(mVrange(j)*1E-3); pause(0.1);%
         
-        fnOn;pause(0.1);
+        fnOn;QCrun;pause(0.1);
 
         chA = zeros(cardInfo.setMemsize,nCyc);
         chB = zeros(cardInfo.setMemsize,nCyc);       
@@ -58,7 +58,7 @@ for i=1:Runs
         end   
         pData(:,j,i)  =  HydrophoneInverseFilter(mean(chA,2),cardInfo.setSamplerate,2);
         vData(:,j,i)  = (mean(chB,2)/1E3)*probe;       
-        fnOff
+        QCstop;fnOff;pause(0.1)
         
         figure(1);plot(timeNs/1E3,pData(:,j,i));drawnow
         figure(2);plot(timeNs/1E3,vData(:,j,i));drawnow
