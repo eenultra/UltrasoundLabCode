@@ -24,7 +24,7 @@
 
 global QC 
 
-COM = 'COM6';%COM16 When using Serial Hub %'COM1';
+COM = 'COM3';%COM16 When using Serial Hub %'COM1';
 
 QC = serial(COM,'BaudRate',115200,'Terminator','CR/LF','DataBits',8,'StopBits',1);
 fopen(QC);
