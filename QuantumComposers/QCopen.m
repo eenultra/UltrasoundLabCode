@@ -20,8 +20,6 @@
 %University of Leeds
 %Jan 2014
 
-
-
 global QC 
 
 COM = 'COM6';%COM16 When using Serial Hub %'COM1';
